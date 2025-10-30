@@ -12,4 +12,8 @@
     <Folder Include="DTOs\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LogicaDeNegocios\LogicaDeNegocios.csproj" />
+  </ItemGroup>
+
 </Project>
