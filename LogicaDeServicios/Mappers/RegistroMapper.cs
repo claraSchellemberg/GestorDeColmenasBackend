@@ -10,18 +10,18 @@ namespace LogicaDeServicios.Mappers
 {
     public class RegistroMapper
     {
-        public static Registro FromDto(RegistroDto registroDto)
+        public static Registro FromDto(RegistroSetDto registroSetDto)
         {
-            return new Registro(registroDto.TempInterna1,
-                                registroDto.TempInterna2,
-                                registroDto.TempInterna3,
-                                registroDto.TempExterna,
-                                registroDto.Peso);
+            return new Registro(registroSetDto.TempInterna1,
+                                registroSetDto.TempInterna2,
+                                registroSetDto.TempInterna3,
+                                registroSetDto.TempExterna,
+                                registroSetDto.Peso);
         }
 
-        public static RegistroListadoDto ToDto(Registro registro)
+        public static RegistroGetDto ToDto(Registro registro)
         {
-            return new RegistroListadoDto(registro.Id,
+            return new RegistroGetDto(registro.Id,
                                           registro.TempInterna1,
                                           registro.TempInterna2,
                                           registro.TempInterna3,
@@ -30,14 +30,14 @@ namespace LogicaDeServicios.Mappers
                                           registro.FechaRegistro);
         }
 
-        public static IEnumerable<RegistroListadoDto> ToListDto(IEnumerable<Registro> registros)
+        public static IEnumerable<RegistroGetDto> ToListDto(IEnumerable<Registro> registros)
         {
-            List<RegistroListadoDto> registrosListadoDto= new List<RegistroListadoDto>();
+            List<RegistroGetDto> registrosGetDto= new List<RegistroGetDto>();
             foreach (Registro registro in registros)
             {
-                registrosListadoDto.Add(ToDto(registro));
+                registrosGetDto.Add(ToDto(registro));
             }
-            return registrosListadoDto;
+            return registrosGetDto;
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.DTOs.Registros
 {
-    public record RegistroListadoDto(int Id,
+    public record RegistroGetDto(int Id,
                                     float TempInterna1,
                                     float TempInterna2,
                                     float TempInterna3,

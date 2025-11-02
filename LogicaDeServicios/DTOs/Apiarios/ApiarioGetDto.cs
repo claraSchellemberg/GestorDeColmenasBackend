@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.DTOs.Apiarios
 {
-    public record ApiarioListadoDto(int Id,
+    public record ApiarioGetDto(int Id,
                                     string Nombre,
                                     string Latitud,
                                     string Longitud,

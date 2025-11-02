@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.DTOs.Colmenas
 {
-    public record ColmenaListadoDto(int Id,
+    public record ColmenaGetDto(int Id,
                                     DateTime FechaInstalacionSensores,
                                     string Descripcion,
                                     EstadoColmena Estado)

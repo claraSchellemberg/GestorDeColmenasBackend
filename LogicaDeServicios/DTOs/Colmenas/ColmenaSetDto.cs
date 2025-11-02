@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.DTOs.Colmenas
 {
-    public record ColmenaDto(string Descripcion)
+    public record ColmenaSetDto(string Descripcion)
     {
     }
 }

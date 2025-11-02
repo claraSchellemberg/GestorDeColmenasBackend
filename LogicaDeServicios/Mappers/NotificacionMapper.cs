@@ -10,28 +10,22 @@ namespace LogicaDeServicios.Mappers
 {
     public class NotificacionMapper
     {
-        public static Notificacion FromDto(NotificacionDto notificacionDto)
+        public static NotificacionGetDto ToDto(Notificacion notificacion)
         {
-            return new Notificacion(notificacionDto.Mensaje,
-                                    notificacionDto.RegistroAsociado);
-        }
-
-        public static NotificacionListadoDto ToDto(Notificacion notificacion)
-        {
-            return new NotificacionListadoDto(notificacion.Id,
+            return new NotificacionGetDto(notificacion.Id,
                                              notificacion.Mensaje,
                                              notificacion.FechaNotificacion,
                                              notificacion.RegistroAsociado);
         }
 
-        public static IEnumerable<NotificacionListadoDto> ToListDto(IEnumerable<Notificacion> notificacions)
+        public static IEnumerable<NotificacionGetDto> ToListDto(IEnumerable<Notificacion> notificacions)
         {
-            List<NotificacionListadoDto> notificacionesListadoDto = new List<NotificacionListadoDto>();
+            List<NotificacionGetDto> notificacionesGetDto = new List<NotificacionGetDto>();
             foreach(Notificacion notificacion in notificacions)
             {
-                notificacionesListadoDto.Add(ToDto(notificacion));
+                notificacionesGetDto.Add(ToDto(notificacion));
             }
-            return notificacionesListadoDto;
+            return notificacionesGetDto;
 
         }
     }

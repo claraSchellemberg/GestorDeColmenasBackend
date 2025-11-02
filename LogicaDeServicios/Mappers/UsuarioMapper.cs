@@ -10,29 +10,29 @@ namespace LogicaDeServicios.Mappers
 {
     public static class UsuarioMapper
     {
-        public static Usuario FromDto(UsuarioDto usuarioDto)
+        public static Usuario FromDto(UsuarioSetDto usuarioSetDto)
         {
-            return new Usuario(usuarioDto.Nombre,
-                                usuarioDto.Email,
-                                usuarioDto.Contraseña);
+            return new Usuario(usuarioSetDto.Nombre,
+                                usuarioSetDto.Email,
+                                usuarioSetDto.Contraseña);
         }
 
-        public static UsuarioListadoDto ToDto(Usuario usuario)
+        public static UsuarioGetDto ToDto(Usuario usuario)
         {
-            return new UsuarioListadoDto(usuario.Id,
+            return new UsuarioGetDto(usuario.Id,
                                         usuario.Nombre,
                                         usuario.Email,
                                         usuario.Contraseña);
         }
 
-        public static IEnumerable<UsuarioListadoDto> ToListDto(IEnumerable<Usuario> usuarios)
+        public static IEnumerable<UsuarioGetDto> ToListDto(IEnumerable<Usuario> usuarios)
         {
-            List<UsuarioListadoDto> usuariosListadoDto= new List<UsuarioListadoDto>();
+            List<UsuarioGetDto> usuariosGetDto= new List<UsuarioGetDto>();
             foreach (Usuario usuario in usuarios)
             {
-                usuariosListadoDto.Add(ToDto(usuario));
+                usuariosGetDto.Add(ToDto(usuario));
             }
-            return usuariosListadoDto;
+            return usuariosGetDto;
         }
             
     }

@@ -10,27 +10,27 @@ namespace LogicaDeServicios.Mappers
 {
     public class ColmenaMapper
     {
-        public static Colmena FromDto(ColmenaDto colmenaDto) 
+        public static Colmena FromDto(ColmenaSetDto colmenaSetDto) 
         {
-            return new Colmena(colmenaDto.Descripcion);
+            return new Colmena(colmenaSetDto.Descripcion);
         }
 
-        public static ColmenaListadoDto ToDto(Colmena colmena)
+        public static ColmenaGetDto ToDto(Colmena colmena)
         {
-            return new ColmenaListadoDto (colmena.Id,
+            return new ColmenaGetDto (colmena.Id,
                                           colmena.FechaInstalacionSensores,
                                           colmena.Descripcion,
                                           colmena.Estado);
         }
 
-        public static IEnumerable<ColmenaListadoDto> ToListDto(IEnumerable<Colmena> colmenas)
+        public static IEnumerable<ColmenaGetDto> ToListDto(IEnumerable<Colmena> colmenas)
         {
-            List<ColmenaListadoDto> colmenasListadoDto = new List<ColmenaListadoDto>();
+            List<ColmenaGetDto> colmenasGetDto = new List<ColmenaGetDto>();
             foreach(Colmena colmena in colmenas)
             {
-                colmenasListadoDto.Add(ToDto(colmena));
+                colmenasGetDto.Add(ToDto(colmena));
             }
-            return colmenasListadoDto;
+            return colmenasGetDto;
         }
     }
 }

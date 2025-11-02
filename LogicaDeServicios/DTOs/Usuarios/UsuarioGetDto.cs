@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.DTOs.Usuarios
 {
-    public record UsuarioListadoDto(int Id,
+    public record UsuarioGetDto(int Id,
                                     string Nombre,
                                     string Email,
                                     string Contraseña)

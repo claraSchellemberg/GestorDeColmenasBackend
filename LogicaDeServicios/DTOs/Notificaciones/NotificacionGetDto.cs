@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.DTOs.Notificaciones
 {
-    public record NotificacionListadoDto(int Id,
+    public record NotificacionGetDto(int Id,
                                         string Mensaje,
                                         DateTime FechaNotificacion,
                                         Registro RegistroAsociado)

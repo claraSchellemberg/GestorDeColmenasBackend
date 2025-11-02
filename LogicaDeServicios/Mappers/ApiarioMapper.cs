@@ -10,17 +10,17 @@ namespace LogicaDeServicios.Mappers
 {
     public class ApiarioMapper
     {
-        public static Apiario FromDto(ApiarioDto apiarioDto)
+        public static Apiario FromDto(ApiarioSetDto apiarioSetDto)
         {
-            return new Apiario(apiarioDto.Nombre,
-                                apiarioDto.Latitud,
-                                apiarioDto.Longitud,
-                                apiarioDto.UbicacionDeReferencia);
+            return new Apiario(apiarioSetDto.Nombre,
+                                apiarioSetDto.Latitud,
+                                apiarioSetDto.Longitud,
+                                apiarioSetDto.UbicacionDeReferencia);
         }
 
-        public static ApiarioListadoDto ToDto(Apiario apiario)
+        public static ApiarioGetDto ToDto(Apiario apiario)
         {
-            return new ApiarioListadoDto(apiario.Id,
+            return new ApiarioGetDto(apiario.Id,
                                         apiario.Nombre,
                                         apiario.Latitud,
                                         apiario.Longitud,
@@ -28,14 +28,14 @@ namespace LogicaDeServicios.Mappers
                                         apiario.fechaAlta);
         }
 
-        public static IEnumerable<ApiarioListadoDto> ToListDto(IEnumerable<Apiario> apiarios)
+        public static IEnumerable<ApiarioGetDto> ToListDto(IEnumerable<Apiario> apiarios)
         {
-            List<ApiarioListadoDto> apiarioListadoDto = new List<ApiarioListadoDto>();
+            List<ApiarioGetDto> apiariosGetDto = new List<ApiarioGetDto>();
             foreach (Apiario apiario in apiarios)
             {
-                apiarioListadoDto.Add(ToDto(apiario));
+                apiariosGetDto.Add(ToDto(apiario));
             }
-            return apiarioListadoDto;
+            return apiariosGetDto;
         }
 
     }
