@@ -8,11 +8,11 @@ namespace LogicaDeNegocios
 {
     public class Configuracion
     {
-        public string NombreIdentificador { get; set; }
+        public string Nombre { get; set; }
         public string Valor { get; set; }
-        public Configuracion(string nombreIdentificador, string valor)
+        public Configuracion(string nombre, string valor)
         {
-            NombreIdentificador = nombreIdentificador;
+            Nombre = nombre;
             Valor = valor;
         }
         public void actualizarValor(string nuevoValor)
@@ -21,7 +21,7 @@ namespace LogicaDeNegocios
         }
         public void validarCampos()
         {
-            if (string.IsNullOrEmpty(NombreIdentificador) || string.IsNullOrEmpty(Valor))
+            if (string.IsNullOrEmpty(Nombre) || string.IsNullOrEmpty(Valor))
             {
                 throw new Exception("Todos los campos son obligatorios.");
             }
