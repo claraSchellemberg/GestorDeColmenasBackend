@@ -15,11 +15,11 @@ namespace LogicaDeNegocios.Entidades
         public string Descripcion { get; set; }
         public EstadoColmena Estado { get; set; }
         public List<Registro> Registros { get; set; } = new List<Registro>();
-        public Colmena(string descripcion, EstadoColmena estado)
+        public Colmena(string descripcion)
         {
             this.Id = ultimoId++;
             this.Descripcion = descripcion;
-            this.Estado = estado;
+            this.Estado = EstadoColmena.OPTIMO; //lo deje como predeterminado cuando demos el alta de la colmena, lo vemos si es mejor que parta con otro estado
             this.FechaInstalacionSensores = DateTime.Now;
         }
     }
