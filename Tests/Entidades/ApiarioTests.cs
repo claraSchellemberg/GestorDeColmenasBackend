@@ -36,7 +36,8 @@ namespace LogicaDeNegocios.Tests.Entidades
         {
             // Arrange
             var apiario = new Apiario("Apiario Test", "-34.9", "-56.1", "Test");
-            var colmena = new Colmena("Colmena 1", Enums.EstadoColmena.OPTIMO);
+            var colmena = new Colmena("Colmena 1");
+            //var colmena = new Colmena("Colmena 1", Enums.EstadoColmena.OPTIMO);
 
             // Act
             apiario.AgregarColmena(colmena);
@@ -51,8 +52,10 @@ namespace LogicaDeNegocios.Tests.Entidades
         {
             // Arrange
             var apiario = new Apiario("Apiario Test", "-34.9", "-56.1", "Test");
-            var colmena1 = new Colmena("Colmena 1", Enums.EstadoColmena.OPTIMO);
-            var colmena2 = new Colmena("Colmena 2", Enums.EstadoColmena.NECESITA_REVISION);
+            var colmena1 = new Colmena("Colmena 1"); 
+            var colmena2 = new Colmena("Colmena 2");
+            // var colmena1 = new Colmena("Colmena 1", Enums.EstadoColmena.OPTIMO);   //se comentan dado que sacamos el estado que le pasabamos pro parametro del constructor
+            //var colmena2 = new Colmena("Colmena 2", Enums.EstadoColmena.NECESITA_REVISION);
 
             // Act
             apiario.AgregarColmena(colmena1);
