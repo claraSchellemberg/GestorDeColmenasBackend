@@ -28,7 +28,7 @@ namespace LogicaDeNegocios.Tests.Entidades
             Xunit.Assert.True(apiario.Id >= 0);
             Xunit.Assert.NotNull(apiario.Colmenas);
             Xunit.Assert.Empty(apiario.Colmenas);
-            Xunit.Assert.True((DateTime.Now - apiario.fechaAlta).TotalSeconds < 2);
+            Xunit.Assert.True((DateTime.Now - apiario.FechaAlta).TotalSeconds < 2);
         }
 
         [Fact]

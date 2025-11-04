@@ -11,14 +11,12 @@ namespace LogicaDeNegocios.Entidades
     public class Usuario
     {
         public int Id { get; set; }
-        private int UltimoId = 0;
         public string Nombre { get; set; }
         public string Email { get; set; }
         public string Contraseña { get; set; }
         public List<Apiario> Apiarios { get; set; } = new List<Apiario>();
         public Usuario( string nombre, string email, string contraseña)
         {
-            this.Id = UltimoId++;
             this.Nombre = nombre;
             this.Email = email;
             this.Contraseña = contraseña;

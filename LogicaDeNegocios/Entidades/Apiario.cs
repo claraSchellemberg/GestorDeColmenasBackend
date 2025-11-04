@@ -10,16 +10,15 @@ namespace LogicaDeNegocios.Entidades
     public class Apiario
     {
         public int Id { get; set; }
-        private static int UltimoId = 0;
         public string Nombre { get; set; }
         public string Latitud { get; set; }
         public string Longitud { get; set; }
         public string UbicacionDeReferencia { get; set; }
-        public DateTime fechaAlta { get; set; } = DateTime.Now;
+        public DateTime FechaAlta { get; set; } = DateTime.Now;
         public List<Colmena> Colmenas { get; set; } = new List<Colmena>();
+        public Apiario() { }
         public Apiario(string nombre, string latitud, string longitud, string ubicacion)
         {
-            this.Id = UltimoId++;
             this.Nombre = nombre;
             this.UbicacionDeReferencia = ubicacion;
             this.Latitud = latitud;
