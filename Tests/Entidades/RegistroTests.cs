@@ -10,6 +10,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         public void Constructor_ConParametros_CreaRegistroCorrectamente()
         {
             // Arrange
+            var nombre = "Colmena";
             var tempInterna1 = 30.5f;
             var tempInterna2 = 31.2f;
             var tempInterna3 = 29.8f;
@@ -17,7 +18,7 @@ namespace LogicaDeNegocios.Tests.Entidades
             var peso = 45.3f;
 
             // Act
-            var registro = new Registro(tempInterna1, tempInterna2, tempInterna3, tempExterna, peso);
+            var registro = new Registro(nombre, tempInterna1, tempInterna2, tempInterna3, tempExterna, peso);
 
             // Assert
             Assert.Equal(tempInterna1, registro.TempInterna1);
@@ -45,15 +46,15 @@ namespace LogicaDeNegocios.Tests.Entidades
         }
 
         [Theory]
-        [InlineData(0f, 0f, 0f, 0f, 0f)]
-        [InlineData(15.5f, 16.0f, 15.8f, 10.0f, 30.0f)]
-        [InlineData(35.0f, 36.0f, 34.5f, 28.0f, 60.0f)]
-        [InlineData(-5.0f, -4.0f, -6.0f, -10.0f, 20.0f)]
+        [InlineData("", 0f, 0f, 0f, 0f, 0f)]
+        [InlineData("Colmena",15.5f, 16.0f, 15.8f, 10.0f, 30.0f)]
+        [InlineData("Colmena",35.0f, 36.0f, 34.5f, 28.0f, 60.0f)]
+        [InlineData("Colmena" ,- 5.0f, -4.0f, -6.0f, -10.0f, 20.0f)]
         public void Constructor_ConDiferentesValores_AsignaCorrectamente(
-            float temp1, float temp2, float temp3, float tempExt, float peso)
+            string nombre, float temp1, float temp2, float temp3, float tempExt, float peso)
         {
             // Act
-            var registro = new Registro(temp1, temp2, temp3, tempExt, peso);
+            var registro = new Registro(nombre, temp1, temp2, temp3, tempExt, peso);
 
             // Assert
             Assert.Equal(temp1, registro.TempInterna1);
@@ -67,7 +68,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         public void Registro_ConValoresNegativos_AceptaValoresNegativos()
         {
             // Arrange & Act
-            var registro = new Registro(-10.0f, -5.0f, -8.0f, -15.0f, -2.0f);
+            var registro = new Registro("Colmena", -10.0f, -5.0f, -8.0f, -15.0f, -2.0f);
 
             // Assert
             Assert.Equal(-10.0f, registro.TempInterna1);
@@ -81,7 +82,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         public void Registro_ConValoresMuyAltos_AceptaValoresAltos()
         {
             // Arrange & Act
-            var registro = new Registro(100.0f, 105.0f, 102.0f, 95.0f, 200.0f);
+            var registro = new Registro("Colmena", 100.0f, 105.0f, 102.0f, 95.0f, 200.0f);
 
             // Assert
             Assert.Equal(100.0f, registro.TempInterna1);
@@ -95,7 +96,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         public void Registro_ConValoresDecimales_MantienePrecision()
         {
             // Arrange & Act
-            var registro = new Registro(30.123f, 31.456f, 29.789f, 25.555f, 45.999f);
+            var registro = new Registro("Colmena", 30.123f, 31.456f, 29.789f, 25.555f, 45.999f);
 
             // Assert
             Assert.Equal(30.123f, registro.TempInterna1, 3);
@@ -109,7 +110,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         public void Registro_PropiedadesSonModificables()
         {
             // Arrange
-            var registro = new Registro(30.0f, 30.0f, 30.0f, 25.0f, 45.0f);
+            var registro = new Registro("Colmena", 30.0f, 30.0f, 30.0f, 25.0f, 45.0f);
 
             // Act
             registro.TempInterna1 = 32.0f;

@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="CasosDeUso\" />
     <Folder Include="Mappers\" />
     <Folder Include="DTOs\" />
   </ItemGroup>
@@ -17,6 +16,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <ProjectReference Include="..\AccesoDeDatos\AccesoDeDatos.csproj" />
     <ProjectReference Include="..\LogicaDeNegocios\LogicaDeNegocios.csproj" />
   </ItemGroup>
 

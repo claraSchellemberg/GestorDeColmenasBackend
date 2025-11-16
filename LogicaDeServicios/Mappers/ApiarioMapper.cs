@@ -25,7 +25,7 @@ namespace LogicaDeServicios.Mappers
                                         apiario.Latitud,
                                         apiario.Longitud,
                                         apiario.UbicacionDeReferencia,
-                                        apiario.fechaAlta);
+                                        apiario.FechaAlta);
         }
 
         public static IEnumerable<ApiarioGetDto> ToListDto(IEnumerable<Apiario> apiarios)

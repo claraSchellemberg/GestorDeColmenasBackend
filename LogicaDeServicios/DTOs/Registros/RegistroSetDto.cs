@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.DTOs.Registros
 {
-    public record RegistroSetDto(float TempInterna1,
+    public record RegistroSetDto(string Nombre,
+                             float TempInterna1,
                              float TempInterna2, 
                              float TempInterna3, 
                              float TempExterna, 

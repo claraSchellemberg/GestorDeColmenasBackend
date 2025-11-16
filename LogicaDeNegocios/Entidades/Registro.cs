@@ -9,6 +9,7 @@ namespace LogicaDeNegocios.Entidades
     public class Registro
     {
         public int Id { get; set; }
+        public string NombreColmena { get; set; }
         public float TempInterna1 { get; set; }
         public float TempInterna2 { get; set; }
         public float TempInterna3 { get; set; }
@@ -17,9 +18,10 @@ namespace LogicaDeNegocios.Entidades
         public float Peso { get; set; }
         public DateTime FechaRegistro { get; set; }
         public Registro() { }
-        public Registro( float tempInterna1, float tempInterna2, float tempInterna3,
+        public Registro( string nombreColmena, float tempInterna1, float tempInterna2, float tempInterna3,
                         float tempExterna, float peso)
         {
+            this.NombreColmena = nombreColmena;
             this.TempInterna1 = tempInterna1;
             this.TempInterna2 = tempInterna2;
             this.TempInterna3 = tempInterna3;

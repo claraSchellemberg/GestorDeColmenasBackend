@@ -11,6 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccesoDeDatos", "AccesoDeDa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{A937909A-3B86-4D0E-B647-54148EC6E02E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{7CB4280F-B883-4A64-875E-D05B94E71EF4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{37EE828A-876E-4F06-AB71-4DC8C5272F46} = {37EE828A-876E-4F06-AB71-4DC8C5272F46}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +38,10 @@ Global
 		{A937909A-3B86-4D0E-B647-54148EC6E02E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A937909A-3B86-4D0E-B647-54148EC6E02E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A937909A-3B86-4D0E-B647-54148EC6E02E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CB4280F-B883-4A64-875E-D05B94E71EF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CB4280F-B883-4A64-875E-D05B94E71EF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CB4280F-B883-4A64-875E-D05B94E71EF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CB4280F-B883-4A64-875E-D05B94E71EF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
