@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogicaDeServicios.DTOs.Colmenas
+namespace LogicaDeServicios.InterfacesCasosDeUso
 {
-    public record ColmenaSetDto(string Descripcion, string Nombre)
+    public interface IObtenerTodos <T>
     {
+        IEnumerable<T> ObtenerTodos();
     }
 }

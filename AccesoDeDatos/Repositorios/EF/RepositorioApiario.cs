@@ -30,12 +30,24 @@ namespace AccesoDeDatos.Repositorios.EF
             }
         }
 
-        public async void Agregar(Apiario entidad)
+        /*public async void Agregar(Apiario entidad)
         {
             if(entidad!=null)
             {
                 await _context.Apiarios.AddAsync(entidad);
                 await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new ApiarioException("El apiario no puede estar vacío");
+            }
+        }*/
+        public void Agregar(Apiario entidad)
+        {
+            if (entidad != null)
+            {
+                _context.Apiarios.AddAsync(entidad);
+                _context.SaveChangesAsync();
             }
             else
             {

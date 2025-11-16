@@ -10,6 +10,7 @@ namespace LogicaDeServicios.DTOs.Colmenas
     public record ColmenaGetDto(int Id,
                                     DateTime FechaInstalacionSensores,
                                     string Descripcion,
+                                    string Nombre,
                                     EstadoColmena Estado)
     {
     }

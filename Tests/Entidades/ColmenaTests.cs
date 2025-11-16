@@ -12,10 +12,11 @@ namespace LogicaDeNegocios.Tests.Entidades
         {
             // Arrange
             var descripcion = "Colmena producción principal";
+            var nombre = "Colmena";
             //var estado = EstadoColmena.OPTIMO;
 
             // Act
-            var colmena = new Colmena(descripcion);
+            var colmena = new Colmena(descripcion,nombre);
             //var colmena = new Colmena(descripcion, estado);
 
             // Assert
@@ -44,7 +45,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         public void Colmena_ConDescripcionVacia_SeCreaSinValidacion()
         {
             // Arrange & Act
-            var colmena = new Colmena("");
+            var colmena = new Colmena("", "");
             //var colmena = new Colmena("", EstadoColmena.OPTIMO);
 
             // Assert
@@ -56,7 +57,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         public void Colmena_ListaRegistros_InicializaVacia()
         {
             // Arrange & Act
-            var colmena = new Colmena("Test");
+            var colmena = new Colmena("Test", "Test");
             //var colmena = new Colmena("Test", EstadoColmena.OPTIMO);
 
             // Assert
@@ -68,9 +69,9 @@ namespace LogicaDeNegocios.Tests.Entidades
         public void Colmena_PuedeAgregarRegistros()
         {
             // Arrange
-            var colmena = new Colmena("Test");
+            var colmena = new Colmena("Test", "Test");
             //var colmena = new Colmena("Test", EstadoColmena.OPTIMO);
-            var registro = new Registro(30.5f, 31.2f, 29.8f, 25.0f, 45.3f);
+            var registro = new Registro("Colmena",30.5f, 31.2f, 29.8f, 25.0f, 45.3f);
 
             // Act
             colmena.Registros.Add(registro);

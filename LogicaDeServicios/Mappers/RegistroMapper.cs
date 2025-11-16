@@ -12,7 +12,8 @@ namespace LogicaDeServicios.Mappers
     {
         public static Registro FromDto(RegistroSetDto registroSetDto)
         {
-            return new Registro(registroSetDto.TempInterna1,
+            return new Registro(registroSetDto.Nombre,
+                                registroSetDto.TempInterna1,
                                 registroSetDto.TempInterna2,
                                 registroSetDto.TempInterna3,
                                 registroSetDto.TempExterna,
@@ -22,6 +23,7 @@ namespace LogicaDeServicios.Mappers
         public static RegistroGetDto ToDto(Registro registro)
         {
             return new RegistroGetDto(registro.Id,
+                                          registro.NombreColmena,
                                           registro.TempInterna1,
                                           registro.TempInterna2,
                                           registro.TempInterna3,

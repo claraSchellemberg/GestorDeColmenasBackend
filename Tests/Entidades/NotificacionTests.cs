@@ -12,7 +12,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         {
             // Arrange
             var mensaje = "Temperatura crítica detectada";
-            var registro = new Registro(35.0f, 36.0f, 34.5f, 25.0f, 50.0f);
+            var registro = new Registro("Colmena", 35.0f, 36.0f, 34.5f, 25.0f, 50.0f);
 
             // Act
             var notificacion = new Notificacion(mensaje, registro);
@@ -28,7 +28,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         public void ValidarNotificacion_ConDatosValidos_NoLanzaExcepcion()
         {
             // Arrange
-            var registro = new Registro(30.0f, 31.0f, 29.0f, 25.0f, 45.0f);
+            var registro = new Registro("Colmena", 30.0f, 31.0f, 29.0f, 25.0f, 45.0f);
             var notificacion = new Notificacion("Mensaje válido", registro);
 
             // Act & Assert
@@ -40,7 +40,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         public void ValidarNotificacion_ConMensajeVacio_LanzaNotificacionException()
         {
             // Arrange
-            var registro = new Registro(30.0f, 31.0f, 29.0f, 25.0f, 45.0f);
+            var registro = new Registro("Colmena", 30.0f, 31.0f, 29.0f, 25.0f, 45.0f);
             var notificacion = new Notificacion("", registro);
 
             // Act & Assert
@@ -52,7 +52,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         public void ValidarNotificacion_ConMensajeNull_LanzaNotificacionException()
         {
             // Arrange
-            var registro = new Registro(30.0f, 31.0f, 29.0f, 25.0f, 45.0f);
+            var registro = new Registro("Colmena", 30.0f, 31.0f, 29.0f, 25.0f, 45.0f);
             var notificacion = new Notificacion(null, registro);
 
             // Act & Assert
@@ -87,7 +87,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         {
             // Arrange
             var mensajeLargo = "Este es un mensaje muy largo que podría contener mucha información sobre el estado de la colmena y sus métricas";
-            var registro = new Registro(30.0f, 31.0f, 29.0f, 25.0f, 45.0f);
+            var registro = new Registro("Colmena", 30.0f, 31.0f, 29.0f, 25.0f, 45.0f);
 
             // Act
             var notificacion = new Notificacion(mensajeLargo, registro);
