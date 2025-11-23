@@ -61,8 +61,8 @@ namespace AccesoDeDatos.Repositorios.EF
         }
         public IEnumerable<Colmena> ObtenerTodosLosElementos()
         {
-            IEnumerable<Colmena> colmenas = _context.Colmenas
-                .Include(c => c.Registros).ToList();
+            IEnumerable<Colmena> colmenas = _context.Colmenas;
+              //  .Include(c => c.Registros).ToList();
             return colmenas;
         }
     }

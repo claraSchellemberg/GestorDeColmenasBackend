@@ -1,7 +1,7 @@
 using AccesoDeDatos.Repositorios.EF;
 using LogicaDeNegocios.InterfacesRepositorio;
 using LogicaDeServicios.CasosDeUso.Apiarios;
-using LogicaDeServicios.CasosDeUso.Registros;
+using LogicaDeServicios.CasosDeUso.TomarMedicion;
 using LogicaDeServicios.DTOs.Apiarios;
 using LogicaDeServicios.DTOs.Registros;
 using LogicaDeServicios.InterfacesCasosDeUso;
@@ -27,9 +27,8 @@ builder.Services.AddScoped<IObtenerPorId<ApiarioGetDto>, ObtenerPorIdApiario>();
 builder.Services.AddScoped<IObtenerTodos<ApiarioGetDto>, ObtenerTodosApiarios>();
 
 //Inyecciones para los Casos de Uso de Registro
-builder.Services.AddScoped<IAgregar<RegistroSetDto>, AgregarRegistro>();
-builder.Services.AddScoped<IObtenerPorId<RegistroGetDto>, ObtenerPorIdRegistro>();
-builder.Services.AddScoped<IObtenerTodos<RegistroGetDto>, ObtenerTodosRegistros>();
+//builder.Services.AddScoped<IAgregar<RegistroSetDto>, AgregarRegistro>(); ////modificar esta inyeccion con el caso de uso toma de medicion
+
 
 
 // Inyecciones para los repositorios
