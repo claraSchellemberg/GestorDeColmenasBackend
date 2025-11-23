@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicaDeNegocios.Excepciones
 {
-    public class UsuarioException : LogicaDeNegocioException
+    public record Error(int Code, string Message)
     {
-        public UsuarioException(string message) : base(message) { }
     }
 }

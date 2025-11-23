@@ -30,23 +30,11 @@ namespace AccesoDeDatos.Repositorios.EF
             }
         }
 
-        /*public async void Agregar(Apiario entidad)
-        {
-            if(entidad!=null)
-            {
-                await _context.Apiarios.AddAsync(entidad);
-                await _context.SaveChangesAsync();
-            }
-            else
-            {
-                throw new ApiarioException("El apiario no puede estar vacío");
-            }
-        }*/
         public void Agregar(Apiario entidad)
         {
             if (entidad != null)
             {
-                _context.Apiarios.AddAsync(entidad);
+                _context.Apiarios.Add(entidad);
                 _context.SaveChangesAsync();
             }
             else
@@ -79,7 +67,7 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             IEnumerable<Apiario> apiarios = _context.Apiarios
                 .Include(apiario => apiario.Colmenas)
-                .ThenInclude(colmena => colmena.Registros)
+               // .ThenInclude(colmena => colmena.Registros)
                 .ToList();
             return apiarios;
         }

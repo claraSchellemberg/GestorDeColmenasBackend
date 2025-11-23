@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace LogicaDeNegocios.Excepciones
 {
-    public class ApiarioException : Exception
+
+    // crear nueva excepcion 
+    public class ApiarioException : LogicaDeNegocioException
     {
         public ApiarioException() : base() { }
         public ApiarioException(string message) : base(message) { }

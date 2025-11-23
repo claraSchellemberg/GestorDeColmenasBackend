@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicaDeNegocios.Excepciones
 {
-    public class RegistroException : Exception
+    public class RegistroException : LogicaDeNegocioException
     {
         public RegistroException() : base() { }
         public RegistroException(string message) : base(message) { }
