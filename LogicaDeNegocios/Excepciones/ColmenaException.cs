@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicaDeNegocios.Excepciones
 {
-    public class ColmenaException : Exception
+    public class ColmenaException : LogicaDeNegocioException
     {
         public ColmenaException() : base() { }
         public ColmenaException(string message) : base(message) { }

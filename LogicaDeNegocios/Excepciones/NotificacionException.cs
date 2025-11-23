@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicaDeNegocios.Excepciones
 {
-    public class NotificacionException : Exception
+    public class NotificacionException : LogicaDeNegocioException
     {
         public NotificacionException() : base() { }
         public NotificacionException(string message) : base(message) { }
