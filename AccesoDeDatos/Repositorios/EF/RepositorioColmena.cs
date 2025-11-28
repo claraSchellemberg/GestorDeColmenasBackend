@@ -66,11 +66,16 @@ namespace AccesoDeDatos.Repositorios.EF
                 throw new ColmenaException("La colmena no existe");
             }
         }
+       
         public IEnumerable<Colmena> ObtenerTodosLosElementos()
         {
             IEnumerable<Colmena> colmenas = _context.Colmenas
                 .Include(c => c.Cuadros)
+<<<<<<< HEAD
                 .Include(c=> c.Mediciones)
+=======
+                .Include(c => c.Mediciones)
+>>>>>>> origin/Develop
                 .ToList();
             return colmenas;
         }

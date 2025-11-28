@@ -1,7 +1,7 @@
 using AccesoDeDatos.Repositorios.EF;
 using LogicaDeNegocios.InterfacesRepositorio;
 using LogicaDeServicios.CasosDeUso.Apiarios;
-using LogicaDeServicios.CasosDeUso.TomarMedicion;
+//using LogicaDeServicios.CasosDeUso.TomarMedicion;
 using LogicaDeServicios.DTOs.Apiarios;
 using LogicaDeServicios.DTOs.Arduino;
 using LogicaDeServicios.DTOs.Registros;
@@ -31,7 +31,7 @@ builder.Services.AddScoped<IAgregar<DataArduinoDto>, AgregarMedicion>();
 
 
 // Inyecciones para los repositorios
-builder.Services.AddScoped<IRepositorioRegistro, RepositorioRegistro>();
+//builder.Services.AddScoped<IRepositorioRegistro, RepositorioRegistro>();
 builder.Services.AddScoped<IRepositorioApiario, RepositorioApiario>();
 builder.Services.AddScoped<IRepositorioCuadro, RepositorioCuadro>();
 builder.Services.AddScoped<IRepositorioColmena, RepositorioColmena>();

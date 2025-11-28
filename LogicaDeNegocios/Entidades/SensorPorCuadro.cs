@@ -3,7 +3,7 @@
     public class SensorPorCuadro
     {
         public Sensor sensor;
-
+        public int Id { get; set; }
         public float TempInterna1 { get; set; }
         public float TempInterna2 { get; set; }
         public float TempInterna3 { get; set; }

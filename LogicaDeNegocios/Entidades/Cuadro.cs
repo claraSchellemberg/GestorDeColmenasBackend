@@ -8,8 +8,13 @@ namespace LogicaDeNegocios.Entidades
 {
     public class Cuadro
     {
+<<<<<<< HEAD
         public int Id;
         public List<SensorPorCuadro> Mediciones= new List<SensorPorCuadro> ();
+=======
+        public int Id { get; set; }
+        public List<SensorPorCuadro> Mediciones = new List<SensorPorCuadro>();
+>>>>>>> origin/Develop
         public Cuadro()
         {
         }
