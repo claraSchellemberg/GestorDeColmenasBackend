@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace LogicaDeNegocios.InterfacesRepositorio
 {
-    public interface IRepositorioUsuario : IRepositorioAgregar<Usuario>, 
-                            IRepositorioActualizar<Usuario>, IRepositorioEliminar<Usuario>, 
-                            IRepositorioObtenerPorId<Usuario>
+    public interface IRepositorioSensor : IRepositorioAgregar<Sensor>,
+                        IRepositorioActualizar<Sensor>, IRepositorioEliminar<Sensor>,
+                        IRepositorioObtenerPorId<Sensor>, IRepositorioObtenerTodos<Sensor>
     {
     }
 }
