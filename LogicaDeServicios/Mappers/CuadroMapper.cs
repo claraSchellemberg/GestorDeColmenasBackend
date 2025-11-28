@@ -17,7 +17,7 @@ namespace LogicaDeServicios.Mappers
 
         public static CuadroGetDto ToDto(Cuadro cuadro)
         {
-            return new CuadroGetDto(cuadro.id);
+            return new CuadroGetDto(cuadro.Id);
         }
 
         public static IEnumerable<CuadroGetDto> ToListDto(IEnumerable<Cuadro> cuadros)

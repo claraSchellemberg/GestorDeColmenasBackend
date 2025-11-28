@@ -1,7 +1,7 @@
 using AccesoDeDatos.Repositorios.EF;
 using LogicaDeNegocios.InterfacesRepositorio;
 using LogicaDeServicios.CasosDeUso.Apiarios;
-using LogicaDeServicios.CasosDeUso.TomarMedicion;
+//using LogicaDeServicios.CasosDeUso.TomarMedicion;
 using LogicaDeServicios.DTOs.Apiarios;
 using LogicaDeServicios.DTOs.Registros;
 using LogicaDeServicios.InterfacesCasosDeUso;
@@ -32,7 +32,7 @@ builder.Services.AddScoped<IObtenerTodos<ApiarioGetDto>, ObtenerTodosApiarios>()
 
 
 // Inyecciones para los repositorios
-builder.Services.AddScoped<IRepositorioRegistro, RepositorioRegistro>();
+//builder.Services.AddScoped<IRepositorioRegistro, RepositorioRegistro>();
 builder.Services.AddScoped<IRepositorioApiario, RepositorioApiario>();
 
 // Inyecta el contex y la cadena de conexion que la toma desde el json

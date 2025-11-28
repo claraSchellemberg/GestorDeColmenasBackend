@@ -18,6 +18,12 @@ namespace AccesoDeDatos.Repositorios.EF
         public DbSet<Registro> Registros { get; set; }
         public DbSet<Notificacion> Notificaciones { get; set; }
         public DbSet<Configuracion> Configuracions { get; set; }
+        public DbSet<Cuadro> Cuadros { get; set; }
+        public DbSet<MedicionColmena> MedicionColmenas { get; set; }
+        public DbSet<RegistroSensor> RegistroSensors { get; set; }
+        public DbSet<Sensor> Sensores { get; set; }
+        public DbSet<SensorPorCuadro> SensorPorCuadros { get; set; }
+
 
         public GestorContext(DbContextOptions<GestorContext> options) : base(options)
         {
