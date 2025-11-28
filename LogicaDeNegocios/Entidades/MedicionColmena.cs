@@ -8,9 +8,11 @@ namespace LogicaDeNegocios.Entidades
 {
     public class MedicionColmena
     {
+        public int Id { get; set; }
         public float TempExterna { get; set; }
         public float Peso { get; set; }
         public DateTime FechaMedicion { get; set; }
+        public int ColmenaId { get; set; }
         public MedicionColmena()
         {
         }

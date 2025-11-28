@@ -8,8 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogicaDeServicios.CasosDeUso.TomarMedicion
-{
+//namespace LogicaDeServicios.CasosDeUso.TomarMedicion
+//{
    // public class AgregarRegistro: IAgregar<RegistroSetDto>
 
         //aca agrega a los sesores por cuadro y al otro donde se agrega el peso y temp externa
@@ -31,4 +31,4 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
         //    _repo.Agregar(RegistroMapper.FromDto(registroSetDto));
         //}
     //}
-}
+//}

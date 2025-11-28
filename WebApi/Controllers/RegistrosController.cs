@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
-//    [ApiController]
-//    [Route("[controller]")]
+    //    [ApiController]
+    //    [Route("[controller]")]
 
     //el controlador se encarga tambien de la seguridad
     ///200 todo ok
@@ -16,13 +16,13 @@ namespace WebApi.Controllers
     //public class RegistrosController : ControllerBase
     //{
     //    IAgregar<RegistroSetDto> _add;
-       
+
 
     //    public RegistrosController(IAgregar<RegistroSetDto> add)
-                                 
+
     //    {
     //        _add = add;
-    
+
     //    }
 
     //    [HttpPost]
@@ -48,8 +48,8 @@ namespace WebApi.Controllers
     //        }
     //    }
 
-       
-    //}
+
+   
 }
 
     

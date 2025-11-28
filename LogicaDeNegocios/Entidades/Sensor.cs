@@ -2,8 +2,10 @@
 {
     public class Sensor
     {
-        public string TipoSensor;
-        public int SensorId;
+        public string TipoSensor { get; set; }
+        public int SensorId { get; set; }
+        public Colmena Colmena;
+        public Cuadro Cuadro;   
         public Sensor()
         {
         }
