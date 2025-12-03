@@ -1,6 +1,8 @@
 using AccesoDeDatos.Repositorios.EF;
 using LogicaDeNegocios.InterfacesRepositorio;
 using LogicaDeServicios.CasosDeUso.Apiarios;
+using LogicaDeServicios.CasosDeUso.TomarMedicion;
+
 //using LogicaDeServicios.CasosDeUso.TomarMedicion;
 using LogicaDeServicios.DTOs.Apiarios;
 using LogicaDeServicios.DTOs.Arduino;

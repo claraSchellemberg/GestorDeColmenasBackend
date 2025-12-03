@@ -22,8 +22,8 @@ namespace LogicaDeServicios.Mappers
 
         public static SensorGetDto ToDto(Sensor sensor)
         {
-            ColmenaGetDto colmena = ColmenaMapper.ToDto(sensor.colmena);
-            CuadroGetDto cuadro = CuadroMapper.ToDto(sensor.cuadro);
+            ColmenaGetDto colmena = ColmenaMapper.ToDto(sensor.Colmena);
+            CuadroGetDto cuadro = CuadroMapper.ToDto(sensor.Cuadro);
             return new SensorGetDto(sensor.TipoSensor, sensor.SensorId, cuadro, colmena);
         }
 

@@ -71,11 +71,7 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             IEnumerable<Colmena> colmenas = _context.Colmenas
                 .Include(c => c.Cuadros)
-<<<<<<< HEAD
                 .Include(c=> c.Mediciones)
-=======
-                .Include(c => c.Mediciones)
->>>>>>> origin/Develop
                 .ToList();
             return colmenas;
         }

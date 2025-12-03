@@ -78,8 +78,4 @@ namespace AccesoDeDatos.Repositorios.EF
             return cuadros;
         }
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/Develop

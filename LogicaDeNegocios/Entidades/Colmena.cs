@@ -16,10 +16,6 @@ namespace LogicaDeNegocios.Entidades
         public EstadoColmena Estado { get; set; }
         public List<Cuadro> Cuadros { get; set; }
         public List<MedicionColmena> Mediciones { get; set; }
-<<<<<<< HEAD
-=======
-       
->>>>>>> origin/Develop
         public Colmena() { }
         
         public Colmena(string descripcion, string nombre)
