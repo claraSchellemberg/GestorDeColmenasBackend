@@ -28,19 +28,19 @@ namespace AccesoDeDatos.Repositorios.EF
         public GestorContext(DbContextOptions<GestorContext> options) : base(options)
         {
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var configuration = new ConfigurationBuilder()
-                 .SetBasePath(Directory.GetCurrentDirectory()) // esto referencia al startup project
-                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                 .Build();
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    var configuration = new ConfigurationBuilder()
+        //         .SetBasePath(Directory.GetCurrentDirectory()) // esto referencia al startup project
+        //         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+        //         .Build();
 
-            var cs = configuration.GetConnectionString("DefaultConnection");
-            if (!string.IsNullOrEmpty(cs))
-            {
-                optionsBuilder.UseSqlServer(cs);
-            }
-        }
+        //    var cs = configuration.GetConnectionString("DefaultConnection");
+        //    if (!string.IsNullOrEmpty(cs))
+        //    {
+        //        optionsBuilder.UseSqlServer(cs);
+        //    }
+        //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

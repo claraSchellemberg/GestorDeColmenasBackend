@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LogicaDeNegocios.Entidades; // Agregado para la propiedad de navegación
 
 namespace LogicaDeNegocios.Entidades
 {
@@ -13,9 +14,12 @@ namespace LogicaDeNegocios.Entidades
         public float Peso { get; set; }
         public DateTime FechaMedicion { get; set; }
         public int ColmenaId { get; set; }
+        public Colmena Colmena { get; set; }
+        
         public MedicionColmena()
         {
         }
+        
         public MedicionColmena(float tempExterna, float peso)
         {
             TempExterna = tempExterna;

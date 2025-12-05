@@ -40,8 +40,6 @@ builder.Services.AddScoped<IRepositorioColmena, RepositorioColmena>();
 builder.Services.AddScoped<IRepositorioSensor, RepositorioSensor>();
 
 // Inyecta el contex y la cadena de conexion que la toma desde el json
-//.Services.AddDbContext<GestorContext>();
-// Add services to the container.
 builder.Services.AddDbContext<GestorContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
