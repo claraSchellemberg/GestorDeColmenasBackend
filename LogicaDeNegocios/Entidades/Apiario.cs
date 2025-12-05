@@ -15,8 +15,11 @@ namespace LogicaDeNegocios.Entidades
         public string Longitud { get; set; }
         public string UbicacionDeReferencia { get; set; }
         public DateTime FechaAlta { get; set; } = DateTime.Now;
+        public int UsuarioId { get; set; }
+        public Usuario Usuario { get; set; }
         public List<Colmena> Colmenas { get; set; } = new List<Colmena>();
         public Apiario() { }
+        
         public Apiario(string nombre, string latitud, string longitud, string ubicacion)
         {
             this.Nombre = nombre;
@@ -36,6 +39,5 @@ namespace LogicaDeNegocios.Entidades
                 throw new ApiarioException("Todos los campos del apiario son obligatorios.");
             }
         }
-
     }
 }

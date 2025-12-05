@@ -9,7 +9,10 @@ namespace LogicaDeNegocios.Entidades
     public class Cuadro
     {
         public int Id { get; set; }
-        public List<SensorPorCuadro> Mediciones = new List<SensorPorCuadro>();
+        public int ColmenaId { get; set; }
+        public Colmena Colmena { get; set; }
+        public List<SensorPorCuadro> Mediciones { get; set; } = new List<SensorPorCuadro>();
+        
         public Cuadro()
         {
         }

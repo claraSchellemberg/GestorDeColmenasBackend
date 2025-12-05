@@ -13,16 +13,19 @@ namespace LogicaDeNegocios.Entidades
         public DateTime FechaInstalacionSensores { get; set; }
         public string Descripcion { get; set; }
         public string Nombre { get; set; }  
-        public EstadoColmena Estado { get; set; }
-        public List<Cuadro> Cuadros { get; set; }
-        public List<MedicionColmena> Mediciones { get; set; }
+        public EstadoColmena Estado { get; set; }        
+        public int ApiarioId { get; set; }
+        public Apiario Apiario { get; set; }
+        public List<Cuadro> Cuadros { get; set; } = new List<Cuadro>();
+        public List<MedicionColmena> Mediciones { get; set; } = new List<MedicionColmena>();
+        
         public Colmena() { }
         
         public Colmena(string descripcion, string nombre)
         {
             this.Descripcion = descripcion;
             this.Nombre = nombre;
-            this.Estado = EstadoColmena.OPTIMO; //lo deje como predeterminado cuando demos el alta de la colmena, lo vemos si es mejor que parta con otro estado
+            this.Estado = EstadoColmena.OPTIMO;
             this.FechaInstalacionSensores = DateTime.Now;
         }
     }

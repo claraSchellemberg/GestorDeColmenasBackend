@@ -36,7 +36,7 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
             //busca colmena por sensor
             Sensor sensor = _repoSensores.ObtenerElementoPorId(obj.idSensor);
 
-            Colmena colmena = sensor.Colmena;
+            sensor.Colmena = _repoColmenas.ObtenerElementoPorId(sensor.ColmenaId);
             // Crear la medición de colmena
             MedicionColmena medicionColmena = new MedicionColmena
             {
@@ -44,19 +44,19 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
                 TempExterna = obj.tempExterna,
                 FechaMedicion = DateTime.Now
             };
-            _repoColmenas.AgregarMedicion(medicionColmena, colmena);
+            _repoColmenas.AgregarMedicion(medicionColmena, sensor.Colmena);
             //agrega al cuadro
             //agarramos el cuadro que tiene el sensor
-            Cuadro cuadro = sensor.Cuadro;
+            sensor.Cuadro= _repoCuadros.ObtenerElementoPorId(sensor.CuadroId);
             SensorPorCuadro medicionDeCuadro = new SensorPorCuadro
             {
-                sensor = sensor,
+                Sensor = sensor,
                 TempInterna1 = obj.temp1,
                 TempInterna2 = obj.temp2,
                 TempInterna3 = obj.temp3,
                 FechaMedicion = DateTime.Now
             };
-            _repoCuadros.AgregarMedicionDeCuadro(medicionDeCuadro, cuadro);
+            _repoCuadros.AgregarMedicionDeCuadro(medicionDeCuadro, sensor.Cuadro);
 
         }
     }

@@ -208,11 +208,21 @@ namespace AccesoDeDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SensorId"));
 
+                    b.Property<int?>("ColmenaId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CuadroId")
+                        .HasColumnType("int");
+
                     b.Property<string>("TipoSensor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SensorId");
+
+                    b.HasIndex("ColmenaId");
+
+                    b.HasIndex("CuadroId");
 
                     b.ToTable("Sensores");
                 });
@@ -225,8 +235,14 @@ namespace AccesoDeDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CuadroId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("FechaMedicion")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("SensorId")
+                        .HasColumnType("int");
 
                     b.Property<float>("TempInterna1")
                         .HasColumnType("real");
@@ -238,6 +254,10 @@ namespace AccesoDeDatos.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CuadroId");
+
+                    b.HasIndex("SensorId");
 
                     b.ToTable("SensorPorCuadros");
                 });
@@ -276,32 +296,40 @@ namespace AccesoDeDatos.Migrations
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Apiario", b =>
                 {
-                    b.HasOne("LogicaDeNegocios.Entidades.Usuario", null)
+                    b.HasOne("LogicaDeNegocios.Entidades.Usuario", "Usuario")
                         .WithMany("Apiarios")
                         .HasForeignKey("UsuarioId");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Colmena", b =>
                 {
-                    b.HasOne("LogicaDeNegocios.Entidades.Apiario", null)
+                    b.HasOne("LogicaDeNegocios.Entidades.Apiario", "Apiario")
                         .WithMany("Colmenas")
                         .HasForeignKey("ApiarioId");
+
+                    b.Navigation("Apiario");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Cuadro", b =>
                 {
-                    b.HasOne("LogicaDeNegocios.Entidades.Colmena", null)
+                    b.HasOne("LogicaDeNegocios.Entidades.Colmena", "Colmena")
                         .WithMany("Cuadros")
                         .HasForeignKey("ColmenaId");
+
+                    b.Navigation("Colmena");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.MedicionColmena", b =>
                 {
-                    b.HasOne("LogicaDeNegocios.Entidades.Colmena", null)
+                    b.HasOne("LogicaDeNegocios.Entidades.Colmena", "Colmena")
                         .WithMany("Mediciones")
                         .HasForeignKey("ColmenaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Colmena");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Notificacion", b =>
@@ -315,6 +343,36 @@ namespace AccesoDeDatos.Migrations
                     b.Navigation("RegistroAsociado");
                 });
 
+            modelBuilder.Entity("LogicaDeNegocios.Entidades.Sensor", b =>
+                {
+                    b.HasOne("LogicaDeNegocios.Entidades.Colmena", "Colmena")
+                        .WithMany()
+                        .HasForeignKey("ColmenaId");
+
+                    b.HasOne("LogicaDeNegocios.Entidades.Cuadro", "Cuadro")
+                        .WithMany()
+                        .HasForeignKey("CuadroId");
+
+                    b.Navigation("Colmena");
+
+                    b.Navigation("Cuadro");
+                });
+
+            modelBuilder.Entity("LogicaDeNegocios.Entidades.SensorPorCuadro", b =>
+                {
+                    b.HasOne("LogicaDeNegocios.Entidades.Cuadro", "Cuadro")
+                        .WithMany("Mediciones")
+                        .HasForeignKey("CuadroId");
+
+                    b.HasOne("LogicaDeNegocios.Entidades.Sensor", "Sensor")
+                        .WithMany()
+                        .HasForeignKey("SensorId");
+
+                    b.Navigation("Cuadro");
+
+                    b.Navigation("Sensor");
+                });
+
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Apiario", b =>
                 {
                     b.Navigation("Colmenas");
@@ -324,6 +382,11 @@ namespace AccesoDeDatos.Migrations
                 {
                     b.Navigation("Cuadros");
 
+                    b.Navigation("Mediciones");
+                });
+
+            modelBuilder.Entity("LogicaDeNegocios.Entidades.Cuadro", b =>
+                {
                     b.Navigation("Mediciones");
                 });
 

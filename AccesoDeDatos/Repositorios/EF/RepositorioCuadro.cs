@@ -73,7 +73,7 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             IEnumerable<Cuadro> cuadros = _context.Cuadros
                             .Include(cuadro => cuadro.Mediciones)
-                            .ThenInclude(sensorPorCuadro => sensorPorCuadro.sensor)
+                            .ThenInclude(sensorPorCuadro => sensorPorCuadro.Sensor)
                             .ToList();
             return cuadros;
         }
