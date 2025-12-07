@@ -1,4 +1,6 @@
 ﻿using LogicaDeNegocios.Entidades;
+using LogicaDeServicios.DTOs.Colmenas;
+using LogicaDeServicios.DTOs.Cuadros;
 using LogicaDeServicios.DTOs.Sensores;
 using System;
 using System.Collections.Generic;
@@ -12,12 +14,17 @@ namespace LogicaDeServicios.Mappers
     {
         public static Sensor FromDto(SensorSetDto sensorSetDto)
         {
-            return new Sensor(sensorSetDto.tipoSensor, sensorSetDto.sensorId);
+            Colmena colmena = ColmenaMapper.FromDto(sensorSetDto.colmenaDto);
+            Cuadro cuadro = CuadroMapper.FromDto(sensorSetDto.cuadroDto);
+            return new Sensor(sensorSetDto.tipoSensor, sensorSetDto.sensorId, colmena,
+                                cuadro);
         }
 
         public static SensorGetDto ToDto(Sensor sensor)
         {
-            return new SensorGetDto(sensor.TipoSensor, sensor.SensorId);
+            ColmenaGetDto colmena = ColmenaMapper.ToDto(sensor.Colmena);
+            CuadroGetDto cuadro = CuadroMapper.ToDto(sensor.Cuadro);
+            return new SensorGetDto(sensor.TipoSensor, sensor.SensorId, cuadro, colmena);
         }
 
         public static IEnumerable<SensorGetDto> ToListDto(IEnumerable<Sensor> sensores)

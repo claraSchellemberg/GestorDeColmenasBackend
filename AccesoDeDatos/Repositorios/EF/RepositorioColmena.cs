@@ -41,6 +41,13 @@ namespace AccesoDeDatos.Repositorios.EF
                 throw new ColmenaException("La colmena no puede estar vacío");
             }
         }
+
+        public void AgregarMedicion(MedicionColmena medicion, Colmena colmena)
+        {
+            colmena.Mediciones.Add(medicion);
+            Actualizar(colmena);
+        }
+
         public void Eliminar(int id)
         {
             Colmena colmena = ObtenerElementoPorId(id);
@@ -64,7 +71,7 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             IEnumerable<Colmena> colmenas = _context.Colmenas
                 .Include(c => c.Cuadros)
-                .Include(c => c.Mediciones)
+                .Include(c=> c.Mediciones)
                 .ToList();
             return colmenas;
         }

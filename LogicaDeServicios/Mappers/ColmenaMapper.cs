@@ -14,6 +14,10 @@ namespace LogicaDeServicios.Mappers
         {
             return new Colmena(colmenaSetDto.Descripcion, colmenaSetDto.Nombre);
         }
+        public static Colmena FromDto(ColmenaGetDto colmenaGetDto)
+        {
+            return new Colmena(colmenaGetDto.Descripcion, colmenaGetDto.Nombre);
+        }
 
         public static ColmenaGetDto ToDto(Colmena colmena)
         {

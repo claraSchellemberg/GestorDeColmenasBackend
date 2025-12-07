@@ -1,13 +1,9 @@
 ﻿using LogicaDeNegocios.Entidades;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using LogicaDeNegocios.InterfacesRepositorio.CRUD;
 
 namespace LogicaDeNegocios.InterfacesRepositorio
 {
-    public interface IRepositorioSensor: IRepositorioAgregar<Sensor>,
+    public interface IRepositorioSensor : IRepositorioAgregar<Sensor>,
                         IRepositorioActualizar<Sensor>, IRepositorioEliminar<Sensor>,
                         IRepositorioObtenerPorId<Sensor>, IRepositorioObtenerTodos<Sensor>
     {

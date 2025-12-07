@@ -18,7 +18,7 @@ namespace LogicaDeServicios.Mappers
 
         public static SensorPorCuadroGetDto ToDto(SensorPorCuadro sensorPorCuadro)
         {
-            return new SensorPorCuadroGetDto(sensorPorCuadro.sensor, sensorPorCuadro.TempInterna1, sensorPorCuadro.TempInterna2, sensorPorCuadro.TempInterna3, sensorPorCuadro.FechaMedicion);
+            return new SensorPorCuadroGetDto(sensorPorCuadro.Sensor, sensorPorCuadro.TempInterna1, sensorPorCuadro.TempInterna2, sensorPorCuadro.TempInterna3, sensorPorCuadro.FechaMedicion);
         }
 
         public static IEnumerable<SensorPorCuadroGetDto> ToListDto(IEnumerable<SensorPorCuadro> sensorPorCuadros)

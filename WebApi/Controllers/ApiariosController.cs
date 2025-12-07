@@ -22,7 +22,6 @@ namespace WebApi.Controllers
             _add = add;
             _getPorId = getPorId;
             _getTodos = getTodos;
-
         }
 
         [HttpPost]
@@ -63,7 +62,6 @@ namespace WebApi.Controllers
             {
                 return StatusCode(500, "Intente nuevamente");
             }
-
         }
 
         [HttpGet("{id}")]
@@ -93,10 +91,5 @@ namespace WebApi.Controllers
                 return StatusCode(500, "Hubo un problema intente nuevamente.");
             }
         }
-
-
-
-
-
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LogicaDeNegocios.Entidades;
+using LogicaDeNegocios.InterfacesRepositorio.CRUD;
 using System;
 using System.Collections.Generic;
 using System.Linq;

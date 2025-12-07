@@ -42,6 +42,7 @@ namespace AccesoDeDatos.Repositorios.EF
                 throw new SensorException("El sensor no puede estar vacío");
             }
         }
+
         public void Eliminar(int id)
         {
             Sensor sensor = ObtenerElementoPorId(id);
