@@ -1,4 +1,4 @@
-﻿using LogicaDeNegocios.Entidades;
+﻿ using LogicaDeNegocios.Entidades;
 using LogicaDeServicios.DTOs.Colmenas;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,15 @@ namespace LogicaDeServicios.Mappers
     {
         public static Colmena FromDto(ColmenaSetDto colmenaSetDto) 
         {
-            return new Colmena(colmenaSetDto.Descripcion, colmenaSetDto.Nombre);
+            return new Colmena(colmenaSetDto.Descripcion, colmenaSetDto.Nombre, colmenaSetDto.ApiarioId);
+        }
+
+        public static Colmena UpdateFromDto(Colmena colmena, ColmenaSetDto colmenaSetDto)
+        {
+            colmena.Descripcion = colmenaSetDto.Descripcion;
+            colmena.Nombre = colmenaSetDto.Nombre;
+            colmena.ApiarioId = colmenaSetDto.ApiarioId;
+            return colmena;
         }
 
         public static ColmenaGetDto ToDto(Colmena colmena)
@@ -21,6 +29,7 @@ namespace LogicaDeServicios.Mappers
                                           colmena.FechaInstalacionSensores,
                                           colmena.Descripcion,
                                           colmena.Nombre,
+                                          colmena.ApiarioId,
                                           colmena.Estado);
         }
 

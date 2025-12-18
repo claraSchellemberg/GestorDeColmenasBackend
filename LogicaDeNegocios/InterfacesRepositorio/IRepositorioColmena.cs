@@ -11,5 +11,6 @@ namespace LogicaDeNegocios.InterfacesRepositorio
                         IRepositorioActualizar<Colmena>, IRepositorioEliminar<Colmena>, 
                         IRepositorioObtenerPorId<Colmena>, IRepositorioObtenerTodos<Colmena>
     {
+        IEnumerable<Colmena> ObtenerColmenasPorApiario(int id);
     }
 }

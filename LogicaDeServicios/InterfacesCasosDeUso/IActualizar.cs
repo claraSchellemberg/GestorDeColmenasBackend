@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogicaDeServicios.DTOs.Colmenas
+namespace LogicaDeServicios.InterfacesCasosDeUso
 {
-    public record ColmenaSetDto(string Descripcion, string Nombre, int ApiarioId)
+    public interface IActualizar<T>
     {
+        void Actualizar(int id, T obj);
     }
 }

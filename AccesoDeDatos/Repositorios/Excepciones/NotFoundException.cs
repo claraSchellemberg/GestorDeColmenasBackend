@@ -14,7 +14,7 @@ namespace AccesoDeDatos.Repositorios.Excepciones
 
         public override int StatusCode()
         {
-            return 400;
+            return 404;
         }
     }
 }

@@ -81,7 +81,7 @@ namespace AccesoDeDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ApiarioId")
+                    b.Property<int>("ApiarioId")
                         .HasColumnType("int");
 
                     b.Property<string>("Descripcion")
@@ -283,9 +283,13 @@ namespace AccesoDeDatos.Migrations
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Colmena", b =>
                 {
-                    b.HasOne("LogicaDeNegocios.Entidades.Apiario", null)
+                    b.HasOne("LogicaDeNegocios.Entidades.Apiario", "Apiario")
                         .WithMany("Colmenas")
-                        .HasForeignKey("ApiarioId");
+                        .HasForeignKey("ApiarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Apiario");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Cuadro", b =>

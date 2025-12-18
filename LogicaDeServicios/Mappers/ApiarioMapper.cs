@@ -18,6 +18,15 @@ namespace LogicaDeServicios.Mappers
                                 apiarioSetDto.UbicacionDeReferencia);
         }
 
+        public static Apiario UpdateFromDto(Apiario apiario, ApiarioSetDto apiarioSetDto)
+        {
+            apiario.Nombre = apiarioSetDto.Nombre;
+            apiario.Latitud = apiarioSetDto.Latitud;
+            apiario.Longitud = apiarioSetDto.Longitud;
+            apiario.UbicacionDeReferencia = apiarioSetDto.UbicacionDeReferencia;
+            return apiario;
+        }
+
         public static ApiarioGetDto ToDto(Apiario apiario)
         {
             return new ApiarioGetDto(apiario.Id,
@@ -27,6 +36,8 @@ namespace LogicaDeServicios.Mappers
                                         apiario.UbicacionDeReferencia,
                                         apiario.FechaAlta);
         }
+
+
 
         public static IEnumerable<ApiarioGetDto> ToListDto(IEnumerable<Apiario> apiarios)
         {
