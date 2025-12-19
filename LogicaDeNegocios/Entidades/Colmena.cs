@@ -14,14 +14,13 @@ namespace LogicaDeNegocios.Entidades
         public int Id { get; set; }
         public DateTime FechaInstalacionSensores { get; set; }
         public string Descripcion { get; set; }
-        public string Nombre { get; set; }
-
+        public string Nombre { get; set; }  
+        public EstadoColmena Estado { get; set; }        
         public int ApiarioId { get; set; }
         public Apiario Apiario { get; set; }
-        public EstadoColmena Estado { get; set; }
-        public List<Cuadro> Cuadros { get; set; }
-        public List<MedicionColmena> Mediciones { get; set; }
-       
+        public List<Cuadro> Cuadros { get; set; } = new List<Cuadro>();
+        public List<MedicionColmena> Mediciones { get; set; } = new List<MedicionColmena>();
+        
         public Colmena() { }
         
         public Colmena(string descripcion, string nombre, int apiarioId)

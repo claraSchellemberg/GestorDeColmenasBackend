@@ -78,7 +78,6 @@ namespace WebApi.Controllers
             {
                 return StatusCode(500, "Intente nuevamente");
             }
-
         }
 
         [HttpGet("{id}")]

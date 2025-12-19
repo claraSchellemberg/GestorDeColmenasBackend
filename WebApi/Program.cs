@@ -2,14 +2,14 @@ using AccesoDeDatos.Repositorios.EF;
 using LogicaDeNegocios.InterfacesRepositorio;
 using LogicaDeServicios.CasosDeUso.Apiarios;
 using LogicaDeServicios.CasosDeUso.Colmenas;
+using LogicaDeServicios.CasosDeUso.TomarMedicion;
 
 //using LogicaDeServicios.CasosDeUso.TomarMedicion;
 using LogicaDeServicios.DTOs.Apiarios;
-using LogicaDeServicios.DTOs.Colmenas;
+using LogicaDeServicios.DTOs.Arduino;
 using LogicaDeServicios.DTOs.Registros;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using Microsoft.EntityFrameworkCore;
-
 
 
 
@@ -52,18 +52,18 @@ builder.Services.AddScoped<IActualizar<ColmenaSetDto>, ActualizarColmena>();
 builder.Services.AddScoped<EliminarColmena>();
 
 //Inyecciones para los Casos de Uso de Registro
-//builder.Services.AddScoped<IAgregar<RegistroSetDto>, AgregarRegistro>(); ////modificar esta inyeccion con el caso de uso toma de medicion
-
+builder.Services.AddScoped<IAgregar<DataArduinoDto>, AgregarMedicion>();
 
 
 // Inyecciones para los repositorios
 //builder.Services.AddScoped<IRepositorioRegistro, RepositorioRegistro>();
 builder.Services.AddScoped<IRepositorioApiario, RepositorioApiario>();
 builder.Services.AddScoped<IRepositorioColmena, RepositorioColmena>();
+builder.Services.AddScoped<IRepositorioCuadro, RepositorioCuadro>();
+builder.Services.AddScoped<IRepositorioColmena, RepositorioColmena>();
+builder.Services.AddScoped<IRepositorioSensor, RepositorioSensor>();
 
 // Inyecta el contex y la cadena de conexion que la toma desde el json
-//.Services.AddDbContext<GestorContext>();
-// Add services to the container.
 builder.Services.AddDbContext<GestorContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );

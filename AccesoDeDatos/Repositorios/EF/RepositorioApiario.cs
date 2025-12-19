@@ -72,7 +72,6 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             IEnumerable<Apiario> apiarios = _context.Apiarios
                 .Include(apiario => apiario.Colmenas)
-               // .ThenInclude(colmena => colmena.Registros)
                 .ToList();
             return apiarios;
         }

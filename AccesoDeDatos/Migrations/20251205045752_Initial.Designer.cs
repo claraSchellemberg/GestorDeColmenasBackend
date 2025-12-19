@@ -4,6 +4,7 @@ using AccesoDeDatos.Repositorios.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccesoDeDatos.Migrations
 {
     [DbContext(typeof(GestorContext))]
-    partial class GestorContextModelSnapshot : ModelSnapshot
+    [Migration("20251205045752_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,10 +84,7 @@ namespace AccesoDeDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ApiarioId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ApiarioId1")
+                    b.Property<int?>("ApiarioId")
                         .HasColumnType("int");
 
                     b.Property<string>("Descripcion")
@@ -104,8 +104,6 @@ namespace AccesoDeDatos.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApiarioId");
-
-                    b.HasIndex("ApiarioId1");
 
                     b.ToTable("Colmenas");
                 });
