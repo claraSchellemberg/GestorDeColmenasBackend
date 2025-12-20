@@ -21,7 +21,10 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             if(entidad!=null)
             {
+                
                 _context.Apiarios.Update(entidad);
+                entidad.ValidarApiario();
+                _context.Entry(entidad).Property(a => a.FechaAlta).IsModified = false; //agrego esto para que entity no nos modifique la fecha de alta
                 _context.SaveChanges();
             }
             else
@@ -34,6 +37,8 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             if (entidad != null)
             {
+                //agrego la validacion del apiario
+                entidad.ValidarApiario();
                 _context.Apiarios.Add(entidad);
                 _context.SaveChangesAsync();
             }

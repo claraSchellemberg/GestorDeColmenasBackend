@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.CasosDeUso.Apiarios
 {
-    //aca se llama alos repos que necesito agregar 
+    //aca se llama a los repos que necesito agregar 
     //primero iria a bucar la colmena
     public class AgregarApiario: IAgregar<ApiarioSetDto>
     {

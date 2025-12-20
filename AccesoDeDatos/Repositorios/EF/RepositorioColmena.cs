@@ -22,6 +22,8 @@ namespace AccesoDeDatos.Repositorios.EF
             if (entidad != null)
             {
                 _context.Colmenas.Update(entidad);
+                entidad.ValidarColmena();
+                _context.Entry(entidad).Property(a=> a.FechaInstalacionSensores).IsModified = false;//agrego esto para que entity no nos modifique la fecha de alta de los sensores
                 _context.SaveChanges();
             }
             else
@@ -33,6 +35,7 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             if (entidad != null)
             {
+                entidad.ValidarColmena();
                 _context.Colmenas.Add(entidad);
                 _context.SaveChangesAsync();
             }
@@ -73,6 +76,20 @@ namespace AccesoDeDatos.Repositorios.EF
                 .Include(c => c.Cuadros)
                 .Include(c=> c.Mediciones)
                 .ToList();
+            return colmenas;
+        }
+
+        public IEnumerable<Colmena> ObtenerColmenasPorApiario(int apiarioId)
+        {
+            IEnumerable<Colmena> colmenas = _context.Colmenas
+                .Where(c => c.ApiarioId == apiarioId)
+                .Include(c => c.Cuadros)
+                .Include(c => c.Mediciones)
+                .ToList();
+            if(!colmenas.Any())
+            {
+                throw new ColmenaException("No se encontraron colmenas para el apiario especificado.");
+            }
             return colmenas;
         }
     }

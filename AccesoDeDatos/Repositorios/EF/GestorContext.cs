@@ -46,6 +46,27 @@ namespace AccesoDeDatos.Repositorios.EF
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Configuracion>()
                 .HasKey(c => c.Nombre);
+
+
+            modelBuilder.Entity<Apiario>()
+                //.HasOne(apiario => apiario.Usuario)
+                //.WithMany(usuario => usuario.Apiarios)
+                //.HasForeignKey(apiario => apiario.IdUsuario)-- esta restriccion no se peude eliminar un usuario si tiene apiarios asociados
+                //.IsRequired();
+                .HasMany(apiario => apiario.Colmenas)
+                .WithOne(colmena => colmena.Apiario)
+                .HasForeignKey(colmena => colmena.ApiarioId);// esta restriccion no se peude eliminar un apiario si tiene colmenas asociadas
+
+             /* modelBuilder.Entity<Colmena>()
+                .HasOne(colmena => colmena.Apiario)
+                .WithMany()
+                .HasForeignKey(colmena => colmena.IdApiario)
+                .OnDelete(DeleteBehavior.Restrict);*/ //con esta restrinccion no se peude eliminar un apiario si tiene colmenas asociadas
+
+
+
+
+
         }
 
     }

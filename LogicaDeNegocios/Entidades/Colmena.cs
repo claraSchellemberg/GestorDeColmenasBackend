@@ -1,6 +1,8 @@
 ﻿using LogicaDeNegocios.Enums;
+using LogicaDeNegocios.Excepciones;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,12 +23,22 @@ namespace LogicaDeNegocios.Entidades
         
         public Colmena() { }
         
-        public Colmena(string descripcion, string nombre)
+        public Colmena(string descripcion, string nombre, int apiarioId)
         {
             this.Descripcion = descripcion;
             this.Nombre = nombre;
-            this.Estado = EstadoColmena.OPTIMO;
+            this.ApiarioId = apiarioId;
+            this.Estado = EstadoColmena.OPTIMO; //lo deje como predeterminado cuando demos el alta de la colmena, lo vemos si es mejor que parta con otro estado
             this.FechaInstalacionSensores = DateTime.Now;
+        }
+
+        public void ValidarColmena()
+        {
+            if (string.IsNullOrEmpty(Descripcion) || string.IsNullOrEmpty(Nombre) ||
+                ApiarioId <= 0)
+            {
+                throw new ApiarioException("Todos los campos de la colmena son obligatorios.");
+            }
         }
     }
 }

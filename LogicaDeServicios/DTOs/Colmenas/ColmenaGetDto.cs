@@ -11,6 +11,7 @@ namespace LogicaDeServicios.DTOs.Colmenas
                                     DateTime FechaInstalacionSensores,
                                     string Descripcion,
                                     string Nombre,
+                                    int ApiarioId,
                                     EstadoColmena Estado)
     {
     }

@@ -13,5 +13,6 @@ namespace LogicaDeNegocios.InterfacesRepositorio
                         IRepositorioObtenerPorId<Colmena>, IRepositorioObtenerTodos<Colmena>,
                         IRepositorioAgregarMedicionColmena
     {
+        IEnumerable<Colmena> ObtenerColmenasPorApiario(int id);
     }
 }
