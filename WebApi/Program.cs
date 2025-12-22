@@ -7,6 +7,7 @@ using LogicaDeServicios.CasosDeUso.TomarMedicion;
 //using LogicaDeServicios.CasosDeUso.TomarMedicion;
 using LogicaDeServicios.DTOs.Apiarios;
 using LogicaDeServicios.DTOs.Arduino;
+using LogicaDeServicios.DTOs.Colmenas;
 using LogicaDeServicios.DTOs.Registros;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using Microsoft.EntityFrameworkCore;

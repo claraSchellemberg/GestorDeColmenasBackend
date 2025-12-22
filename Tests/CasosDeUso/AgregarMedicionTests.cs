@@ -41,7 +41,7 @@ namespace Tests.CasosDeUso
                 CuadroId = 1
             };
 
-            var colmena = new Colmena("Desc", "Colmena A1") { Id = 1 };
+            var colmena = new Colmena("Desc", "Colmena A1", 1) { Id = 1 };
             var cuadro = new Cuadro { Id = 1 };
 
             var dataArduino = new DataArduinoDto(
@@ -92,7 +92,7 @@ namespace Tests.CasosDeUso
         {
             // Arrange
             var sensor = new Sensor { SensorId = 1, ColmenaId = 1, CuadroId = 1 };
-            var colmena = new Colmena("Desc", "Col A") { Id = 1 };
+            var colmena = new Colmena("Desc", "Col A", 1) { Id = 1 };
             var cuadro = new Cuadro { Id = 1 };
 
             var dataArduino = new DataArduinoDto(
@@ -125,7 +125,7 @@ namespace Tests.CasosDeUso
         {
             // Arrange
             var sensor = new Sensor { SensorId = 1, ColmenaId = 1, CuadroId = 1 };
-            var colmena = new Colmena("Desc", "Col A") { Id = 1 };
+            var colmena = new Colmena("Desc", "Col A", 1) { Id = 1 };
             var cuadro = new Cuadro { Id = 1 };
 
             var dataArduino = new DataArduinoDto(
@@ -154,7 +154,7 @@ namespace Tests.CasosDeUso
         {
             // Arrange
             var sensor = new Sensor { SensorId = 1, ColmenaId = 1, CuadroId = 1 };
-            var colmena = new Colmena("Desc", "Col A") { Id = 1 };
+            var colmena = new Colmena("Desc", "Col A", 1) { Id = 1 };
             var cuadro = new Cuadro { Id = 1 };
 
             var dataArduino = new DataArduinoDto(
@@ -187,7 +187,7 @@ namespace Tests.CasosDeUso
         {
             // Arrange
             var sensor = new Sensor { SensorId = 1, ColmenaId = 1, CuadroId = 1 };
-            var colmena = new Colmena("Desc", "Col A") { Id = 1 };
+            var colmena = new Colmena("Desc", "Col A", 1) { Id = 1 };
             var cuadro = new Cuadro { Id = 1 };
 
             var dataArduino = new DataArduinoDto(
@@ -216,7 +216,7 @@ namespace Tests.CasosDeUso
         {
             // Arrange
             var sensor = new Sensor { SensorId = 1, ColmenaId = 1, CuadroId = 1 };
-            var colmena = new Colmena("Desc", "Col A") { Id = 1 };
+            var colmena = new Colmena("Desc", "Col A", 1) { Id = 1 };
             var cuadro = new Cuadro { Id = 1 };
 
             var dataArduino = new DataArduinoDto(
@@ -301,7 +301,7 @@ namespace Tests.CasosDeUso
         {
             // Arrange
             var sensor = new Sensor { SensorId = 1, ColmenaId = 1, CuadroId = 999 };
-            var colmena = new Colmena("Desc", "Col A") { Id = 1 };
+            var colmena = new Colmena("Desc", "Col A", 1) { Id = 1 };
 
             var dataArduino = new DataArduinoDto(
                 idSensor: 1,
@@ -331,7 +331,7 @@ namespace Tests.CasosDeUso
         {
             // Arrange
             var sensor = new Sensor { SensorId = 1, ColmenaId = 1, CuadroId = 1 };
-            var colmena = new Colmena("Desc", "Col A") { Id = 1 };
+            var colmena = new Colmena("Desc", "Col A", 1) { Id = 1 };
             var cuadro = new Cuadro { Id = 1 };
 
             var dataArduino = new DataArduinoDto(
@@ -360,7 +360,7 @@ namespace Tests.CasosDeUso
         {
             // Arrange
             var sensor = new Sensor { SensorId = 1, ColmenaId = 1, CuadroId = 1 };
-            var colmena = new Colmena("Desc", "Col A") { Id = 1 };
+            var colmena = new Colmena("Desc", "Col A", 1) { Id = 1 };
             var cuadro = new Cuadro { Id = 1 };
 
             var dataArduino = new DataArduinoDto(
@@ -389,7 +389,7 @@ namespace Tests.CasosDeUso
         {
             // Arrange
             var sensor = new Sensor { SensorId = 1, ColmenaId = 1, CuadroId = 1 };
-            var colmena = new Colmena("Desc", "Col A") { Id = 1 };
+            var colmena = new Colmena("Desc", "Col A", 1) { Id = 1 };
             var cuadro = new Cuadro { Id = 1 };
 
             var dataArduino = new DataArduinoDto(
