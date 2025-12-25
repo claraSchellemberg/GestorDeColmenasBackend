@@ -15,7 +15,7 @@ namespace LogicaDeNegocios.Entidades
         public DateTime FechaInstalacionSensores { get; set; }
         public string Descripcion { get; set; }
         public string Nombre { get; set; }  
-        public EstadoColmena Estado { get; set; }        
+        public CondicionColmena Estado { get; set; }        
         public int ApiarioId { get; set; }
         public Apiario Apiario { get; set; }
         public List<Cuadro> Cuadros { get; set; } = new List<Cuadro>();
@@ -28,7 +28,7 @@ namespace LogicaDeNegocios.Entidades
             this.Descripcion = descripcion;
             this.Nombre = nombre;
             this.ApiarioId = apiarioId;
-            this.Estado = EstadoColmena.OPTIMO; //lo deje como predeterminado cuando demos el alta de la colmena, lo vemos si es mejor que parta con otro estado
+            this.Estado = CondicionColmena.OPTIMO; //lo deje como predeterminado cuando demos el alta de la colmena, lo vemos si es mejor que parta con otro estado
             this.FechaInstalacionSensores = DateTime.Now;
         }
 

@@ -10,7 +10,7 @@ namespace WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ColmenasController: ControllerBase
+    public class ColmenasController : ControllerBase
     {
         IAgregar<ColmenaSetDto> _add;
         IObtenerPorId<ColmenaGetDto> _getPorId;
@@ -18,13 +18,15 @@ namespace WebApi.Controllers
         IObtenerColmenasPorApiario<ColmenaGetDto> _getColmenasPorApiario;
         IActualizar<ColmenaSetDto> _update;
         IEliminar _delete;
+        IObtenerDetalleColmena<DetalleColmenaDto> _getDetalleColmena;
 
         public ColmenasController(IAgregar<ColmenaSetDto> add,
                                     IObtenerPorId<ColmenaGetDto> getPorId,
                                     IObtenerTodos<ColmenaGetDto> getTodos,
                                     IObtenerColmenasPorApiario<ColmenaGetDto> getColmenasPorApiario,
                                     IActualizar<ColmenaSetDto> update,
-                                    EliminarColmena delete)
+                                    EliminarColmena delete,
+                                    IObtenerDetalleColmena<DetalleColmenaDto> getDetalleColmena)
         {
             _add = add;
             _getPorId = getPorId;
@@ -32,6 +34,7 @@ namespace WebApi.Controllers
             _getColmenasPorApiario = getColmenasPorApiario;
             _update = update;
             _delete = delete;
+            _getDetalleColmena = getDetalleColmena;
         }
 
         [HttpPost]
@@ -211,6 +214,35 @@ namespace WebApi.Controllers
                 return StatusCode(500, "Hubo un problema intente nuevamente.");
             }
 
+        }
+        [HttpGet("{id}/detalle")]
+        public IActionResult ObtenerDetalleColmena(int id)
+        {
+            try
+            {
+                if (id == 0)
+                {
+                    throw new BadRequestException("El id recibido es incorrecto");
+                }
+                var colmenaDetalle = _getDetalleColmena.ObtenerDetalleColmena(id);
+                return Ok(colmenaDetalle);
+            }
+            catch (BadRequestException e)
+            {
+                return StatusCode(e.StatusCode(), e.Error());
+            }
+            catch (NotFoundException e)
+            {
+                return StatusCode(e.StatusCode(), e.Error());
+            }
+            catch (LogicaDeNegocioException ex)
+            {
+                return StatusCode(404, ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Hubo un problema intente nuevamente.");
+            }
         }
     }
 }

@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace LogicaDeNegocios.Enums
 {
-    public enum Alerta
+    public enum Estado
     {
-        OPTIMA,
-        ADVERTENCIA,
-        URGENTE
+        ACTIVA,
+        INACTIVA
     }
 }

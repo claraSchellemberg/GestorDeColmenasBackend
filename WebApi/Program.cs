@@ -50,6 +50,7 @@ builder.Services.AddScoped<IObtenerColmenasPorApiario<ColmenaGetDto>>(sp =>
     )
 );
 builder.Services.AddScoped<IActualizar<ColmenaSetDto>, ActualizarColmena>();
+builder.Services.AddScoped<IObtenerDetalleColmena<DetalleColmenaDto>, ObtenerDetalleColmena>();
 builder.Services.AddScoped<EliminarColmena>();
 
 //Inyecciones para los Casos de Uso de Registro
