@@ -17,18 +17,21 @@ namespace WebApi.Controllers
         IObtenerTodos<ApiarioGetDto> _getTodos;
         IActualizar<ApiarioSetDto> _update;
         IEliminar _delete;
+        IObtenerPorNombreApiarioEIdUsuario<ApiarioGetDto> _getPorNombreEIdUsuario;
 
         public ApiariosController(IAgregar<ApiarioSetDto> add,
                                     IObtenerPorId<ApiarioGetDto> getPorId,
                                     IObtenerTodos<ApiarioGetDto> getTodos,
                                     IActualizar<ApiarioSetDto> update,
-                                    EliminarApiario delete)
+                                    EliminarApiario delete,
+                                    IObtenerPorNombreApiarioEIdUsuario<ApiarioGetDto> getPorNombreEIdUsuario)
         {
             _add = add;
             _getPorId = getPorId;
             _getTodos = getTodos;
             _update = update;
             _delete = delete;
+            _getPorNombreEIdUsuario = getPorNombreEIdUsuario;
         }
 
         [HttpPost]
@@ -173,5 +176,38 @@ namespace WebApi.Controllers
                 return StatusCode(500, "Hubo un problema intente nuevamente.");
             }
         }
+
+        [HttpGet("nombre/{nombre}/usuario/{usuarioId}")]
+        public IActionResult ObtenerPorNombreYUsuario(string nombre, int usuarioId) 
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(nombre))
+                {
+                    throw new BadRequestException("El nombre del apiario es requerido");
+                }
+
+                if (usuarioId <= 0)
+                {
+                    throw new BadRequestException("El id del usuario es incorrecto");
+                }
+
+                var apiario = _getPorNombreEIdUsuario.ObtenerPorNombreEIdUsuario(nombre, usuarioId);
+                return Ok(apiario);
+            }
+            catch (BadRequestException e)
+            {
+                return StatusCode(e.StatusCode(), e.Error());
+            }
+            catch (NotFoundException e)
+            {
+                return StatusCode(e.StatusCode(), e.Error());
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Hubo un problema intente nuevamente.");
+            }
+        }
+
     }
 }
