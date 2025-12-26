@@ -11,7 +11,7 @@ namespace LogicaDeNegocios.Entidades
     {
         public int Id { get; set; }
         public DateTime FechaRegistro { get; set; }
-        public Alerta alerta;
+        public Estado alerta;
         public Registro() 
         {
             this.FechaRegistro = DateTime.Now;

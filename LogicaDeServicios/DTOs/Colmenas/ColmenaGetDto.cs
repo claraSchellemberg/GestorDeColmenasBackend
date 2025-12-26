@@ -12,7 +12,7 @@ namespace LogicaDeServicios.DTOs.Colmenas
                                     string Descripcion,
                                     string Nombre,
                                     int ApiarioId,
-                                    EstadoColmena Estado)
+                                    CondicionColmena Estado)
     {
     }
 }

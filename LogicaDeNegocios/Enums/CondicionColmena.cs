@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LogicaDeNegocios.Enums
 {
-    public enum EstadoColmena
+    public enum CondicionColmena
     {
         OPTIMO, 
         NECESITA_REVISION,
