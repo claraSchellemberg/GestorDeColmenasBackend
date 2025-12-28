@@ -15,6 +15,7 @@ namespace LogicaDeNegocios.Entidades
         public string Longitud { get; set; }
         public string UbicacionDeReferencia { get; set; }
         public DateTime FechaAlta { get; set; } = DateTime.Now;
+        public bool Activo { get; set; } = true;
         public int UsuarioId { get; set; }
         public Usuario Usuario { get; set; }
         public List<Colmena> Colmenas { get; set; } = new List<Colmena>();

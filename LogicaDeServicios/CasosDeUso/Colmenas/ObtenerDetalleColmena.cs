@@ -40,7 +40,7 @@ namespace LogicaDeServicios.CasosDeUso.Colmenas
 
             return new DetalleColmenaDto(idColmena, colmena.Nombre, colmena.Descripcion, 
                 apiario.Nombre,
-                colmena.FechaInstalacionSensores, colmena.Estado, cantCuadros, cantRegistros,
+                colmena.FechaInstalacionSensores, colmena.Condicion, cantCuadros, cantRegistros,
                 tempInterna1, tempInterna2, tempInterna3, tempExterna, peso);
         }
 

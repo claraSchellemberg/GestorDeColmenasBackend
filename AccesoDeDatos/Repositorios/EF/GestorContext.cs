@@ -21,6 +21,7 @@ namespace AccesoDeDatos.Repositorios.EF
         public DbSet<Cuadro> Cuadros { get; set; }
         public DbSet<MedicionColmena> MedicionColmenas { get; set; }
         public DbSet<RegistroSensor> RegistroSensors { get; set; }
+        public DbSet<RegistroMedicionColmena> RegistroMedicionColmenas { get; set; }
         public DbSet<Sensor> Sensores { get; set; }
         public DbSet<SensorPorCuadro> SensorPorCuadros { get; set; }
 
@@ -28,19 +29,7 @@ namespace AccesoDeDatos.Repositorios.EF
         public GestorContext(DbContextOptions<GestorContext> options) : base(options)
         {
         }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    var configuration = new ConfigurationBuilder()
-        //         .SetBasePath(Directory.GetCurrentDirectory()) // esto referencia al startup project
-        //         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-        //         .Build();
 
-        //    var cs = configuration.GetConnectionString("DefaultConnection");
-        //    if (!string.IsNullOrEmpty(cs))
-        //    {
-        //        optionsBuilder.UseSqlServer(cs);
-        //    }
-        //}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -55,18 +44,19 @@ namespace AccesoDeDatos.Repositorios.EF
                 //.IsRequired();
                 .HasMany(apiario => apiario.Colmenas)
                 .WithOne(colmena => colmena.Apiario)
-                .HasForeignKey(colmena => colmena.ApiarioId);// esta restriccion no se peude eliminar un apiario si tiene colmenas asociadas
-
-             /* modelBuilder.Entity<Colmena>()
-                .HasOne(colmena => colmena.Apiario)
+                .HasForeignKey(colmena => colmena.ApiarioId);// esta restriccion no se peude eliminar un apiario si tiene colmenas asociada
+            // Configurar Sensor con ambas FKs en NoAction
+            modelBuilder.Entity<Sensor>()
+                .HasOne(s => s.Colmena)
                 .WithMany()
-                .HasForeignKey(colmena => colmena.IdApiario)
-                .OnDelete(DeleteBehavior.Restrict);*/ //con esta restrinccion no se peude eliminar un apiario si tiene colmenas asociadas
+                .HasForeignKey(s => s.ColmenaId)
+                .OnDelete(DeleteBehavior.NoAction);
 
-
-
-
-
+            modelBuilder.Entity<Sensor>()
+                .HasOne(s => s.Cuadro)
+                .WithMany()
+                .HasForeignKey(s => s.CuadroId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
     }

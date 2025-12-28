@@ -8,8 +8,13 @@ using System.Threading.Tasks;
 
 namespace LogicaDeNegocios.InterfacesRepositorio
 {
-    public interface IRepositorioNotificacion : IRepositorioAgregar<Notificacion>, 
-                            IRepositorioEliminar<Notificacion>, IRepositorioObtenerPorId<Notificacion>
+    public interface IRepositorioNotificacion : IRepositorioAgregar<Notificacion>,
+                                                IRepositorioObtenerPorId<Notificacion>,
+                                                IRepositorioObtenerTodos<Notificacion>
     {
+        /// <summary>
+        /// Obtiene todas las notificaciones pendientes de un usuario
+        /// </summary>
+        IEnumerable<Notificacion> ObtenerNotificacionesPendientes(int usuarioId);
     }
 }

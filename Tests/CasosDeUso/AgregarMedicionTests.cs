@@ -14,17 +14,29 @@ namespace Tests.CasosDeUso
         private readonly Mock<IRepositorioColmena> _mockRepoColmenas;
         private readonly Mock<IRepositorioSensor> _mockRepoSensores;
         private readonly AgregarMedicion _agregarMedicion;
+        private readonly Mock<IRepositorioRegistroSensor> _mockRepoRegistrosSensores;
+        private readonly Mock<IRepositorioRegistroMedicionColmena> _mockRepoRegistroMedicionColmena;
+        private readonly Mock<IRepositorioNotificacion> _mockRepoNotificaciones;
+        private readonly Mock<IGeneradorNotificaciones> _mockGeneradorNotificaciones;
 
         public AgregarMedicionTests()
         {
             _mockRepoCuadros = new Mock<IRepositorioCuadro>();
             _mockRepoColmenas = new Mock<IRepositorioColmena>();
             _mockRepoSensores = new Mock<IRepositorioSensor>();
-            
+           _mockRepoRegistrosSensores = new Mock<IRepositorioRegistroSensor>();
+            _mockRepoRegistroMedicionColmena = new Mock<IRepositorioRegistroMedicionColmena>();
+            _mockRepoNotificaciones = new Mock<IRepositorioNotificacion>();
+            _mockGeneradorNotificaciones = new Mock<IGeneradorNotificaciones>();
+
             _agregarMedicion = new AgregarMedicion(
                 _mockRepoCuadros.Object,
                 _mockRepoColmenas.Object,
-                _mockRepoSensores.Object);
+                _mockRepoSensores.Object,
+                _mockRepoRegistrosSensores.Object,
+                _mockRepoRegistroMedicionColmena.Object,
+                _mockRepoNotificaciones.Object,
+                _mockGeneradorNotificaciones.Object);
         }
 
         #region Test Cases - Happy Path
