@@ -32,7 +32,8 @@ namespace AccesoDeDatos.Repositorios.EF
                 throw new ApiarioException("El apiario no puede estar vacío");
             }
         }
-
+        //antes del agregar hay que utilizar el find para verificar que ese nombre de apiario ya no exista dentro de ese usuario
+        //tambien implementarlo en colmena para los cuadros y tambiien se agrega la constrain a nivel del EF
         public void Agregar(Apiario entidad)
         {
             if (entidad != null)

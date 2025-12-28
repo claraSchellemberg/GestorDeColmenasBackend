@@ -9,8 +9,7 @@ using System.Threading.Tasks;
 namespace LogicaDeNegocios.InterfacesRepositorio
 {
     public interface IRepositorioRegistroSensor: IRepositorioAgregar<RegistroSensor>,
-                        IRepositorioActualizar<RegistroSensor>, IRepositorioEliminar<RegistroSensor>,
-                        IRepositorioObtenerPorId<RegistroSensor>, IRepositorioObtenerTodos<RegistroSensor>
+                        IRepositorioObtenerPorId<RegistroSensor>, IRepositorioObtenerTodos<RegistroSensor>, IRepositorioObtenerUltimoCadro
     {
     }
 }

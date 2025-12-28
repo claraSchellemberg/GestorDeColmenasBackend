@@ -34,7 +34,7 @@ namespace LogicaDeServicios.Mappers
                                           colmena.Descripcion,
                                           colmena.Nombre,
                                           colmena.ApiarioId,
-                                          colmena.Estado);
+                                          colmena.Condicion);
         }
 
         public static IEnumerable<ColmenaGetDto> ToListDto(IEnumerable<Colmena> colmenas)

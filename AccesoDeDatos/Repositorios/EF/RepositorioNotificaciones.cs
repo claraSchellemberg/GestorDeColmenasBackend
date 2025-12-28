@@ -17,6 +17,7 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             _context = context;
         }
+
         public void Agregar(Notificacion entidad)
         {
             if (entidad != null)
@@ -30,12 +31,6 @@ namespace AccesoDeDatos.Repositorios.EF
             }
         }
 
-        public void Eliminar(int id)
-        {
-            Notificacion notificacion = ObtenerElementoPorId(id);
-            _context.Notificaciones.Remove(notificacion);
-            _context.SaveChanges();
-        }
 
         public Notificacion ObtenerElementoPorId(int id)
         {
@@ -48,6 +43,16 @@ namespace AccesoDeDatos.Repositorios.EF
             {
                 throw new NotificacionException("La notificación no existe");
             }
+        }
+
+        public IEnumerable<Notificacion> ObtenerNotificacionesPendientes(int usuarioId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Notificacion> ObtenerTodosLosElementos()
+        {
+            throw new NotImplementedException();
         }
     }
 }

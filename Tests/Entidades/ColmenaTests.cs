@@ -25,7 +25,7 @@ namespace LogicaDeNegocios.Tests.Entidades
             Assert.Equal(descripcion, colmena.Descripcion);
             Assert.Equal(nombre, colmena.Nombre);
             Assert.Equal(apiarioId, colmena.ApiarioId);
-            Assert.Equal(CondicionColmena.OPTIMO, colmena.Estado);
+            Assert.Equal(CondicionColmena.OPTIMO, colmena.Condicion);
             Assert.NotEqual(DateTime.MinValue, colmena.FechaInstalacionSensores);
         }
 
@@ -124,7 +124,7 @@ namespace LogicaDeNegocios.Tests.Entidades
             var colmena = new Colmena("Descripción", "C1", 1);
 
             // Assert
-            Assert.Equal(CondicionColmena.OPTIMO, colmena.Estado);
+            Assert.Equal(CondicionColmena.OPTIMO, colmena.Condicion);
         }
 
         [Fact]

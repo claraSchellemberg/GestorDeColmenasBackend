@@ -11,10 +11,12 @@ namespace LogicaDeNegocios.Entidades
     {
         public int Id { get; set; }
         public DateTime FechaRegistro { get; set; }
-        public Estado alerta;
+        public bool EstaPendiente { get; set; } = true;
         public Registro() 
         {
             this.FechaRegistro = DateTime.Now;
         }
+
+        public abstract void ControlarValores();
     }
 }
