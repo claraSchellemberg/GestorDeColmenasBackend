@@ -2,6 +2,7 @@ using AccesoDeDatos.Repositorios.EF;
 using LogicaDeNegocios.InterfacesRepositorio;
 using LogicaDeServicios.CasosDeUso.Apiarios;
 using LogicaDeServicios.CasosDeUso.Colmenas;
+using LogicaDeServicios.CasosDeUso.Notificaciones;
 using LogicaDeServicios.CasosDeUso.TomarMedicion;
 
 //using LogicaDeServicios.CasosDeUso.TomarMedicion;
@@ -23,7 +24,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
+// Inyecciones para los repositorios
+builder.Services.AddScoped<IRepositorioApiario, RepositorioApiario>();
+builder.Services.AddScoped<IRepositorioColmena, RepositorioColmena>();
+builder.Services.AddScoped<IRepositorioCuadro, RepositorioCuadro>();
+builder.Services.AddScoped<IRepositorioNotificacion, RepositorioNotificaciones>();
+builder.Services.AddScoped<IRepositorioRegistro, RepositorioRegistro>();
+builder.Services.AddScoped<IRepositorioRegistroMedicionColmena, RepositorioRegistroMedicionColmena>();
+builder.Services.AddScoped<IRepositorioRegistroSensor, RepositorioRegistroSensor>();
+builder.Services.AddScoped<IRepositorioSensor, RepositorioSensor>();
+builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
 
 //Inyecciones para los Casos de Uso de Apiarios
 builder.Services.AddScoped<IAgregar<ApiarioSetDto>, AgregarApiario>();
@@ -42,7 +52,7 @@ builder.Services.AddScoped<IAgregar<ColmenaSetDto>>(sp =>
 );
 builder.Services.AddScoped<IObtenerPorId<ColmenaGetDto>, ObtenerPorIdColmena>();
 builder.Services.AddScoped<IObtenerTodos<ColmenaGetDto>, ObtenerTodosColmenas>();
-//builder.Services.AddScoped<IObtenerColmenasPorApiario<ColmenaGetDto>, ObtenerColmenasPorApiario>();
+builder.Services.AddScoped<IObtenerColmenasPorApiario<ColmenaGetDto>, ObtenerColmenasPorApiario>();
 builder.Services.AddScoped<IObtenerColmenasPorApiario<ColmenaGetDto>>(sp =>
     new ObtenerColmenasPorApiario(
         sp.GetRequiredService<IRepositorioColmena>(),
@@ -52,18 +62,13 @@ builder.Services.AddScoped<IObtenerColmenasPorApiario<ColmenaGetDto>>(sp =>
 builder.Services.AddScoped<IActualizar<ColmenaSetDto>, ActualizarColmena>();
 builder.Services.AddScoped<IObtenerDetalleColmena<DetalleColmenaDto>, ObtenerDetalleColmena>();
 builder.Services.AddScoped<EliminarColmena>();
+builder.Services.AddScoped<IObtenerPorNombreApiarioEIdUsuario<ApiarioGetDto>, ObtenerApiarioPorNombreEIdUsuario>();
 
 //Inyecciones para los Casos de Uso de Registro
 builder.Services.AddScoped<IAgregar<DataArduinoDto>, AgregarMedicion>();
+builder.Services.AddScoped<IGeneradorNotificaciones, GeneradorNotificaciones>();
 
 
-// Inyecciones para los repositorios
-//builder.Services.AddScoped<IRepositorioRegistro, RepositorioRegistro>();
-builder.Services.AddScoped<IRepositorioApiario, RepositorioApiario>();
-builder.Services.AddScoped<IRepositorioColmena, RepositorioColmena>();
-builder.Services.AddScoped<IRepositorioCuadro, RepositorioCuadro>();
-builder.Services.AddScoped<IRepositorioColmena, RepositorioColmena>();
-builder.Services.AddScoped<IRepositorioSensor, RepositorioSensor>();
 
 // Inyecta el contex y la cadena de conexion que la toma desde el json
 builder.Services.AddDbContext<GestorContext>(

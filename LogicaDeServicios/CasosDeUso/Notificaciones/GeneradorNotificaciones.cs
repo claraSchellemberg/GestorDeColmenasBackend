@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace LogicaDeServicios
+namespace LogicaDeServicios.CasosDeUso.Notificaciones
 {
     /// <summary>
     /// Implementa el patrón Subject/Observable para las notificaciones.
