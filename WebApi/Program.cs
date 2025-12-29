@@ -42,7 +42,7 @@ builder.Services.AddScoped<IAgregar<ColmenaSetDto>>(sp =>
 );
 builder.Services.AddScoped<IObtenerPorId<ColmenaGetDto>, ObtenerPorIdColmena>();
 builder.Services.AddScoped<IObtenerTodos<ColmenaGetDto>, ObtenerTodosColmenas>();
-//builder.Services.AddScoped<IObtenerColmenasPorApiario<ColmenaGetDto>, ObtenerColmenasPorApiario>();
+builder.Services.AddScoped<IObtenerColmenasPorApiario<ColmenaGetDto>, ObtenerColmenasPorApiario>();
 builder.Services.AddScoped<IObtenerColmenasPorApiario<ColmenaGetDto>>(sp =>
     new ObtenerColmenasPorApiario(
         sp.GetRequiredService<IRepositorioColmena>(),
@@ -52,6 +52,7 @@ builder.Services.AddScoped<IObtenerColmenasPorApiario<ColmenaGetDto>>(sp =>
 builder.Services.AddScoped<IActualizar<ColmenaSetDto>, ActualizarColmena>();
 builder.Services.AddScoped<IObtenerDetalleColmena<DetalleColmenaDto>, ObtenerDetalleColmena>();
 builder.Services.AddScoped<EliminarColmena>();
+builder.Services.AddScoped<IObtenerPorNombreApiarioEIdUsuario<ApiarioGetDto>, ObtenerApiarioPorNombreEIdUsuario>();
 
 //Inyecciones para los Casos de Uso de Registro
 builder.Services.AddScoped<IAgregar<DataArduinoDto>, AgregarMedicion>();
