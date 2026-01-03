@@ -6,29 +6,43 @@ using System.Threading.Tasks;
 
 namespace LogicaDeNegocios.Entidades
 {
-    public class RegistroMedicionColmena: Registro
+    public class RegistroMedicionColmena : Registro
     {
         public MedicionColmena MedicionColmena { get; set; }
+        public bool ValorEstaEnRangoBorde { get; set; }
+        public List<string> MensajesAlerta { get; set; } = new List<string>();
+
         public RegistroMedicionColmena() { }
+
         public RegistroMedicionColmena(MedicionColmena medicionColmena)
         {
             this.MedicionColmena = medicionColmena;
+            ValorEstaEnRangoBorde = false;
         }
 
         public override void ControlarValores()
         {
-            float pesoMinimo = float.Parse(
-                Configuracion.Instancia.GetValorPorNombre("PesoMinimoColmena"));
-            if (MedicionColmena.Peso <= pesoMinimo)
+            // Validamos que la colmena no se haya caido o que no haya un error en la medición
+            if (MedicionColmena.Peso == 0)
             {
-                throw new Exception("Alerta: Peso de la colmena por debajo del umbral mínimo.");
+                ValorEstaEnRangoBorde = true;
+                MensajesAlerta.Add("Alerta: Peso de la colmena es cero. Verifique que se encuentre todo en orden.");
+            }
+
+            float pesoMinimo = float.Parse(
+                Configuracion.GetValorPorNombre("PesoMinimoColmena"));
+            if (MedicionColmena.Peso > 0 && MedicionColmena.Peso <= pesoMinimo)
+            {
+                ValorEstaEnRangoBorde = true;
+                MensajesAlerta.Add("Alerta: Peso de la colmena por debajo del umbral mínimo.");
             }
 
             float pesoMaximo = float.Parse(
-                Configuracion.Instancia.GetValorPorNombre("PesoMaximo"));
+                Configuracion.GetValorPorNombre("PesoMaximo"));
             if (MedicionColmena.Peso >= pesoMaximo)
             {
-                throw new Exception("Alerta: Peso de la colmena por encima del umbral máximo. Vaya a cosechar");
+                ValorEstaEnRangoBorde = true;
+                MensajesAlerta.Add("Alerta: Peso de la colmena por encima del umbral máximo. Vaya a cosechar.");
             }
         }
     }

@@ -10,8 +10,8 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class MedicionSensoresController : ControllerBase
     {
-        IAgregar<DataArduinoDto> _addMedicion;
-        public MedicionSensoresController(IAgregar<DataArduinoDto> addMedicion)
+        IAgregar<DataArduinoDto, DataArduinoDto> _addMedicion;
+        public MedicionSensoresController(IAgregar<DataArduinoDto, DataArduinoDto> addMedicion)
         {
             _addMedicion = addMedicion;
         }
@@ -24,12 +24,12 @@ namespace WebApi.Controllers
                 {
                     return BadRequest("Los datos recibidos son incorrectos");
                 }
-                _addMedicion.Agregar(dataArduinoDto);
-                return Created("", null);
+                var medicionCreada = _addMedicion.Agregar(dataArduinoDto);
+                return Created("", medicionCreada);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return StatusCode(500, "Hubo un problema intente nuevamente.");
+                return StatusCode(500, e.Message);
             }
         }
     }

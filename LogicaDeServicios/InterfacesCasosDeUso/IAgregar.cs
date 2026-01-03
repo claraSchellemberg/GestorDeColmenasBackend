@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.InterfacesCasosDeUso
 {
-    public interface IAgregar <T>
+    public interface IAgregar<TIn, TOut>
     {
-        void Agregar(T obj);
+        TOut Agregar(TIn obj);
     }
 }

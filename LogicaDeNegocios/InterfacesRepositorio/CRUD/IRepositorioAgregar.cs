@@ -8,6 +8,6 @@ namespace LogicaDeNegocios.InterfacesRepositorio.CRUD
 {
     public interface IRepositorioAgregar<T> where T : class
     {
-        void Agregar(T entidad);
+        T Agregar(T entidad);
     }
 }

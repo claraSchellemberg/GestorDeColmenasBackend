@@ -1,4 +1,5 @@
 using AccesoDeDatos.Repositorios.EF;
+using LogicaDeNegocios;
 using LogicaDeNegocios.InterfacesRepositorio;
 using LogicaDeServicios.CasosDeUso.Apiarios;
 using LogicaDeServicios.CasosDeUso.Colmenas;
@@ -36,7 +37,7 @@ builder.Services.AddScoped<IRepositorioSensor, RepositorioSensor>();
 builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
 
 //Inyecciones para los Casos de Uso de Apiarios
-builder.Services.AddScoped<IAgregar<ApiarioSetDto>, AgregarApiario>();
+builder.Services.AddScoped<IAgregar<ApiarioSetDto, ApiarioGetDto>, AgregarApiario>();
 builder.Services.AddScoped<IObtenerPorId<ApiarioGetDto>, ObtenerPorIdApiario>();
 builder.Services.AddScoped<IObtenerTodos<ApiarioGetDto>, ObtenerTodosApiarios>();
 builder.Services.AddScoped<IActualizar<ApiarioSetDto>, ActualizarApiario>();
@@ -44,7 +45,7 @@ builder.Services.AddScoped<EliminarApiario>();
 
 //Inyecciones para los Casos de Uso de Colmenas
 //builder.Services.AddScoped<IAgregar<ColmenaSetDto>, AgregarColmena>();-- pruebo con otra inyeccion
-builder.Services.AddScoped<IAgregar<ColmenaSetDto>>(sp =>
+builder.Services.AddScoped<IAgregar<ColmenaSetDto, ColmenaGetDto>>(sp =>
     new AgregarColmena(
         sp.GetRequiredService<IRepositorioColmena>(),
         sp.GetRequiredService<IRepositorioApiario>()
@@ -65,7 +66,7 @@ builder.Services.AddScoped<EliminarColmena>();
 builder.Services.AddScoped<IObtenerPorNombreApiarioEIdUsuario<ApiarioGetDto>, ObtenerApiarioPorNombreEIdUsuario>();
 
 //Inyecciones para los Casos de Uso de Registro
-builder.Services.AddScoped<IAgregar<DataArduinoDto>, AgregarMedicion>();
+builder.Services.AddScoped<IAgregar<DataArduinoDto, DataArduinoDto>, AgregarMedicion>();
 builder.Services.AddScoped<IGeneradorNotificaciones, GeneradorNotificaciones>();
 
 
@@ -76,6 +77,16 @@ builder.Services.AddDbContext<GestorContext>(
 );
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<GestorContext>();
+    var configs = context.Configuracions
+        .ToList()
+        .Select(c => (c.Nombre, c.Valor))
+        .ToList();
+    Configuracion.Inicializar(configs);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

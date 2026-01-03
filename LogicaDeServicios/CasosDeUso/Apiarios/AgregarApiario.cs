@@ -12,7 +12,7 @@ namespace LogicaDeServicios.CasosDeUso.Apiarios
 {
     //aca se llama a los repos que necesito agregar 
     //primero iria a bucar la colmena
-    public class AgregarApiario: IAgregar<ApiarioSetDto>
+    public class AgregarApiario: IAgregar<ApiarioSetDto, ApiarioGetDto>
     {
         private IRepositorioApiario _repo;
 
@@ -21,9 +21,13 @@ namespace LogicaDeServicios.CasosDeUso.Apiarios
             _repo = repo; 
         }  
 
-        public void Agregar(ApiarioSetDto apiarioSetDto)
+        public ApiarioGetDto Agregar(ApiarioSetDto apiarioSetDto)
         {
-            _repo.Agregar(ApiarioMapper.FromDto(apiarioSetDto));
+            ApiarioGetDto agregado;
+            agregado =ApiarioMapper.ToDto( 
+                _repo.Agregar(ApiarioMapper.FromDto(apiarioSetDto))
+                );
+            return agregado;
         }
 
     }

@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.DTOs.Apiarios
 {
-    public record ApiarioSetDto (string Nombre, 
-                                string Latitud, 
-                                string Longitud, 
-                                string UbicacionDeReferencia)
+    public record ApiarioSetDto(
+        string Nombre,
+        string Latitud,
+        string Longitud,
+        string UbicacionDeReferencia,
+        int UsuarioId)
     {
     }
 }

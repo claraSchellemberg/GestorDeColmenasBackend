@@ -19,9 +19,7 @@ namespace LogicaDeServicios.CasosDeUso.Notificaciones
             _observadores = new List<IObservadorNotificaciones>();
         }
 
-        /// <summary>
-        /// Suscribe un observador a las notificaciones
-        /// </summary>
+        // Suscribe un observador a las notificaciones
         public void SuscribirObservador(IObservadorNotificaciones observador)
         {
             if (observador == null)
@@ -33,10 +31,8 @@ namespace LogicaDeServicios.CasosDeUso.Notificaciones
                 _observadores.Add(observador);
             }
         }
-
-        /// <summary>
-        /// Desuscribe un observador
-        /// </summary>
+        
+        // Desuscribe un observador
         public void DesSuscribirObservador(IObservadorNotificaciones observador)
         {
             if (observador != null)
@@ -45,15 +41,15 @@ namespace LogicaDeServicios.CasosDeUso.Notificaciones
             }
         }
 
-        /// <summary>
-        /// Notifica a todos los observadores suscriptos
-        /// </summary>
+        // Notifica a todos los observadores suscriptos
         public void NotificarObservadores(Notificacion notificacion)
         {
             if (notificacion == null)
-                throw new ArgumentNullException(nameof(notificacion), "La notificación no puede ser nula.");
+                throw new ArgumentNullException(nameof(notificacion), 
+                    "La notificación no puede ser nula.");
 
-            // Crear una copia de la lista para evitar problemas si alguien se desuscribe durante la iteración
+            // Crear una copia de la lista para evitar problemas si alguien
+            // se desuscribe durante la iteración
             var observadoresCopia = _observadores.ToList();
 
             foreach (var observador in observadoresCopia)

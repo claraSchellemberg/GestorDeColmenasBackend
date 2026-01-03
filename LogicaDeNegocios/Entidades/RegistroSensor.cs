@@ -10,6 +10,8 @@ namespace LogicaDeNegocios.Entidades
     {
         public SensorPorCuadro sensorPorCuadro;
         public bool ValorEstaEnRangoBorde { get; set; }
+        public List<string> MensajesAlerta { get; set; } = new List<string>();
+
         public RegistroSensor() { }
 
         public RegistroSensor(SensorPorCuadro sensorPorCuadro)
@@ -21,22 +23,25 @@ namespace LogicaDeNegocios.Entidades
         public override void ControlarValores()
         {
             float tempHipotermia = float.Parse(
-                Configuracion.Instancia.GetValorPorNombre("TempHipotermia"));
+                Configuracion.GetValorPorNombre("TempHipotermia"));
 
             if (sensorPorCuadro.TempInterna1 <= tempHipotermia ||
                 sensorPorCuadro.TempInterna2 <= tempHipotermia ||
                 sensorPorCuadro.TempInterna3 <= tempHipotermia)
             {
                 ValorEstaEnRangoBorde = true;
+                MensajesAlerta.Add("Alerta: Temperatura en rango de hipotermia detectada.");
             }
-            float tempCrias = float.Parse(
-                Configuracion.Instancia.GetValorPorNombre("TempCrias"));
 
-            if (sensorPorCuadro.TempInterna1 <= tempCrias ||
-                sensorPorCuadro.TempInterna2 <= tempCrias ||
-                sensorPorCuadro.TempInterna3 <= tempCrias) 
+            float tempCrias = float.Parse(
+                Configuracion.GetValorPorNombre("TempCrias"));
+
+            if (sensorPorCuadro.TempInterna1 == tempCrias &&
+                sensorPorCuadro.TempInterna2 == tempCrias &&
+                sensorPorCuadro.TempInterna3 == tempCrias)
             {
                 ValorEstaEnRangoBorde = true;
+                MensajesAlerta.Add("Alerta: Todo el cuadro presenta temperatura de crías, vaya a revisarlo para prevenir enjambramiento");
             }
         }
     }

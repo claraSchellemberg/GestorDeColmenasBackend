@@ -29,12 +29,13 @@ namespace AccesoDeDatos.Repositorios.EF
                 throw new UsuarioException("El usuario no puede estar vacío");
             }
         }
-        public void Agregar(Usuario entidad)
+        public Usuario Agregar(Usuario entidad)
         {
             if (entidad != null)
             {
                 _context.Usuarios.Add(entidad);
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
+                return entidad;
             }
             else
             {

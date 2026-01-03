@@ -18,7 +18,7 @@ namespace AccesoDeDatos.Repositorios.EF
             _context = context;
         }
 
-        public void Agregar(RegistroSensor entidad)
+        public RegistroSensor Agregar(RegistroSensor entidad)
         {
             throw new NotImplementedException();
         }

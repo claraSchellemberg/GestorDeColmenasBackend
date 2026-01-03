@@ -15,7 +15,10 @@ namespace LogicaDeServicios.Mappers
             return new Apiario(apiarioSetDto.Nombre,
                                 apiarioSetDto.Latitud,
                                 apiarioSetDto.Longitud,
-                                apiarioSetDto.UbicacionDeReferencia);
+                                apiarioSetDto.UbicacionDeReferencia,
+                                apiarioSetDto.UsuarioId)
+            {
+            };
         }
 
         public static Apiario UpdateFromDto(Apiario apiario, ApiarioSetDto apiarioSetDto)
@@ -24,6 +27,7 @@ namespace LogicaDeServicios.Mappers
             apiario.Latitud = apiarioSetDto.Latitud;
             apiario.Longitud = apiarioSetDto.Longitud;
             apiario.UbicacionDeReferencia = apiarioSetDto.UbicacionDeReferencia;
+            apiario.UsuarioId = apiarioSetDto.UsuarioId;
             return apiario;
         }
 
@@ -34,7 +38,8 @@ namespace LogicaDeServicios.Mappers
                                         apiario.Latitud,
                                         apiario.Longitud,
                                         apiario.UbicacionDeReferencia,
-                                        apiario.FechaAlta);
+                                        apiario.FechaAlta, 
+                                        apiario.UsuarioId);
         }
 
 

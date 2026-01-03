@@ -1,67 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LogicaDeNegocios
 {
     public class Configuracion
     {
-        private static Configuracion _instancia;
+        private static Dictionary<string, string> _valores = new Dictionary<string, string>();
 
+        // Keep these for EF Core entity mapping
         public string Nombre { get; set; }
         public string Valor { get; set; }
 
-        private Configuracion(string nombre, string valor)
-        {
-            Nombre = nombre;
-            Valor = valor;
-        }
+        public Configuracion() { }
 
-        public static Configuracion Instancia
+        public static void Inicializar(IEnumerable<(string Nombre, string Valor)> configuraciones)
         {
-            get
+            _valores.Clear();
+            foreach (var config in configuraciones)
             {
-                if (_instancia == null)
-                {
-                    throw new Exception("Configuración no inicializada.");
-                }
-                return _instancia;
+                _valores[config.Nombre] = config.Valor;
             }
         }
 
-        public static void Inicializar(string nombre, string valor)
+        public static string GetValorPorNombre(string nombre)
         {
-            if (_instancia == null)
+            if (_valores.TryGetValue(nombre, out string valor))
             {
-                _instancia = new Configuracion(nombre, valor);
-                _instancia.validarCampos();
-            }
-        }
-
-        public void actualizarValor(string nuevoValor)
-        {
-            Valor = nuevoValor;
-        }
-
-        public void validarCampos()
-        {
-            if (string.IsNullOrEmpty(Nombre) || string.IsNullOrEmpty(Valor))
-            {
-                throw new Exception("Todos los campos son obligatorios.");
-            }
-        }
-
-        public string GetValorPorNombre(string nombre)
-        {
-            if (nombre == Nombre)
-            {
-                return Valor;
+                return valor;
             }
             else
             {
-                throw new Exception("Configuración no encontrada.");
+                throw new Exception($"Configuración '{nombre}' no encontrada.");
             }
         }
     }

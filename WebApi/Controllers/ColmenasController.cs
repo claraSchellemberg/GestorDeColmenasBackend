@@ -12,7 +12,7 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class ColmenasController : ControllerBase
     {
-        IAgregar<ColmenaSetDto> _add;
+        IAgregar<ColmenaSetDto, ColmenaGetDto> _add;
         IObtenerPorId<ColmenaGetDto> _getPorId;
         IObtenerTodos<ColmenaGetDto> _getTodos;
         IObtenerColmenasPorApiario<ColmenaGetDto> _getColmenasPorApiario;
@@ -20,7 +20,7 @@ namespace WebApi.Controllers
         IEliminar _delete;
         IObtenerDetalleColmena<DetalleColmenaDto> _getDetalleColmena;
 
-        public ColmenasController(IAgregar<ColmenaSetDto> add,
+        public ColmenasController(IAgregar<ColmenaSetDto, ColmenaGetDto> add,
                                     IObtenerPorId<ColmenaGetDto> getPorId,
                                     IObtenerTodos<ColmenaGetDto> getTodos,
                                     IObtenerColmenasPorApiario<ColmenaGetDto> getColmenasPorApiario,
@@ -46,8 +46,8 @@ namespace WebApi.Controllers
                 {
                     throw new BadRequestException("Los datos recibidos son incorrectos");
                 }
-                _add.Agregar(new ColmenaSetDto(colmenaSetDto.Descripcion, colmenaSetDto.Nombre, colmenaSetDto.ApiarioId));
-                return Created();
+                var colmenaCreada = _add.Agregar(new ColmenaSetDto(colmenaSetDto.Descripcion, colmenaSetDto.Nombre, colmenaSetDto.ApiarioId));
+                return Created($"/Colmenas/{colmenaCreada.Id}", colmenaCreada);
             }
             catch (BadRequestException e)
             {

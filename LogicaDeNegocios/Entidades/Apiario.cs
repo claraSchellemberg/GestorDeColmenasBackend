@@ -21,12 +21,14 @@ namespace LogicaDeNegocios.Entidades
         public List<Colmena> Colmenas { get; set; } = new List<Colmena>();
         public Apiario() { }
         
-        public Apiario(string nombre, string latitud, string longitud, string ubicacion)
+        public Apiario(string nombre, string latitud, string longitud, string ubicacion,
+                        int usuarioId)
         {
             this.Nombre = nombre;
             this.UbicacionDeReferencia = ubicacion;
             this.Latitud = latitud;
             this.Longitud = longitud;
+            this.UsuarioId = usuarioId;
         }
         public void AgregarColmena(Colmena colmena)
         {

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.CasosDeUso.Colmenas
 {
-    public class AgregarColmena: IAgregar<ColmenaSetDto>
+    public class AgregarColmena: IAgregar<ColmenaSetDto, ColmenaGetDto>
     {
         private IRepositorioColmena _repoColmena;
         private IRepositorioApiario _repoApiario;
@@ -21,7 +21,7 @@ namespace LogicaDeServicios.CasosDeUso.Colmenas
             _repoApiario = repoApiario;
         }
 
-        public void Agregar(ColmenaSetDto colmenaSetDto)
+        public ColmenaGetDto Agregar(ColmenaSetDto colmenaSetDto)
         {
             //validar que el apiario exista
             var apiario = _repoApiario.ObtenerElementoPorId(colmenaSetDto.ApiarioId);
@@ -29,7 +29,11 @@ namespace LogicaDeServicios.CasosDeUso.Colmenas
             {
                 throw new ColmenaException($"El apiario con ID {colmenaSetDto.ApiarioId} no existe.");
             }
-            _repoColmena.Agregar(ColmenaMapper.FromDto(colmenaSetDto));
+            ColmenaGetDto agregada;
+            agregada = ColmenaMapper.ToDto(
+                _repoColmena.Agregar(ColmenaMapper.FromDto(colmenaSetDto))
+                );
+            return agregada;
         }
     }
 }
