@@ -31,13 +31,14 @@ namespace AccesoDeDatos.Repositorios.EF
                 throw new ColmenaException("El apiario no puede estar vacío");
             }
         }
-        public void Agregar(Colmena entidad)
+        public Colmena Agregar(Colmena entidad)
         {
             if (entidad != null)
             {
                 entidad.ValidarColmena();
                 _context.Colmenas.Add(entidad);
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
+                return entidad;
             }
             else
             {

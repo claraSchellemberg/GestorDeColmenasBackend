@@ -30,12 +30,13 @@ namespace AccesoDeDatos.Repositorios.EF
             }
         }
 
-        public void Agregar(Sensor entidad)
+        public Sensor Agregar(Sensor entidad)
         {
             if (entidad != null)
             {
                 _context.Sensores.Add(entidad);
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
+                return entidad;
             }
             else
             {

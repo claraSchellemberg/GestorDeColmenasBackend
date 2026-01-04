@@ -12,14 +12,14 @@ namespace WebApi.Controllers
     [Route("[controller]")]
     public class ApiariosController: ControllerBase
     {
-        IAgregar<ApiarioSetDto> _add;
+        IAgregar<ApiarioSetDto, ApiarioGetDto> _add;
         IObtenerPorId<ApiarioGetDto> _getPorId;
         IObtenerTodos<ApiarioGetDto> _getTodos;
         IActualizar<ApiarioSetDto> _update;
         IEliminar _delete;
         IObtenerPorNombreApiarioEIdUsuario<ApiarioGetDto> _getPorNombreEIdUsuario;
 
-        public ApiariosController(IAgregar<ApiarioSetDto> add,
+        public ApiariosController(IAgregar<ApiarioSetDto, ApiarioGetDto> add,
                                     IObtenerPorId<ApiarioGetDto> getPorId,
                                     IObtenerTodos<ApiarioGetDto> getTodos,
                                     IActualizar<ApiarioSetDto> update,
@@ -43,8 +43,13 @@ namespace WebApi.Controllers
                 {
                     throw new BadRequestException("Los datos recibido son incorrectos");
                 }
-                _add.Agregar(new ApiarioSetDto(apiarioSetDto.Nombre, apiarioSetDto.Latitud, apiarioSetDto.Longitud, apiarioSetDto.UbicacionDeReferencia));
-                return Created();
+                var apiarioCreado = _add.Agregar(new ApiarioSetDto(
+                    apiarioSetDto.Nombre,
+                    apiarioSetDto.Latitud,
+                    apiarioSetDto.Longitud,
+                    apiarioSetDto.UbicacionDeReferencia,
+                    apiarioSetDto.UsuarioId));
+                return Created($"/Apiarios/{apiarioCreado.Id}", apiarioCreado);
             }
             catch (BadRequestException e)
             {
@@ -58,9 +63,9 @@ namespace WebApi.Controllers
             {
                 return StatusCode(404, ex.Message);
             }
-            catch (Exception)
+            catch (Exception exc)
             {
-                return StatusCode(500, "Hubo un problema intente nuevamente.");
+                return StatusCode(500, exc.Message);
             }
         }
 

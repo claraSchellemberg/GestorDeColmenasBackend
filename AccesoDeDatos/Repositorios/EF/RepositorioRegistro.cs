@@ -30,12 +30,13 @@ namespace AccesoDeDatos.Repositorios.EF
             }
         }
 
-        public void Agregar(Registro entidad)
+        public Registro Agregar(Registro entidad)
         {
             if (entidad != null)
             {
                 _context.Registros.Add(entidad);
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
+                return entidad;
             }
             else
             {

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.CasosDeUso.TomarMedicion
 {
-    public class AgregarMedicion : IAgregar<DataArduinoDto>
+    public class AgregarMedicion : IAgregar<DataArduinoDto, DataArduinoDto>
     {
         private IRepositorioCuadro _repoCuadros;
         private IRepositorioColmena _repoColmenas;
@@ -24,8 +24,8 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
         private IRepositorioNotificacion _repoNotificaciones;
         private IGeneradorNotificaciones _generadorNotificaciones;
 
-        public AgregarMedicion(IRepositorioCuadro repoCuadros, 
-                        IRepositorioColmena repoColmenas, IRepositorioSensor repoSensores, 
+        public AgregarMedicion(IRepositorioCuadro repoCuadros,
+                        IRepositorioColmena repoColmenas, IRepositorioSensor repoSensores,
                         IRepositorioRegistroSensor repoRegistrosSensores,
                         IRepositorioRegistroMedicionColmena repositorioRegistroMedicionColmena,
                         IRepositorioNotificacion repoNotificaciones,
@@ -39,15 +39,13 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
             _repoNotificaciones = repoNotificaciones;
             _generadorNotificaciones = generadorNotificaciones;
         }
-        
-        public void Agregar(DataArduinoDto obj)
+
+        public DataArduinoDto Agregar(DataArduinoDto obj)
         {
-            //busca colmena por sensor
             Sensor sensor = _repoSensores.ObtenerElementoPorId(obj.idSensor);
             sensor.Colmena = _repoColmenas.ObtenerElementoPorId(sensor.ColmenaId);
             
-            // Crear la medición de colmena
-            if(obj.peso>0 || obj.tempExterna>0)
+            if ((obj.peso >= 0 && obj.tipoSensor=="peso") || obj.tempExterna > 0)
             {
                 MedicionColmena medicionColmena = new MedicionColmena
                 {
@@ -63,12 +61,21 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
                     FechaRegistro = DateTime.Now,
                     EstaPendiente = true
                 };
-                _repoRegistroMedicionColmena.Agregar(registroMedicionColmena);
+                
                 registroMedicionColmena.ControlarValores();
+                _repoRegistroMedicionColmena.Agregar(registroMedicionColmena);
+
+                // Generate notification for EACH alert
+                if (registroMedicionColmena.ValorEstaEnRangoBorde)
+                {
+                    foreach (var mensaje in registroMedicionColmena.MensajesAlerta)
+                    {
+                        GenerarNotificacion(mensaje, sensor.Colmena, registroMedicionColmena);
+                    }
+                }
             }
-            else if(obj.temp1>0 || obj.temp2>0 || obj.temp3 > 0)
+            else if (obj.temp1 > 0 || obj.temp2 > 0 || obj.temp3 > 0)
             {
-                //agrega al cuadro
                 sensor.Cuadro = _repoCuadros.ObtenerElementoPorId(sensor.CuadroId);
                 SensorPorCuadro medicionDeCuadro = new SensorPorCuadro
                 {
@@ -87,36 +94,43 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
                     EstaPendiente = true
                 };
                 
-                // Controlar si esta en rango borde
                 registro.ControlarValores();
-                
-                // Agregar el registro ANTES de verificar colmena
                 _repoRegistrosSensores.Agregar(registro);
+
+                // Generate notification for EACH alert
+                if (registro.ValorEstaEnRangoBorde)
+                {
+                    foreach (var mensaje in registro.MensajesAlerta)
+                    {
+                        GenerarNotificacion(mensaje, sensor.Colmena, registro);
+                    }
+                }
                 
-                // AQUI VIENE LA LOGICA NUEVA: Verificar si generar notificacion a nivel colmena
                 VerificarEstadoColmena(sensor.Colmena, registro);
-            }   
+            }
+            return obj;
         }
 
-        /// <summary>
-        /// Verifica si todos los cuadros de la colmena tienen su última medición en rango borde.
-        /// Si es así, genera una notificación y actualiza el estado de la colmena.
-        /// </summary>
+        // Verifica si todos los cuadros de la colmena tienen su última medición en 
+        // rango borde.
+        // Si es así, genera una notificación y actualiza el estado de la colmena.
         private void VerificarEstadoColmena(Colmena colmena, RegistroSensor registroActual)
         {
             // PASO 1: Obtener todos los cuadros de la colmena
-            // Esto es necesario porque necesitamos verificar el estado de TODA la colmena
+            // Esto es necesario porque necesitamos verificar el estado de
+            // TODA la colmena
             var cuadrosDeColmena = colmena.Cuadros;
-            
+
             if (cuadrosDeColmena == null || cuadrosDeColmena.Count == 0)
             {
                 return; // No hay cuadros para verificar
             }
 
             // PASO 2: Para cada cuadro, obtener el último registro de sensor
-            // Recorremos todos los cuadros porque cada uno tiene mediciones independientes
+            // Recorremos todos los cuadros porque cada uno tiene mediciones
+            // independientes
             var ultimasmedicionesQueBordean = new List<RegistroSensor>();
-            
+
             foreach (var cuadro in cuadrosDeColmena)
             {
                 // Obtener TODOS los registros de sensores para este cuadro
@@ -130,14 +144,15 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
                 }
             }
 
-            // PASO 4: Si todos los cuadros tienen medición en rango borde, generar notificación
+            // PASO 4: Si todos los cuadros tienen medición en rango borde, generar
+            // notificación
             // Comparamos la cantidad de cuadros con mediciones en rango borde
             // Si son iguales, significa que TODOS los cuadros están en rango borde
             if (ultimasmedicionesQueBordean.Count == cuadrosDeColmena.Count)
             {
                 string mensaje = $"ALERTA: Todos los cuadros de la colmena {colmena.Nombre} están en rango borde de temperatura.";
                 GenerarNotificacion(mensaje, colmena, registroActual);
-                
+
                 // Opcional: Actualizar el estado de la colmena
                 colmena.Condicion = CondicionColmena.EN_PELIGRO;
                 _repoColmenas.Actualizar(colmena);

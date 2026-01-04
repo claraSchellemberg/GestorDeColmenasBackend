@@ -30,12 +30,13 @@ namespace AccesoDeDatos.Repositorios.EF
             }
         }
 
-        public void Agregar(Cuadro entidad)
+        public Cuadro Agregar(Cuadro entidad)
         {
             if (entidad != null)
             {
                 _context.Cuadros.Add(entidad);
                 _context.SaveChangesAsync();
+                return entidad;
             }
             else
             {

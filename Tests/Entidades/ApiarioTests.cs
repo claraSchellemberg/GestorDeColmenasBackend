@@ -17,9 +17,10 @@ namespace LogicaDeNegocios.Tests.Entidades
             string latitud = "-34.5";
             string longitud = "-58.5";
             string ubicacion = "San Isidro";
+            int usuarioId = 1;
 
             // Act
-            var apiario = new Apiario(nombre, latitud, longitud, ubicacion);
+            var apiario = new Apiario(nombre, latitud, longitud, ubicacion, usuarioId);
 
             // Assert
             Assert.Equal(nombre, apiario.Nombre);
@@ -48,7 +49,7 @@ namespace LogicaDeNegocios.Tests.Entidades
             var beforeCreation = DateTime.Now;
 
             // Act
-            var apiario = new Apiario("Nombre", "-34.5", "-58.5", "Ubicacion");
+            var apiario = new Apiario("Nombre", "-34.5", "-58.5", "Ubicacion", 1);
             var afterCreation = DateTime.Now;
 
             // Assert
@@ -158,7 +159,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         public void AgregarColmena_ConColmenaValida_AgregaSatisfactoriamente()
         {
             // Arrange
-            var apiario = new Apiario("Apiario", "-34.5", "-58.5", "Ubicacion");
+            var apiario = new Apiario("Apiario", "-34.5", "-58.5", "Ubicacion", 1);
             var colmena = new Colmena("Descripción", "C1", 1);
 
             // Act
@@ -173,7 +174,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         public void AgregarColmena_MultiplesColmenas_AgregaSatisfactoriamente()
         {
             // Arrange
-            var apiario = new Apiario("Apiario", "-34.5", "-58.5", "Ubicacion");
+            var apiario = new Apiario("Apiario", "-34.5", "-58.5", "Ubicacion", 1);
             var colmena1 = new Colmena("Descripción 1", "C1", 1);
             var colmena2 = new Colmena("Descripción 2", "C2", 1);
             var colmena3 = new Colmena("Descripción 3", "C3", 1);
@@ -205,7 +206,7 @@ namespace LogicaDeNegocios.Tests.Entidades
         public void AgregarColmena_ConColmenaNula_NoLanzaExcepcion()
         {
             // Arrange
-            var apiario = new Apiario("Apiario", "-34.5", "-58.5", "Ubicacion");
+            var apiario = new Apiario("Apiario", "-34.5", "-58.5", "Ubicacion", 1);
 
             // Act & Assert - Documenta que actualmente no valida null
             apiario.AgregarColmena(null);

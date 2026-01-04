@@ -11,7 +11,8 @@ namespace LogicaDeServicios.DTOs.Apiarios
                                     string Latitud,
                                     string Longitud,
                                     string UbicacionDeReferencia,
-                                    DateTime fechaAlta)
+                                    DateTime fechaAlta,
+                                    int UsuarioId)
     {
     }
 }

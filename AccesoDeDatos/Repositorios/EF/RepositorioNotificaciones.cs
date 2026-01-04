@@ -18,12 +18,13 @@ namespace AccesoDeDatos.Repositorios.EF
             _context = context;
         }
 
-        public void Agregar(Notificacion entidad)
+        public Notificacion Agregar(Notificacion entidad)
         {
             if (entidad != null)
             {
                 _context.Notificaciones.Add(entidad);
-                _context.SaveChangesAsync();
+                _context.SaveChanges();
+                return entidad;
             }
             else
             {
