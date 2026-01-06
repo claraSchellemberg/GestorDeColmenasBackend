@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AccesoDeDatos.Migrations
 {
     /// <inheritdoc />
-    public partial class inicial : Migration
+    public partial class Inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -163,7 +163,10 @@ namespace AccesoDeDatos.Migrations
                     EstaPendiente = table.Column<bool>(type: "bit", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
                     MedicionColmenaId = table.Column<int>(type: "int", nullable: true),
-                    ValorEstaEnRangoBorde = table.Column<bool>(type: "bit", nullable: true)
+                    ValorEstaEnRangoBorde = table.Column<bool>(type: "bit", nullable: true),
+                    MensajesAlerta = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RegistroSensor_ValorEstaEnRangoBorde = table.Column<bool>(type: "bit", nullable: true),
+                    RegistroSensor_MensajesAlerta = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

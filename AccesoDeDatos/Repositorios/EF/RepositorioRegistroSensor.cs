@@ -20,11 +20,28 @@ namespace AccesoDeDatos.Repositorios.EF
 
         public RegistroSensor Agregar(RegistroSensor entidad)
         {
-            throw new NotImplementedException();
+            if (entidad != null)
+            {
+                _context.RegistroSensors.Add(entidad);
+                _context.SaveChanges();
+                return entidad;
+            }
+            else
+            {
+                throw new SensorException("El sensor no puede estar vacío");
+            }
         }
         public RegistroSensor ObtenerElementoPorId(int id)
         {
-            throw new NotImplementedException();
+            RegistroSensor registroSensor = _context.RegistroSensors.FirstOrDefault(rs => rs.Id == id);
+            if (registroSensor != null)
+            {
+                return registroSensor;
+            }
+            else
+            {
+                throw new SensorException("El sensor ingresado no existe");
+            }
         }
 
         public IEnumerable<RegistroSensor> ObtenerTodosLosElementos()

@@ -10,9 +10,9 @@ namespace LogicaDeServicios.DTOs.Arduino
                                  string tipoSensor,
                                  float peso,
                                  float tempExterna,
-                                 float temp1,
-                                 float temp2,
-                                 float temp3)
+                                 float tempInterna1,
+                                 float tempInterna2,
+                                 float tempInterna3)
     {
 
     }
