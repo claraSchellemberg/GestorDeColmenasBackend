@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccesoDeDatos.Migrations
 {
     [DbContext(typeof(GestorContext))]
-    [Migration("20251229233918_inicial")]
-    partial class inicial
+    [Migration("20260106161259_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -306,6 +306,13 @@ namespace AccesoDeDatos.Migrations
                     b.Property<int>("MedicionColmenaId")
                         .HasColumnType("int");
 
+                    b.PrimitiveCollection<string>("MensajesAlerta")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("ValorEstaEnRangoBorde")
+                        .HasColumnType("bit");
+
                     b.HasIndex("MedicionColmenaId");
 
                     b.HasDiscriminator().HasValue("RegistroMedicionColmena");
@@ -315,8 +322,21 @@ namespace AccesoDeDatos.Migrations
                 {
                     b.HasBaseType("LogicaDeNegocios.Entidades.Registro");
 
+                    b.PrimitiveCollection<string>("MensajesAlerta")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("ValorEstaEnRangoBorde")
                         .HasColumnType("bit");
+
+                    b.ToTable("Registros", t =>
+                        {
+                            t.Property("MensajesAlerta")
+                                .HasColumnName("RegistroSensor_MensajesAlerta");
+
+                            t.Property("ValorEstaEnRangoBorde")
+                                .HasColumnName("RegistroSensor_ValorEstaEnRangoBorde");
+                        });
 
                     b.HasDiscriminator().HasValue("RegistroSensor");
                 });

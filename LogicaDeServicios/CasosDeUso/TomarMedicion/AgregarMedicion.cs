@@ -74,15 +74,15 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
                     }
                 }
             }
-            else if (obj.temp1 > 0 || obj.temp2 > 0 || obj.temp3 > 0)
+            if (obj.tempInterna1 > 0 || obj.tempInterna2 > 0 || obj.tempInterna3 > 0)
             {
                 sensor.Cuadro = _repoCuadros.ObtenerElementoPorId(sensor.CuadroId);
                 SensorPorCuadro medicionDeCuadro = new SensorPorCuadro
                 {
                     Sensor = sensor,
-                    TempInterna1 = obj.temp1,
-                    TempInterna2 = obj.temp2,
-                    TempInterna3 = obj.temp3,
+                    TempInterna1 = obj.tempInterna1,
+                    TempInterna2 = obj.tempInterna2,
+                    TempInterna3 = obj.tempInterna3,
                     FechaMedicion = DateTime.Now
                 };
                 _repoCuadros.AgregarMedicionDeCuadro(medicionDeCuadro, sensor.Cuadro);
