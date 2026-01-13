@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 namespace LogicaDeServicios.DTOs.Usuarios
 {
     public record UsuarioSetDto(string Nombre,
-                            string Email,
-                            string Contraseña)
+                                string Email,
+                                string Contraseña,
+                                string NumeroTelefono,
+                                string NumeroApicultor)
     {
     }
 }

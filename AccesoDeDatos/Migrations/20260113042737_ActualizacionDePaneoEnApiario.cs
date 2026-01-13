@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AccesoDeDatos.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class ActualizacionDePaneoEnApiario : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,7 +31,9 @@ namespace AccesoDeDatos.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NumeroTelefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MedioDeComunicacionDePreferencia = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,7 +62,7 @@ namespace AccesoDeDatos.Migrations
                         column: x => x.UsuarioId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,7 +86,7 @@ namespace AccesoDeDatos.Migrations
                         column: x => x.ApiarioId,
                         principalTable: "Apiarios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -154,32 +156,6 @@ namespace AccesoDeDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Registros",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FechaRegistro = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EstaPendiente = table.Column<bool>(type: "bit", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
-                    MedicionColmenaId = table.Column<int>(type: "int", nullable: true),
-                    ValorEstaEnRangoBorde = table.Column<bool>(type: "bit", nullable: true),
-                    MensajesAlerta = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RegistroSensor_ValorEstaEnRangoBorde = table.Column<bool>(type: "bit", nullable: true),
-                    RegistroSensor_MensajesAlerta = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Registros", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Registros_MedicionColmenas_MedicionColmenaId",
-                        column: x => x.MedicionColmenaId,
-                        principalTable: "MedicionColmenas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SensorPorCuadros",
                 columns: table => new
                 {
@@ -210,6 +186,38 @@ namespace AccesoDeDatos.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Registros",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FechaRegistro = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EstaPendiente = table.Column<bool>(type: "bit", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(34)", maxLength: 34, nullable: false),
+                    MedicionColmenaId = table.Column<int>(type: "int", nullable: true),
+                    ValorEstaEnRangoBorde = table.Column<bool>(type: "bit", nullable: true),
+                    MensajesAlerta = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RegistroSensor_ValorEstaEnRangoBorde = table.Column<bool>(type: "bit", nullable: true),
+                    RegistroSensor_MensajesAlerta = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    sensorPorCuadroId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Registros", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Registros_MedicionColmenas_MedicionColmenaId",
+                        column: x => x.MedicionColmenaId,
+                        principalTable: "MedicionColmenas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Registros_SensorPorCuadros_sensorPorCuadroId",
+                        column: x => x.sensorPorCuadroId,
+                        principalTable: "SensorPorCuadros",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Notificaciones",
                 columns: table => new
                 {
@@ -217,7 +225,8 @@ namespace AccesoDeDatos.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Mensaje = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaNotificacion = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RegistroAsociadoId = table.Column<int>(type: "int", nullable: false)
+                    RegistroAsociadoId = table.Column<int>(type: "int", nullable: false),
+                    UsuarioRecipienteId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -226,6 +235,12 @@ namespace AccesoDeDatos.Migrations
                         name: "FK_Notificaciones_Registros_RegistroAsociadoId",
                         column: x => x.RegistroAsociadoId,
                         principalTable: "Registros",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Notificaciones_Usuarios_UsuarioRecipienteId",
+                        column: x => x.UsuarioRecipienteId,
+                        principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -256,9 +271,19 @@ namespace AccesoDeDatos.Migrations
                 column: "RegistroAsociadoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Notificaciones_UsuarioRecipienteId",
+                table: "Notificaciones",
+                column: "UsuarioRecipienteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Registros_MedicionColmenaId",
                 table: "Registros",
                 column: "MedicionColmenaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Registros_sensorPorCuadroId",
+                table: "Registros",
+                column: "sensorPorCuadroId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sensores_ColmenaId",
@@ -291,16 +316,16 @@ namespace AccesoDeDatos.Migrations
                 name: "Notificaciones");
 
             migrationBuilder.DropTable(
-                name: "SensorPorCuadros");
-
-            migrationBuilder.DropTable(
                 name: "Registros");
 
             migrationBuilder.DropTable(
-                name: "Sensores");
+                name: "MedicionColmenas");
 
             migrationBuilder.DropTable(
-                name: "MedicionColmenas");
+                name: "SensorPorCuadros");
+
+            migrationBuilder.DropTable(
+                name: "Sensores");
 
             migrationBuilder.DropTable(
                 name: "Cuadros");

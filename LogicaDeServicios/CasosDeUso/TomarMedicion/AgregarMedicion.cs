@@ -43,7 +43,7 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
         public DataArduinoDto Agregar(DataArduinoDto obj)
         {
             Sensor sensor = _repoSensores.ObtenerElementoPorId(obj.idSensor);
-            sensor.Colmena = _repoColmenas.ObtenerElementoPorId(sensor.ColmenaId);
+            //sensor.Colmena = _repoColmenas.ObtenerElementoPorId(sensor.ColmenaId);
             
             if ((obj.peso >= 0 && obj.tipoSensor=="peso") || obj.tempExterna > 0)
             {
@@ -164,7 +164,7 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
             try
             {
                 // PASO 1: Crear la notificación
-                var notificacion = new Notificacion(mensaje, registroAsociado);
+                var notificacion = new Notificacion(mensaje, registroAsociado, colmena.Apiario.Usuario);
                 notificacion.ValidarNotificacion();
 
                 // PASO 2: Guardar en la base de datos

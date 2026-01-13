@@ -15,7 +15,8 @@ namespace LogicaDeServicios.Mappers
             return new NotificacionGetDto(notificacion.Id,
                                              notificacion.Mensaje,
                                              notificacion.FechaNotificacion,
-                                             notificacion.RegistroAsociado);
+                                             notificacion.Estado.ToString(),
+                                             notificacion.RegistroAsociado.Id);
         }
 
         public static IEnumerable<NotificacionGetDto> ToListDto(IEnumerable<Notificacion> notificacions)

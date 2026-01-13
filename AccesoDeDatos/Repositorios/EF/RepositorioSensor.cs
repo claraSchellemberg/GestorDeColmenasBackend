@@ -53,7 +53,11 @@ namespace AccesoDeDatos.Repositorios.EF
 
         public Sensor ObtenerElementoPorId(int id)
         {
-            Sensor sensor = _context.Sensores.FirstOrDefault(s => s.SensorId == id);
+            Sensor sensor = _context.Sensores
+                                    .Include(s => s.Colmena)
+                                    .ThenInclude(c => c.Apiario)
+                                    .ThenInclude(a => a.Usuario)
+                                    .FirstOrDefault(s => s.SensorId == id);
             if (sensor != null)
             {
                 return sensor;

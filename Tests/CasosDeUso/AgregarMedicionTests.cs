@@ -56,14 +56,61 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
             Configuracion.Inicializar(configs);
         }
 
-        private Sensor CrearSensorConColmena(int sensorId = 1, int colmenaId = 1)
+        /// <summary>
+        /// Crea un Usuario de prueba con datos válidos
+        /// </summary>
+        private Usuario CrearUsuarioTest(int id = 1)
         {
-            var colmena = new Colmena
+            return new Usuario("Usuario Test", "test@test.com", "password123", "+59899123456", "12")
             {
-                Id = colmenaId,
-                Nombre = "Colmena Test",
-                Cuadros = new List<Cuadro>()
+                Id = id
             };
+        }
+
+        /// <summary>
+        /// Crea un Apiario de prueba con Usuario asociado
+        /// </summary>
+        private Apiario CrearApiarioTest(int id = 1, Usuario usuario = null)
+        {
+            usuario ??= CrearUsuarioTest();
+            return new Apiario
+            {
+                Id = id,
+                Nombre = "Apiario Test",
+                Latitud = "-34.9011",
+                Longitud = "-56.1645",
+                UbicacionDeReferencia = "Ubicacion Test",
+                UsuarioId = usuario.Id,
+                Usuario = usuario
+            };
+        }
+
+        /// <summary>
+        /// Crea una Colmena de prueba con Apiario y Usuario asociados
+        /// </summary>
+        private Colmena CrearColmenaTest(int id = 1, Apiario apiario = null, List<Cuadro> cuadros = null)
+        {
+            apiario ??= CrearApiarioTest();
+            return new Colmena
+            {
+                Id = id,
+                Nombre = "Colmena Test",
+                Descripcion = "Descripcion Test",
+                ApiarioId = apiario.Id,
+                Apiario = apiario,
+                Cuadros = cuadros ?? new List<Cuadro>(),
+                Condicion = CondicionColmena.OPTIMO
+            };
+        }
+
+        /// <summary>
+        /// Crea un Sensor de prueba con la cadena completa: Sensor -> Colmena -> Apiario -> Usuario
+        /// </summary>
+        private Sensor CrearSensorConColmenaCompleta(int sensorId = 1, int colmenaId = 1, List<Cuadro> cuadros = null)
+        {
+            var usuario = CrearUsuarioTest();
+            var apiario = CrearApiarioTest(1, usuario);
+            var colmena = CrearColmenaTest(colmenaId, apiario, cuadros);
 
             return new Sensor
             {
@@ -79,7 +126,7 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         public void Agregar_ConPesoPositivo_DebeCrearMedicionColmena()
         {
             // Arrange
-            var sensor = CrearSensorConColmena();
+            var sensor = CrearSensorConColmenaCompleta();
             var dto = new DataArduinoDto(1, "peso", 50, 25, 0, 0, 0);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
@@ -100,7 +147,7 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         public void Agregar_ConPesoNegativo_NoDebeCrearMedicionColmena()
         {
             // Arrange
-            var sensor = CrearSensorConColmena();
+            var sensor = CrearSensorConColmenaCompleta();
             var dto = new DataArduinoDto(1, "peso", -10, -5, 0, 0, 0);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
@@ -119,7 +166,7 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         public void Agregar_ConPesoEnLimiteMaximo_DebeCrearMedicionYGenerarNotificacion()
         {
             // Arrange - PesoMaximo is 120
-            var sensor = CrearSensorConColmena();
+            var sensor = CrearSensorConColmenaCompleta();
             var dto = new DataArduinoDto(1, "peso", 120, 25, 0, 0, 0);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
@@ -144,7 +191,7 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         public void Agregar_ConPesoSobreMaximo_DebeGenerarNotificacionDeCosecha()
         {
             // Arrange - PesoMaximo is 120
-            var sensor = CrearSensorConColmena();
+            var sensor = CrearSensorConColmenaCompleta();
             var dto = new DataArduinoDto(1, "peso", 150, 25, 0, 0, 0);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
@@ -162,7 +209,7 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         public void Agregar_ConPesoEnLimiteMinimo_DebeGenerarNotificacion()
         {
             // Arrange - PesoMinimoColmena is 0, so peso <= 0 triggers alert
-            var sensor = CrearSensorConColmena();
+            var sensor = CrearSensorConColmenaCompleta();
             var dto = new DataArduinoDto(1, "peso", 0.1f, 25, 0, 0, 0);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
@@ -181,7 +228,7 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         public void Agregar_ConPesoNormal_NoDebeGenerarNotificacion()
         {
             // Arrange - Peso between min and max
-            var sensor = CrearSensorConColmena();
+            var sensor = CrearSensorConColmenaCompleta();
             var dto = new DataArduinoDto(1, "peso", 50, 25, 0, 0, 0);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
@@ -199,7 +246,7 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         public void Agregar_SoloConTempExternaPositiva_DebeCrearMedicionColmena()
         {
             // Arrange
-            var sensor = CrearSensorConColmena();
+            var sensor = CrearSensorConColmenaCompleta();
             var dto = new DataArduinoDto(1, "temperatura", 0, 30, 0, 0, 0);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
@@ -218,7 +265,7 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         public void Agregar_ConPesoCero_YTipoSensorPeso_DebeCrearMedicionYGenerarNotificacion()
         {
             // Arrange - peso=0 with tipoSensor="peso" indicates a fallen hive or sensor issue
-            var sensor = CrearSensorConColmena();
+            var sensor = CrearSensorConColmenaCompleta();
             var dto = new DataArduinoDto(1, "peso", 0, 0, 0, 0, 0);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
@@ -241,7 +288,7 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         public void Agregar_ConPesoCeroYTempExternaCero_YTipoSensorTemperatura_NoDebeCrearMedicionColmena()
         {
             // Arrange - All zeros with tipoSensor != "peso" should not create any measurement
-            var sensor = CrearSensorConColmena();
+            var sensor = CrearSensorConColmenaCompleta();
             var dto = new DataArduinoDto(1, "temperatura", 0, 0, 0, 0, 0);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
@@ -261,24 +308,14 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         {
             // Arrange
             var cuadro = new Cuadro { Id = 1 };
-            var colmena = new Colmena
-            {
-                Id = 1,
-                Nombre = "Colmena Test",
-                Cuadros = new List<Cuadro> { cuadro }
-            };
-            var sensor = new Sensor
-            {
-                SensorId = 1,
-                ColmenaId = 1,
-                CuadroId = 1,
-                Colmena = colmena
-            };
+            var sensor = CrearSensorConColmenaCompleta(cuadros: new List<Cuadro> { cuadro });
+            sensor.CuadroId = 1;
+
             // Use tipoSensor="temperatura" and peso=0, tempExterna=0 so it goes to cuadro logic
             var dto = new DataArduinoDto(1, "temperatura", 0, 0, 35, 36, 37);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
-            _mockRepoColmenas.Setup(r => r.ObtenerElementoPorId(1)).Returns(colmena);
+            _mockRepoColmenas.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor.Colmena);
             _mockRepoCuadros.Setup(r => r.ObtenerElementoPorId(1)).Returns(cuadro);
 
             // Act
@@ -298,26 +335,16 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
             // Arrange - TempHipotermia is 12
             var cuadro1 = new Cuadro { Id = 1 };
             var cuadro2 = new Cuadro { Id = 2 };
-            var colmena = new Colmena
-            {
-                Id = 1,
-                Nombre = "Colmena Test",
-                Cuadros = new List<Cuadro> { cuadro1, cuadro2 }
-            };
-            var sensor = new Sensor
-            {
-                SensorId = 1,
-                ColmenaId = 1,
-                CuadroId = 1,
-                Colmena = colmena
-            };
+            var sensor = CrearSensorConColmenaCompleta(cuadros: new List<Cuadro> { cuadro1, cuadro2 });
+            sensor.CuadroId = 1;
+
             // tipoSensor="temperatura", peso=0, tempExterna=0 ensures we go to cuadro logic
             var dto = new DataArduinoDto(1, "temperatura", 0, 0, 12, 35, 35);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
-            _mockRepoColmenas.Setup(r => r.ObtenerElementoPorId(1)).Returns(colmena);
+            _mockRepoColmenas.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor.Colmena);
             _mockRepoCuadros.Setup(r => r.ObtenerElementoPorId(1)).Returns(cuadro1);
-            
+
             _mockRepoRegistrosSensores.Setup(r => r.ObtenerUltimoPorCuadro(1))
                 .Returns(new RegistroSensor { ValorEstaEnRangoBorde = true });
             _mockRepoRegistrosSensores.Setup(r => r.ObtenerUltimoPorCuadro(2))
@@ -339,25 +366,15 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
             // Arrange - TempHipotermia is 12
             var cuadro1 = new Cuadro { Id = 1 };
             var cuadro2 = new Cuadro { Id = 2 };
-            var colmena = new Colmena
-            {
-                Id = 1,
-                Nombre = "Colmena Test",
-                Cuadros = new List<Cuadro> { cuadro1, cuadro2 }
-            };
-            var sensor = new Sensor
-            {
-                SensorId = 1,
-                ColmenaId = 1,
-                CuadroId = 1,
-                Colmena = colmena
-            };
+            var sensor = CrearSensorConColmenaCompleta(cuadros: new List<Cuadro> { cuadro1, cuadro2 });
+            sensor.CuadroId = 1;
+
             var dto = new DataArduinoDto(1, "temperatura", 0, 0, 5, 35, 35);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
-            _mockRepoColmenas.Setup(r => r.ObtenerElementoPorId(1)).Returns(colmena);
+            _mockRepoColmenas.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor.Colmena);
             _mockRepoCuadros.Setup(r => r.ObtenerElementoPorId(1)).Returns(cuadro1);
-            
+
             _mockRepoRegistrosSensores.Setup(r => r.ObtenerUltimoPorCuadro(1))
                 .Returns(new RegistroSensor { ValorEstaEnRangoBorde = true });
             _mockRepoRegistrosSensores.Setup(r => r.ObtenerUltimoPorCuadro(2))
@@ -379,24 +396,14 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
             // Arrange - Temperature that triggers both hipotermia AND crias alerts
             var cuadro1 = new Cuadro { Id = 1 };
             var cuadro2 = new Cuadro { Id = 2 };
-            var colmena = new Colmena
-            {
-                Id = 1,
-                Nombre = "Colmena Test",
-                Cuadros = new List<Cuadro> { cuadro1, cuadro2 }
-            };
-            var sensor = new Sensor
-            {
-                SensorId = 1,
-                ColmenaId = 1,
-                CuadroId = 1,
-                Colmena = colmena
-            };
+            var sensor = CrearSensorConColmenaCompleta(cuadros: new List<Cuadro> { cuadro1, cuadro2 });
+            sensor.CuadroId = 1;
+
             // temp1=5 (hipotermia), temp2=30 (below crias threshold of 34), temp3=35 (normal)
             var dto = new DataArduinoDto(1, "temperatura", 0, 0, 5, 30, 35);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
-            _mockRepoColmenas.Setup(r => r.ObtenerElementoPorId(1)).Returns(colmena);
+            _mockRepoColmenas.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor.Colmena);
             _mockRepoCuadros.Setup(r => r.ObtenerElementoPorId(1)).Returns(cuadro1);
             _mockRepoRegistrosSensores.Setup(r => r.ObtenerUltimoPorCuadro(1))
                 .Returns(new RegistroSensor { ValorEstaEnRangoBorde = true });
@@ -419,24 +426,13 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
             // Arrange
             var cuadro1 = new Cuadro { Id = 1 };
             var cuadro2 = new Cuadro { Id = 2 };
-            var colmena = new Colmena
-            {
-                Id = 1,
-                Nombre = "Colmena Test",
-                Condicion = CondicionColmena.OPTIMO,
-                Cuadros = new List<Cuadro> { cuadro1, cuadro2 }
-            };
-            var sensor = new Sensor
-            {
-                SensorId = 1,
-                ColmenaId = 1,
-                CuadroId = 1,
-                Colmena = colmena
-            };
+            var sensor = CrearSensorConColmenaCompleta(cuadros: new List<Cuadro> { cuadro1, cuadro2 });
+            sensor.CuadroId = 1;
+
             var dto = new DataArduinoDto(1, "temperatura", 0, 0, 10, 10, 10);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
-            _mockRepoColmenas.Setup(r => r.ObtenerElementoPorId(1)).Returns(colmena);
+            _mockRepoColmenas.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor.Colmena);
             _mockRepoCuadros.Setup(r => r.ObtenerElementoPorId(1)).Returns(cuadro1);
 
             _mockRepoRegistrosSensores.Setup(r => r.ObtenerUltimoPorCuadro(1))
@@ -464,24 +460,13 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
             // Arrange
             var cuadro1 = new Cuadro { Id = 1 };
             var cuadro2 = new Cuadro { Id = 2 };
-            var colmena = new Colmena
-            {
-                Id = 1,
-                Nombre = "Colmena Test",
-                Condicion = CondicionColmena.OPTIMO,
-                Cuadros = new List<Cuadro> { cuadro1, cuadro2 }
-            };
-            var sensor = new Sensor
-            {
-                SensorId = 1,
-                ColmenaId = 1,
-                CuadroId = 1,
-                Colmena = colmena
-            };
+            var sensor = CrearSensorConColmenaCompleta(cuadros: new List<Cuadro> { cuadro1, cuadro2 });
+            sensor.CuadroId = 1;
+
             var dto = new DataArduinoDto(1, "temperatura", 0, 0, 10, 10, 10);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
-            _mockRepoColmenas.Setup(r => r.ObtenerElementoPorId(1)).Returns(colmena);
+            _mockRepoColmenas.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor.Colmena);
             _mockRepoCuadros.Setup(r => r.ObtenerElementoPorId(1)).Returns(cuadro1);
 
             _mockRepoRegistrosSensores.Setup(r => r.ObtenerUltimoPorCuadro(1))
@@ -503,24 +488,14 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         public void Agregar_ColmenaSinCuadros_NoDebeGenerarNotificacionDeColmena()
         {
             // Arrange
-            var colmena = new Colmena
-            {
-                Id = 1,
-                Nombre = "Colmena Test",
-                Cuadros = new List<Cuadro>()
-            };
-            var sensor = new Sensor
-            {
-                SensorId = 1,
-                ColmenaId = 1,
-                CuadroId = 1,
-                Colmena = colmena
-            };
+            var sensor = CrearSensorConColmenaCompleta(cuadros: new List<Cuadro>());
+            sensor.CuadroId = 1;
             var cuadro = new Cuadro { Id = 1 };
+
             var dto = new DataArduinoDto(1, "temperatura", 0, 0, 10, 10, 10);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);
-            _mockRepoColmenas.Setup(r => r.ObtenerElementoPorId(1)).Returns(colmena);
+            _mockRepoColmenas.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor.Colmena);
             _mockRepoCuadros.Setup(r => r.ObtenerElementoPorId(1)).Returns(cuadro);
 
             // Act
@@ -555,7 +530,7 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         public void Agregar_DebeRetornarMismoDtoRecibido()
         {
             // Arrange
-            var sensor = CrearSensorConColmena();
+            var sensor = CrearSensorConColmenaCompleta();
             var dto = new DataArduinoDto(1, "peso", 50, 25, 0, 0, 0);
 
             _mockRepoSensores.Setup(r => r.ObtenerElementoPorId(1)).Returns(sensor);

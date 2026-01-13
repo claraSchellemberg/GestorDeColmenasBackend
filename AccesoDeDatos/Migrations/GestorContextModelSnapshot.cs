@@ -174,9 +174,14 @@ namespace AccesoDeDatos.Migrations
                     b.Property<int>("RegistroAsociadoId")
                         .HasColumnType("int");
 
+                    b.Property<int>("UsuarioRecipienteId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("RegistroAsociadoId");
+
+                    b.HasIndex("UsuarioRecipienteId");
 
                     b.ToTable("Notificaciones");
                 });
@@ -287,7 +292,14 @@ namespace AccesoDeDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("MedioDeComunicacionDePreferencia")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumeroTelefono")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -326,6 +338,11 @@ namespace AccesoDeDatos.Migrations
                     b.Property<bool>("ValorEstaEnRangoBorde")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("sensorPorCuadroId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("sensorPorCuadroId");
+
                     b.ToTable("Registros", t =>
                         {
                             t.Property("MensajesAlerta")
@@ -343,7 +360,7 @@ namespace AccesoDeDatos.Migrations
                     b.HasOne("LogicaDeNegocios.Entidades.Usuario", "Usuario")
                         .WithMany("Apiarios")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Usuario");
@@ -354,7 +371,7 @@ namespace AccesoDeDatos.Migrations
                     b.HasOne("LogicaDeNegocios.Entidades.Apiario", "Apiario")
                         .WithMany("Colmenas")
                         .HasForeignKey("ApiarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Apiario");
@@ -390,7 +407,15 @@ namespace AccesoDeDatos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("LogicaDeNegocios.Entidades.Usuario", "UsuarioRecipiente")
+                        .WithMany()
+                        .HasForeignKey("UsuarioRecipienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("RegistroAsociado");
+
+                    b.Navigation("UsuarioRecipiente");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Sensor", b =>
@@ -440,6 +465,15 @@ namespace AccesoDeDatos.Migrations
                         .IsRequired();
 
                     b.Navigation("MedicionColmena");
+                });
+
+            modelBuilder.Entity("LogicaDeNegocios.Entidades.RegistroSensor", b =>
+                {
+                    b.HasOne("LogicaDeNegocios.Entidades.SensorPorCuadro", "sensorPorCuadro")
+                        .WithMany()
+                        .HasForeignKey("sensorPorCuadroId");
+
+                    b.Navigation("sensorPorCuadro");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Apiario", b =>

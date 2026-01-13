@@ -4,15 +4,17 @@ using LogicaDeNegocios.InterfacesRepositorio;
 using LogicaDeServicios.CasosDeUso.Apiarios;
 using LogicaDeServicios.CasosDeUso.Colmenas;
 using LogicaDeServicios.CasosDeUso.Notificaciones;
+using LogicaDeServicios.CasosDeUso.Notificaciones.Canales;
 using LogicaDeServicios.CasosDeUso.TomarMedicion;
-
-//using LogicaDeServicios.CasosDeUso.TomarMedicion;
 using LogicaDeServicios.DTOs.Apiarios;
 using LogicaDeServicios.DTOs.Arduino;
 using LogicaDeServicios.DTOs.Colmenas;
 using LogicaDeServicios.DTOs.Registros;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Hubs;
+using WebApi.Servicios.Notificaciones;
+using WebApi.Servicios.Sms;
 
 
 
@@ -24,6 +26,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// SignalR
+builder.Services.AddSignalR();
 
 // Inyecciones para los repositorios
 builder.Services.AddScoped<IRepositorioApiario, RepositorioApiario>();
@@ -44,7 +49,6 @@ builder.Services.AddScoped<IActualizar<ApiarioSetDto>, ActualizarApiario>();
 builder.Services.AddScoped<EliminarApiario>();
 
 //Inyecciones para los Casos de Uso de Colmenas
-//builder.Services.AddScoped<IAgregar<ColmenaSetDto>, AgregarColmena>();-- pruebo con otra inyeccion
 builder.Services.AddScoped<IAgregar<ColmenaSetDto, ColmenaGetDto>>(sp =>
     new AgregarColmena(
         sp.GetRequiredService<IRepositorioColmena>(),
@@ -67,9 +71,37 @@ builder.Services.AddScoped<IObtenerPorNombreApiarioEIdUsuario<ApiarioGetDto>, Ob
 
 //Inyecciones para los Casos de Uso de Registro
 builder.Services.AddScoped<IAgregar<DataArduinoDto, DataArduinoDto>, AgregarMedicion>();
-builder.Services.AddScoped<IGeneradorNotificaciones, GeneradorNotificaciones>();
 
+//Inyeccion para las notificaciones
+// Servicio de infraestructura
+builder.Services.AddScoped<IServicioSms, VonageServicioSms>();
 
+// Servicio de push para SignalR
+builder.Services.AddScoped<INotificacionPushService, SignalRNotificacionPushService>();
+
+// Canales de notificación
+builder.Services.AddScoped<CanalSms>();
+builder.Services.AddScoped<CanalEmail>();
+builder.Services.AddScoped<CanalWhatsApp>();
+builder.Services.AddScoped<CanalFrontend>();
+
+// EnviadorNotificaciones (observer) - ahora incluye CanalFrontend
+builder.Services.AddScoped<EnviadorNotificaciones>(provider =>
+    new EnviadorNotificaciones(
+        provider.GetRequiredService<CanalSms>(),
+        provider.GetRequiredService<CanalEmail>(),
+        provider.GetRequiredService<CanalWhatsApp>(),
+        provider.GetRequiredService<CanalFrontend>()
+    ));
+
+// GeneradorNotificaciones con observer suscrito
+builder.Services.AddScoped<IGeneradorNotificaciones>(provider =>
+{
+    var generador = new GeneradorNotificaciones();
+    var enviador = provider.GetRequiredService<EnviadorNotificaciones>();
+    generador.SuscribirObservador(enviador);
+    return generador;
+});
 
 // Inyecta el contex y la cadena de conexion que la toma desde el json
 builder.Services.AddDbContext<GestorContext>(
@@ -100,5 +132,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Map SignalR Hub
+app.MapHub<NotificacionHub>("/notificacionHub");
 
 app.Run();

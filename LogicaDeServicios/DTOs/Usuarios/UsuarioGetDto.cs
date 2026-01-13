@@ -9,7 +9,8 @@ namespace LogicaDeServicios.DTOs.Usuarios
     public record UsuarioGetDto(int Id,
                                     string Nombre,
                                     string Email,
-                                    string Contraseña)
+                                    string Contraseña,
+                                    string NumeroTelefono)
     {
     }
 }
