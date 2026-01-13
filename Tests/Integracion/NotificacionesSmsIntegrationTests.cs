@@ -248,15 +248,18 @@ namespace Tests.Integracion
 
         #region Test de Integración Real (Envía SMS real via Vonage)
 
-        /// <summary>
-        /// ⚠️ ESTE TEST ENVÍA UN SMS REAL A +59891988714
-        /// Solo ejecutar manualmente para verificar el flujo completo.
-        /// Requiere variables de entorno VONAGE_API_KEY, VONAGE_API_SECRET configuradas.
-        /// </summary>
-        //[Fact(Skip = "Ejecutar manualmente - envía SMS real via Vonage")]
-        [Fact]
+        // ESTE TEST ENVÍA UN SMS REAL A +59891988714
+        // Solo ejecutar manualmente para verificar el flujo completo.
+        // Requiere variables de entorno VONAGE_API_KEY, VONAGE_API_SECRET configuradas.
+        [Fact(Skip = "Ejecutar manualmente - envía SMS real via Vonage")]
+        //[Fact]
         public void FlujoCompletoReal_MedicionPesoCero_EnviaSmsRealViaVonage()
         {
+            // seteamos las variables de entorno para Vonage (API Key, Secret, From Number)
+            Environment.SetEnvironmentVariable("VONAGE_API_KEY", "3667ac03");
+            Environment.SetEnvironmentVariable("VONAGE_API_SECRET", "AOBOax02F4jWGOob");
+            Environment.SetEnvironmentVariable("VONAGE_FROM_NUMBER", "+59891988714");
+
             // Arrange
             var usuario = CrearUsuarioDePrueba();
             var apiario = CrearApiarioDePrueba(usuario);
