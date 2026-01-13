@@ -88,9 +88,10 @@ namespace Tests.Integracion
             var canalSms = new CanalSms(_mockServicioSms.Object);
             var canalEmailMock = new Mock<ICanalNotificacion>().Object;
             var canalWhatsAppMock = new Mock<ICanalNotificacion>().Object;
+            var canalFrontendMock = new Mock<ICanalNotificacion>().Object;
 
             // Crear el enviador y suscribirlo al generador
-            var enviadorNotificaciones = new EnviadorNotificaciones(canalSms, canalEmailMock, canalWhatsAppMock);
+            var enviadorNotificaciones = new EnviadorNotificaciones(canalSms, canalEmailMock, canalWhatsAppMock, canalFrontendMock);
             _generadorNotificaciones.SuscribirObservador(enviadorNotificaciones);
 
             // Crear el caso de uso
@@ -150,6 +151,7 @@ namespace Tests.Integracion
             var enviadorNotificaciones = new EnviadorNotificaciones(
                 canalSms,
                 new Mock<ICanalNotificacion>().Object,
+                new Mock<ICanalNotificacion>().Object,
                 new Mock<ICanalNotificacion>().Object
             );
             _generadorNotificaciones.SuscribirObservador(enviadorNotificaciones);
@@ -206,6 +208,7 @@ namespace Tests.Integracion
             var canalSms = new CanalSms(_mockServicioSms.Object);
             var enviadorNotificaciones = new EnviadorNotificaciones(
                 canalSms,
+                new Mock<ICanalNotificacion>().Object,
                 new Mock<ICanalNotificacion>().Object,
                 new Mock<ICanalNotificacion>().Object
             );
@@ -282,6 +285,7 @@ namespace Tests.Integracion
             var enviadorNotificaciones = new EnviadorNotificaciones(
                 canalSms,
                 new Mock<ICanalNotificacion>().Object,
+                new Mock<ICanalNotificacion>().Object,
                 new Mock<ICanalNotificacion>().Object
             );
 
@@ -323,7 +327,7 @@ namespace Tests.Integracion
 
         private Usuario CrearUsuarioDePrueba()
         {
-            return new Usuario("Clara Test", "clara@test.com", "password123", NUMERO_PRUEBA)
+            return new Usuario("Clara Test", "clara@test.com", "password123", NUMERO_PRUEBA, "12")
             {
                 Id = 1,
                 MedioDeComunicacionDePreferencia = CanalPreferidoNotificacion.SMS

@@ -1,4 +1,5 @@
-﻿using LogicaDeNegocios.Excepciones;
+﻿using LogicaDeNegocios.Enums;
+using LogicaDeNegocios.Excepciones;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,8 @@ namespace LogicaDeNegocios.Entidades
         public string Mensaje { get; set; }
         public DateTime FechaNotificacion { get; set; }
         public Registro RegistroAsociado { get; set; }
-        public Usuario UsuarioRecipiente { get; set; }
+        public Usuario UsuarioReceptor { get; set; }
+        public EstadoNotificacion Estado { get; set; }
 
         //falta un estado (creado y esta pendiente, enviado y leido), esta las va a levantar el observer
         //alguien tiene que grabar una notificacion (en creaado y pendiente)
@@ -28,7 +30,8 @@ namespace LogicaDeNegocios.Entidades
             this.Mensaje = mensaje;
             this.FechaNotificacion = DateTime.Now;
             RegistroAsociado = registroAsociado;
-            this.UsuarioRecipiente = usuarioAsociado;
+            this.UsuarioReceptor = usuarioAsociado;
+            this.Estado = EstadoNotificacion.PENDIENTE;
         }
         public void ValidarNotificacion()
         {

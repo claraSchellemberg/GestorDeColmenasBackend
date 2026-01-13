@@ -15,7 +15,9 @@ namespace LogicaDeServicios.Mappers
             return new Usuario(usuarioSetDto.Nombre,
                                 usuarioSetDto.Email,
                                 usuarioSetDto.Contraseña,
-                                usuarioSetDto.NumeroTelefono);
+                                usuarioSetDto.NumeroTelefono,
+                                usuarioSetDto.NumeroApicultor
+                                );
         }
 
         public static UsuarioGetDto ToDto(Usuario usuario)

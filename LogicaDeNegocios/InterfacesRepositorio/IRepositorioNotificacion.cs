@@ -1,20 +1,21 @@
 ﻿using LogicaDeNegocios.Entidades;
+using LogicaDeNegocios.Enums;
 using LogicaDeNegocios.InterfacesRepositorio.CRUD;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LogicaDeNegocios.InterfacesRepositorio
 {
     public interface IRepositorioNotificacion : IRepositorioAgregar<Notificacion>,
                                                 IRepositorioObtenerPorId<Notificacion>,
-                                                IRepositorioObtenerTodos<Notificacion>
+                                                IRepositorioObtenerTodos<Notificacion>,
+                                                IRepositorioActualizar<Notificacion>
     {
-        /// <summary>
-        /// Obtiene todas las notificaciones pendientes de un usuario
-        /// </summary>
-        IEnumerable<Notificacion> ObtenerNotificacionesPendientes(int usuarioId);
+        // Obtiene todas las notificaciones de un usuario filtradas por estado
+        IEnumerable<Notificacion> ObtenerPorUsuarioYEstado(int usuarioId, EstadoNotificacion? estado = null);
+
+        // Marca una notificación como leída
+        void MarcarComoLeida(int notificacionId);
+
+        // Marca múltiples notificaciones como 
+        void MarcarVariasComoLeidas(IEnumerable<int> notificacionIds);
     }
 }

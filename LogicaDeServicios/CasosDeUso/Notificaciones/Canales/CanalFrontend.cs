@@ -1,4 +1,5 @@
 ﻿using LogicaDeNegocios.Entidades;
+using LogicaDeServicios.InterfacesCasosDeUso;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,18 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.CasosDeUso.Notificaciones.Canales
 {
-    internal class CanalFrontend : ICanalNotificacion
+    public class CanalFrontend : ICanalNotificacion
     {
-        public Task EnviarAsync(Notificacion notificacion, Usuario usuario)
+        private readonly INotificacionPushService _pushService;
+        public CanalFrontend(INotificacionPushService pushService)
         {
-            throw new NotImplementedException();
+            _pushService = pushService;
+        }
+
+        public async Task EnviarAsync(Notificacion notificacion, Usuario usuario)
+        {
+            await _pushService.EnviarNotificacionAsync(usuario.Id, notificacion);
+            Console.WriteLine($"🔔 Notificación push enviada al frontend para usuario: {usuario.Id}");
         }
     }
 }

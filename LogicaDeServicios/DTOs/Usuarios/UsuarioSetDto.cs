@@ -9,7 +9,8 @@ namespace LogicaDeServicios.DTOs.Usuarios
     public record UsuarioSetDto(string Nombre,
                                 string Email,
                                 string Contraseña,
-                                string NumeroTelefono)
+                                string NumeroTelefono,
+                                string NumeroApicultor)
     {
     }
 }

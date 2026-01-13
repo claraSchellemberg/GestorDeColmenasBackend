@@ -24,7 +24,7 @@ namespace WebApi.Controllers
         public IActionResult EnviarSmsDePrueba([FromBody] TestSmsRequest request)
         {
             // Crear usuario de prueba con el número proporcionado
-            var usuario = new Usuario("Test User", "test@test.com", "password123", request.NumeroTelefono)
+            var usuario = new Usuario("Test User", "test@test.com", "password123", request.NumeroTelefono, "123")
             {
                 Id = 1,
                 MedioDeComunicacionDePreferencia = CanalPreferidoNotificacion.SMS

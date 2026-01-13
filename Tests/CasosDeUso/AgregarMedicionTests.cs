@@ -61,7 +61,7 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         /// </summary>
         private Usuario CrearUsuarioTest(int id = 1)
         {
-            return new Usuario("Usuario Test", "test@test.com", "password123", "+59899123456")
+            return new Usuario("Usuario Test", "test@test.com", "password123", "+59899123456", "12")
             {
                 Id = id
             };
