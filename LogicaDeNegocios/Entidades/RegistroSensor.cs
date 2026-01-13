@@ -36,9 +36,9 @@ namespace LogicaDeNegocios.Entidades
             float tempCrias = float.Parse(
                 Configuracion.GetValorPorNombre("TempCrias"));
 
-            if (sensorPorCuadro.TempInterna1 == tempCrias &&
-                sensorPorCuadro.TempInterna2 == tempCrias &&
-                sensorPorCuadro.TempInterna3 == tempCrias)
+            if (sensorPorCuadro.TempInterna1 >= tempCrias &&
+                sensorPorCuadro.TempInterna2 >= tempCrias &&
+                sensorPorCuadro.TempInterna3 >= tempCrias)
             {
                 ValorEstaEnRangoBorde = true;
                 MensajesAlerta.Add("Alerta: Todo el cuadro presenta temperatura de crías, vaya a revisarlo para prevenir enjambramiento");

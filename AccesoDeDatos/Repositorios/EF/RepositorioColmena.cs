@@ -60,7 +60,9 @@ namespace AccesoDeDatos.Repositorios.EF
         }
         public Colmena ObtenerElementoPorId(int id)
         {
-            Colmena colmena = _context.Colmenas.FirstOrDefault(a => a.Id == id);
+            Colmena colmena = _context.Colmenas.Include(c => c.Apiario)
+                .ThenInclude(a => a.Usuario)
+                .FirstOrDefault(a => a.Id == id);
             if (colmena != null)
             {
                 return colmena;

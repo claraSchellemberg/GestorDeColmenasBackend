@@ -14,7 +14,8 @@ namespace LogicaDeServicios.Mappers
         {
             return new Usuario(usuarioSetDto.Nombre,
                                 usuarioSetDto.Email,
-                                usuarioSetDto.Contraseña);
+                                usuarioSetDto.Contraseña,
+                                usuarioSetDto.NumeroTelefono);
         }
 
         public static UsuarioGetDto ToDto(Usuario usuario)
@@ -22,7 +23,8 @@ namespace LogicaDeServicios.Mappers
             return new UsuarioGetDto(usuario.Id,
                                         usuario.Nombre,
                                         usuario.Email,
-                                        usuario.Contraseña);
+                                        usuario.Contraseña,
+                                        usuario.NumeroTelefono);
         }
 
         public static IEnumerable<UsuarioGetDto> ToListDto(IEnumerable<Usuario> usuarios)

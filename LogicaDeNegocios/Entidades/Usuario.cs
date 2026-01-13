@@ -1,4 +1,5 @@
-﻿using LogicaDeNegocios.Excepciones;
+﻿using LogicaDeNegocios.Enums;
+using LogicaDeNegocios.Excepciones;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,16 @@ namespace LogicaDeNegocios.Entidades
         public string Nombre { get; set; }
         public string Email { get; set; }
         public string Contraseña { get; set; }
+        public string NumeroTelefono { get; set; }
+        public CanalPreferidoNotificacion MedioDeComunicacionDePreferencia { get; set; }
+        //no se llama canal porque no puedo repetir el nombre
         public List<Apiario> Apiarios { get; set; } = new List<Apiario>();
-        public Usuario( string nombre, string email, string contraseña)
+        public Usuario( string nombre, string email, string contraseña, string numeroTelefono)
         {
             this.Nombre = nombre;
             this.Email = email;
             this.Contraseña = contraseña;
+            this.NumeroTelefono = numeroTelefono;
         }
         public void ValidarUsuario()
         {
@@ -36,10 +41,28 @@ namespace LogicaDeNegocios.Entidades
             {
                 throw new UsuarioException("La contraseña debe tener al menos 6 caracteres.");
             }
+            if (!ValidarTelefono())
+            {
+                throw new UsuarioException("El número de teléfono debe estar en formato telefonico internacional" +
+                    " (ej: +59899123456).");
+            }
         }
 
+        private bool ValidarTelefono()
+        {
+            if (string.IsNullOrWhiteSpace(NumeroTelefono))
+            {
+                return false;
+            }
+            // para que funcione con twilio debe cumplir con el formato E.164:
+            // - Empezar con +
+            // - Seguido de 1-15 digitos
+            // - Primer digito después del + no puede ser un 0
+            string pattern = @"^\+[1-9][0-9]{0,14}$";
+            return Regex.IsMatch(NumeroTelefono, pattern);
+        }
 
-        public bool ValidarEmail()
+        private bool ValidarEmail()
         {
             if (string.IsNullOrWhiteSpace(Email))
             {

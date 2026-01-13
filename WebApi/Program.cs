@@ -4,6 +4,7 @@ using LogicaDeNegocios.InterfacesRepositorio;
 using LogicaDeServicios.CasosDeUso.Apiarios;
 using LogicaDeServicios.CasosDeUso.Colmenas;
 using LogicaDeServicios.CasosDeUso.Notificaciones;
+using LogicaDeServicios.CasosDeUso.Notificaciones.Canales;
 using LogicaDeServicios.CasosDeUso.TomarMedicion;
 
 //using LogicaDeServicios.CasosDeUso.TomarMedicion;
@@ -13,6 +14,7 @@ using LogicaDeServicios.DTOs.Colmenas;
 using LogicaDeServicios.DTOs.Registros;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using Microsoft.EntityFrameworkCore;
+using WebApi.Servicios.Sms;
 
 
 
@@ -67,8 +69,32 @@ builder.Services.AddScoped<IObtenerPorNombreApiarioEIdUsuario<ApiarioGetDto>, Ob
 
 //Inyecciones para los Casos de Uso de Registro
 builder.Services.AddScoped<IAgregar<DataArduinoDto, DataArduinoDto>, AgregarMedicion>();
-builder.Services.AddScoped<IGeneradorNotificaciones, GeneradorNotificaciones>();
 
+//Inyeccion para las notificaciones
+// Servicio de infraestructura (Twilio)
+builder.Services.AddScoped<IServicioSms, VonageServicioSms>();
+
+// Canales de notificación
+builder.Services.AddScoped<CanalSms>();
+builder.Services.AddScoped<CanalEmail>();
+builder.Services.AddScoped<CanalWhatsApp>();
+
+// EnviadorNotificaciones (observer)
+builder.Services.AddScoped<EnviadorNotificaciones>(provider =>
+    new EnviadorNotificaciones(
+        provider.GetRequiredService<CanalSms>(),
+        provider.GetRequiredService<CanalEmail>(),
+        provider.GetRequiredService<CanalWhatsApp>()
+    ));
+
+// GeneradorNotificaciones con observer suscrito
+builder.Services.AddScoped<IGeneradorNotificaciones>(provider =>
+{
+    var generador = new GeneradorNotificaciones();
+    var enviador = provider.GetRequiredService<EnviadorNotificaciones>();
+    generador.SuscribirObservador(enviador);
+    return generador;
+});
 
 
 // Inyecta el contex y la cadena de conexion que la toma desde el json

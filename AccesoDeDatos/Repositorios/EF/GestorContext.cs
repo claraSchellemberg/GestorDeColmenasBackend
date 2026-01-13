@@ -36,15 +36,22 @@ namespace AccesoDeDatos.Repositorios.EF
             modelBuilder.Entity<Configuracion>()
                 .HasKey(c => c.Nombre);
 
-
+            //paneo de relacionamient apiario -> usuario
             modelBuilder.Entity<Apiario>()
-                //.HasOne(apiario => apiario.Usuario)
-                //.WithMany(usuario => usuario.Apiarios)
-                //.HasForeignKey(apiario => apiario.IdUsuario)-- esta restriccion no se peude eliminar un usuario si tiene apiarios asociados
-                //.IsRequired();
+                .HasOne(apiario => apiario.Usuario)
+                .WithMany(usuario => usuario.Apiarios)
+                .HasForeignKey(apiario => apiario.UsuarioId)
+                .OnDelete(DeleteBehavior.Restrict); //evita que se pueda borrar un usuario con apiarios
+
+            //paneo de relacionamiento apiario -> colmena
+            modelBuilder.Entity<Apiario>()
                 .HasMany(apiario => apiario.Colmenas)
                 .WithOne(colmena => colmena.Apiario)
-                .HasForeignKey(colmena => colmena.ApiarioId);// esta restriccion no se peude eliminar un apiario si tiene colmenas asociada
+                .HasForeignKey(colmena => colmena.ApiarioId)
+                .OnDelete(DeleteBehavior.Restrict); // evita que se pueda borrar un apiario con colmenas
+
+
+
             // Configurar Sensor con ambas FKs en NoAction
             modelBuilder.Entity<Sensor>()
                 .HasOne(s => s.Colmena)
