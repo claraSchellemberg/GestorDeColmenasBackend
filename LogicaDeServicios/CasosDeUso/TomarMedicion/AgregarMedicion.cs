@@ -45,12 +45,12 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
             Sensor sensor = _repoSensores.ObtenerElementoPorId(obj.idSensor);
             //sensor.Colmena = _repoColmenas.ObtenerElementoPorId(sensor.ColmenaId);
             
-            if ((obj.peso >= 0 && obj.tipoSensor=="peso") || obj.tempExterna > 0)
+            if ((obj.peso != null && obj.peso >= 0 && obj.tipoSensor=="peso") || (obj.tempExterna != null && obj.tempExterna > 0))
             {
                 MedicionColmena medicionColmena = new MedicionColmena
                 {
-                    Peso = obj.peso,
-                    TempExterna = obj.tempExterna,
+                    Peso = (float)obj.peso,
+                    TempExterna = (float)obj.tempExterna,
                     FechaMedicion = DateTime.Now
                 };
                 _repoColmenas.AgregarMedicion(medicionColmena, sensor.Colmena);
@@ -74,15 +74,15 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
                     }
                 }
             }
-            if (obj.tempInterna1 > 0 || obj.tempInterna2 > 0 || obj.tempInterna3 > 0)
+            if ((obj.tempInterna1 != null && obj.tempInterna1 > 0) || (obj.tempInterna2 != null && obj.tempInterna2 > 0) || (obj.tempInterna3 != null && obj.tempInterna3 > 0))
             {
                 sensor.Cuadro = _repoCuadros.ObtenerElementoPorId(sensor.CuadroId);
                 SensorPorCuadro medicionDeCuadro = new SensorPorCuadro
                 {
                     Sensor = sensor,
-                    TempInterna1 = obj.tempInterna1,
-                    TempInterna2 = obj.tempInterna2,
-                    TempInterna3 = obj.tempInterna3,
+                    TempInterna1 = (float)obj.tempInterna1,
+                    TempInterna2 = (float)obj.tempInterna2,
+                    TempInterna3 = (float)obj.tempInterna3,
                     FechaMedicion = DateTime.Now
                 };
                 _repoCuadros.AgregarMedicionDeCuadro(medicionDeCuadro, sensor.Cuadro);
