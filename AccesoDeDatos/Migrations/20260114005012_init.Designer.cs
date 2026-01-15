@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccesoDeDatos.Migrations
 {
     [DbContext(typeof(GestorContext))]
-    [Migration("20260113042737_ActualizacionDePaneoEnApiario")]
-    partial class ActualizacionDePaneoEnApiario
+    [Migration("20260114005012_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -167,6 +167,9 @@ namespace AccesoDeDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("FechaNotificacion")
                         .HasColumnType("datetime2");
 
@@ -177,14 +180,14 @@ namespace AccesoDeDatos.Migrations
                     b.Property<int>("RegistroAsociadoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsuarioRecipienteId")
+                    b.Property<int>("UsuarioReceptorId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RegistroAsociadoId");
 
-                    b.HasIndex("UsuarioRecipienteId");
+                    b.HasIndex("UsuarioReceptorId");
 
                     b.ToTable("Notificaciones");
                 });
@@ -302,6 +305,10 @@ namespace AccesoDeDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NumeroApicultor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NumeroTelefono")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -410,15 +417,15 @@ namespace AccesoDeDatos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LogicaDeNegocios.Entidades.Usuario", "UsuarioRecipiente")
+                    b.HasOne("LogicaDeNegocios.Entidades.Usuario", "UsuarioReceptor")
                         .WithMany()
-                        .HasForeignKey("UsuarioRecipienteId")
+                        .HasForeignKey("UsuarioReceptorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("RegistroAsociado");
 
-                    b.Navigation("UsuarioRecipiente");
+                    b.Navigation("UsuarioReceptor");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Sensor", b =>

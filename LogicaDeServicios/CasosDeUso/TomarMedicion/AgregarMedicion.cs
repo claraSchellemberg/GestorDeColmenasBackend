@@ -43,7 +43,6 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
         public DataArduinoDto Agregar(DataArduinoDto obj)
         {
             Sensor sensor = _repoSensores.ObtenerElementoPorId(obj.idSensor);
-            //sensor.Colmena = _repoColmenas.ObtenerElementoPorId(sensor.ColmenaId);
             
             if ((obj.peso >= 0 && obj.tipoSensor=="peso") || obj.tempExterna > 0)
             {

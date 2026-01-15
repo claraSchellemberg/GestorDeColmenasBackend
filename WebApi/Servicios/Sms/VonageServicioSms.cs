@@ -13,7 +13,7 @@ namespace WebApi.Servicios.Sms
         public VonageServicioSms()
         {
             var apiKey = Environment.GetEnvironmentVariable("VONAGE_API_KEY");
-            var apiSecret = Environment.GetEnvironmentVariable("VONAGE_API_SECRET");
+             var apiSecret = Environment.GetEnvironmentVariable("VONAGE_API_SECRET");
             _remitente = Environment.GetEnvironmentVariable("VONAGE_FROM_NUMBER") ?? "GestorColmenas";
 
             if (string.IsNullOrEmpty(apiKey) || string.IsNullOrEmpty(apiSecret))

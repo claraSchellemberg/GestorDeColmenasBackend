@@ -59,7 +59,7 @@ namespace AccesoDeDatos.Repositorios.EF
 
         public Cuadro ObtenerElementoPorId(int id)
         {
-            Cuadro cuadro = _context.Cuadros.FirstOrDefault(c => c.Id == id);
+            Cuadro cuadro = _context.Cuadros.Include(c => c.Mediciones).FirstOrDefault(c => c.Id == id);
             if (cuadro != null)
             {
                 return cuadro;
