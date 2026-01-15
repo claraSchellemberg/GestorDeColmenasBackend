@@ -8,11 +8,11 @@ namespace LogicaDeServicios.DTOs.Arduino
 {
     public record DataArduinoDto(int idSensor,
                                  string tipoSensor,
-                                 float peso,
-                                 float tempExterna,
-                                 float tempInterna1,
-                                 float tempInterna2,
-                                 float tempInterna3)
+                                 float? peso,
+                                 float? tempExterna,
+                                 float? tempInterna1,
+                                 float? tempInterna2,
+                                 float? tempInterna3)
     {
 
     }
