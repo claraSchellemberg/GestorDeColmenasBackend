@@ -47,7 +47,7 @@ namespace AccesoDeDatos.Repositorios.EF
         public IEnumerable<RegistroSensor> ObtenerTodosLosElementos()
         {
             IEnumerable<RegistroSensor> registros = _context.RegistroSensors
-                .Include(rs => rs.sensorPorCuadro)
+                .Include(rs => rs.SensorPorCuadro)
                 .ToList();
             return registros;
         }
@@ -55,7 +55,7 @@ namespace AccesoDeDatos.Repositorios.EF
         public RegistroSensor ObtenerUltimoPorCuadro(int cuadroId)
         {
             var ultimoRegistro = ObtenerTodosLosElementos()
-                                .Where(r => r.sensorPorCuadro.CuadroId == cuadroId)
+                                .Where(r => r.SensorPorCuadro.CuadroId == cuadroId)
                                 .OrderByDescending(r => r.FechaRegistro)
                                 .FirstOrDefault(); // FirstOrDefault retorna null si no hay elementos
             

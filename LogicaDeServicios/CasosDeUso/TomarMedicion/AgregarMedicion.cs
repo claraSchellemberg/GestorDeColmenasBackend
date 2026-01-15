@@ -89,7 +89,7 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
 
                 RegistroSensor registro = new RegistroSensor
                 {
-                    sensorPorCuadro = medicionDeCuadro,
+                    SensorPorCuadro = medicionDeCuadro,
                     FechaRegistro = DateTime.Now,
                     EstaPendiente = true
                 };

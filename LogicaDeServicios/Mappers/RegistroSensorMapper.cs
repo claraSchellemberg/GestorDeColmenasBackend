@@ -13,7 +13,7 @@ namespace LogicaDeServicios.Mappers
     {
         public static RegistroSensorGetDto ToDto(RegistroSensor registroSensor)
         {
-            return new RegistroSensorGetDto(registroSensor.sensorPorCuadro);
+            return new RegistroSensorGetDto(registroSensor.SensorPorCuadro);
         }
 
         public static IEnumerable<RegistroSensorGetDto> ToListDto(IEnumerable<RegistroSensor> registroSensores)

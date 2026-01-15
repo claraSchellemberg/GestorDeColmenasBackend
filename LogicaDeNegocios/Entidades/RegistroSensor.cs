@@ -8,7 +8,8 @@ namespace LogicaDeNegocios.Entidades
 {
     public class RegistroSensor: Registro
     {
-        public SensorPorCuadro sensorPorCuadro;
+        public int? SensorPorCuadroId { get; set; }
+        public SensorPorCuadro SensorPorCuadro { get; set; } 
         public bool ValorEstaEnRangoBorde { get; set; }
         public List<string> MensajesAlerta { get; set; } = new List<string>();
 
@@ -16,7 +17,7 @@ namespace LogicaDeNegocios.Entidades
 
         public RegistroSensor(SensorPorCuadro sensorPorCuadro)
         {
-            this.sensorPorCuadro = sensorPorCuadro;
+            this.SensorPorCuadro = sensorPorCuadro;
             ValorEstaEnRangoBorde = false;
         }
 
@@ -25,9 +26,9 @@ namespace LogicaDeNegocios.Entidades
             float tempHipotermia = float.Parse(
                 Configuracion.GetValorPorNombre("TempHipotermia"));
 
-            if (sensorPorCuadro.TempInterna1 <= tempHipotermia ||
-                sensorPorCuadro.TempInterna2 <= tempHipotermia ||
-                sensorPorCuadro.TempInterna3 <= tempHipotermia)
+            if (SensorPorCuadro.TempInterna1 <= tempHipotermia ||
+                SensorPorCuadro.TempInterna2 <= tempHipotermia ||
+                SensorPorCuadro.TempInterna3 <= tempHipotermia)
             {
                 ValorEstaEnRangoBorde = true;
                 MensajesAlerta.Add("Alerta: Temperatura en rango de hipotermia detectada.");
@@ -36,9 +37,9 @@ namespace LogicaDeNegocios.Entidades
             float tempCrias = float.Parse(
                 Configuracion.GetValorPorNombre("TempCrias"));
 
-            if (sensorPorCuadro.TempInterna1 >= tempCrias &&
-                sensorPorCuadro.TempInterna2 >= tempCrias &&
-                sensorPorCuadro.TempInterna3 >= tempCrias)
+            if (SensorPorCuadro.TempInterna1 >= tempCrias &&
+                SensorPorCuadro.TempInterna2 >= tempCrias &&
+                SensorPorCuadro.TempInterna3 >= tempCrias)
             {
                 ValorEstaEnRangoBorde = true;
                 MensajesAlerta.Add("Alerta: Todo el cuadro presenta temperatura de crías, vaya a revisarlo para prevenir enjambramiento");
