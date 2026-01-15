@@ -16,8 +16,18 @@ namespace LogicaDeServicios.Mappers
                                 usuarioSetDto.Email,
                                 usuarioSetDto.Contraseña,
                                 usuarioSetDto.NumeroTelefono,
-                                usuarioSetDto.NumeroApicultor
-                                );
+                                usuarioSetDto.NumeroApicultor);
+        }
+
+        public static Usuario UpdateFromDto(Usuario usuario,UsuarioSetDto usuarioSetDto)
+        {
+            usuario.Nombre = usuarioSetDto.Nombre;
+            usuario.Email = usuarioSetDto.Email;
+            usuario.Contraseña = usuarioSetDto.Contraseña;
+            usuario.NumeroTelefono = usuarioSetDto.NumeroTelefono;
+            usuario.NumeroApicultor = usuarioSetDto.NumeroApicultor;
+            return usuario;
+
         }
 
         public static UsuarioGetDto ToDto(Usuario usuario)
@@ -26,7 +36,8 @@ namespace LogicaDeServicios.Mappers
                                         usuario.Nombre,
                                         usuario.Email,
                                         usuario.Contraseña,
-                                        usuario.NumeroTelefono);
+                                        usuario.NumeroTelefono,
+                                        usuario.NumeroApicultor);
         }
 
         public static IEnumerable<UsuarioGetDto> ToListDto(IEnumerable<Usuario> usuarios)
@@ -37,7 +48,6 @@ namespace LogicaDeServicios.Mappers
                 usuariosGetDto.Add(ToDto(usuario));
             }
             return usuariosGetDto;
-        }
-            
+        }   
     }
 }

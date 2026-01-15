@@ -6,10 +6,12 @@ using LogicaDeServicios.CasosDeUso.Colmenas;
 using LogicaDeServicios.CasosDeUso.Notificaciones;
 using LogicaDeServicios.CasosDeUso.Notificaciones.Canales;
 using LogicaDeServicios.CasosDeUso.TomarMedicion;
+using LogicaDeServicios.CasosDeUso.Usuarios;
 using LogicaDeServicios.DTOs.Apiarios;
 using LogicaDeServicios.DTOs.Arduino;
 using LogicaDeServicios.DTOs.Colmenas;
 using LogicaDeServicios.DTOs.Registros;
+using LogicaDeServicios.DTOs.Usuarios;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Hubs;
@@ -71,6 +73,12 @@ builder.Services.AddScoped<IObtenerPorNombreApiarioEIdUsuario<ApiarioGetDto>, Ob
 
 //Inyecciones para los Casos de Uso de Registro
 builder.Services.AddScoped<IAgregar<DataArduinoDto, DataArduinoDto>, AgregarMedicion>();
+
+//Inyecciones para los Casos de Uso de Usuario
+builder.Services.AddScoped<IAgregar<UsuarioSetDto, UsuarioGetDto>, AgregarUsuario>();
+builder.Services.AddScoped<IObtenerPorId<UsuarioGetDto>, ObtenerPorIdUsuario>();
+builder.Services.AddScoped<IActualizar<UsuarioSetDto>, ActualizarUsuario>();
+builder.Services.AddScoped<IEliminar, EliminarUsuario>();
 
 //Inyeccion para las notificaciones
 // Servicio de infraestructura

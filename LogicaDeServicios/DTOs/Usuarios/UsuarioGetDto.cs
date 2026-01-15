@@ -10,7 +10,8 @@ namespace LogicaDeServicios.DTOs.Usuarios
                                     string Nombre,
                                     string Email,
                                     string Contraseña,
-                                    string NumeroTelefono)
+                                    string NumeroTelefono,
+                                    string NumeroApicultor)
     {
     }
 }
