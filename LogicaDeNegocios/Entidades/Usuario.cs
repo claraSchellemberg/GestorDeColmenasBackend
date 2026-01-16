@@ -19,7 +19,7 @@ namespace LogicaDeNegocios.Entidades
         public CanalPreferidoNotificacion MedioDeComunicacionDePreferencia { get; set; }
         //no se llama canal porque no puedo repetir el nombre
         public List<Apiario> Apiarios { get; set; } = new List<Apiario>();
-        public string NumeroApicultor { get; set; }
+        public string NumeroApicultor { get; set; }// preguntarle a Pablo si se puede cambiar o es de por vida
 
         // Constructor sin parámetros para permitir la inicialización vacía
         public Usuario() { }

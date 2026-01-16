@@ -148,9 +148,9 @@ namespace WebApi.Controllers
             {
                 return StatusCode(404, ex.Message);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, "Hubo un problema intente nuevamente.");
+                return StatusCode(500, ex.Message);
             }
         }
     }
