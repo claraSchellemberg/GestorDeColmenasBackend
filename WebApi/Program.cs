@@ -85,7 +85,7 @@ builder.Services.AddScoped<CanalEmail>();
 builder.Services.AddScoped<CanalWhatsApp>();
 builder.Services.AddScoped<CanalFrontend>();
 
-// EnviadorNotificaciones (observer) - ahora incluye CanalFrontend
+// EnviadorNotificaciones (observer)
 builder.Services.AddScoped<EnviadorNotificaciones>(provider =>
     new EnviadorNotificaciones(
         provider.GetRequiredService<CanalSms>(),
@@ -105,7 +105,7 @@ builder.Services.AddScoped<IGeneradorNotificaciones>(provider =>
 
 // Inyecta el contex y la cadena de conexion que la toma desde el json
 builder.Services.AddDbContext<GestorContext>(
-    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options => options.UseSqlServer(Environment.GetEnvironmentVariable("ADO.NET_CONNECTION_STRING"))
 );
 
 var app = builder.Build();
