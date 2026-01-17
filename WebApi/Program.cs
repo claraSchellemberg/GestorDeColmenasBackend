@@ -105,7 +105,7 @@ builder.Services.AddScoped<IGeneradorNotificaciones>(provider =>
 
 // Inyecta el contex y la cadena de conexion que la toma desde el json
 builder.Services.AddDbContext<GestorContext>(
-    options => options.UseSqlServer(Environment.GetEnvironmentVariable("ADO.NET_CONNECTION_STRING"))
+    options => options.UseSqlServer(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"))
 );
 
 var app = builder.Build();
