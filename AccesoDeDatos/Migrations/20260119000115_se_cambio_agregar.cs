@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AccesoDeDatos.Migrations
 {
     /// <inheritdoc />
-    public partial class ActualizacionDePaneoEnApiario : Migration
+    public partial class se_cambio_agregar : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,7 +33,8 @@ namespace AccesoDeDatos.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Contraseña = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NumeroTelefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MedioDeComunicacionDePreferencia = table.Column<int>(type: "int", nullable: false)
+                    MedioDeComunicacionDePreferencia = table.Column<int>(type: "int", nullable: false),
+                    NumeroApicultor = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,7 +52,7 @@ namespace AccesoDeDatos.Migrations
                     Longitud = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UbicacionDeReferencia = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaAlta = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Activo = table.Column<bool>(type: "bit", nullable: false),
+                    Estado = table.Column<int>(type: "int", nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -226,7 +227,8 @@ namespace AccesoDeDatos.Migrations
                     Mensaje = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaNotificacion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RegistroAsociadoId = table.Column<int>(type: "int", nullable: false),
-                    UsuarioRecipienteId = table.Column<int>(type: "int", nullable: false)
+                    UsuarioReceptorId = table.Column<int>(type: "int", nullable: false),
+                    Estado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -238,8 +240,8 @@ namespace AccesoDeDatos.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Notificaciones_Usuarios_UsuarioRecipienteId",
-                        column: x => x.UsuarioRecipienteId,
+                        name: "FK_Notificaciones_Usuarios_UsuarioReceptorId",
+                        column: x => x.UsuarioReceptorId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -271,9 +273,9 @@ namespace AccesoDeDatos.Migrations
                 column: "RegistroAsociadoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notificaciones_UsuarioRecipienteId",
+                name: "IX_Notificaciones_UsuarioReceptorId",
                 table: "Notificaciones",
-                column: "UsuarioRecipienteId");
+                column: "UsuarioReceptorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Registros_MedicionColmenaId",
