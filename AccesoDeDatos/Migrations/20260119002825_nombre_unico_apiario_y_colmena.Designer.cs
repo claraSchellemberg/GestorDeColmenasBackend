@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccesoDeDatos.Migrations
 {
     [DbContext(typeof(GestorContext))]
-    [Migration("20260113015744_FixConMock")]
-    partial class FixConMock
+    [Migration("20260119002825_nombre_unico_apiario_y_colmena")]
+    partial class nombre_unico_apiario_y_colmena
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -167,6 +167,9 @@ namespace AccesoDeDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("FechaNotificacion")
                         .HasColumnType("datetime2");
 
@@ -177,9 +180,14 @@ namespace AccesoDeDatos.Migrations
                     b.Property<int>("RegistroAsociadoId")
                         .HasColumnType("int");
 
+                    b.Property<int>("UsuarioReceptorId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("RegistroAsociadoId");
+
+                    b.HasIndex("UsuarioReceptorId");
 
                     b.ToTable("Notificaciones");
                 });
@@ -290,7 +298,18 @@ namespace AccesoDeDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("MedioDeComunicacionDePreferencia")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumeroApicultor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NumeroTelefono")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -351,7 +370,7 @@ namespace AccesoDeDatos.Migrations
                     b.HasOne("LogicaDeNegocios.Entidades.Usuario", "Usuario")
                         .WithMany("Apiarios")
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Usuario");
@@ -362,7 +381,7 @@ namespace AccesoDeDatos.Migrations
                     b.HasOne("LogicaDeNegocios.Entidades.Apiario", "Apiario")
                         .WithMany("Colmenas")
                         .HasForeignKey("ApiarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Apiario");
@@ -398,7 +417,15 @@ namespace AccesoDeDatos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("LogicaDeNegocios.Entidades.Usuario", "UsuarioReceptor")
+                        .WithMany()
+                        .HasForeignKey("UsuarioReceptorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("RegistroAsociado");
+
+                    b.Navigation("UsuarioReceptor");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Sensor", b =>

@@ -25,7 +25,6 @@ namespace AccesoDeDatos.Repositorios.EF
         public DbSet<Sensor> Sensores { get; set; }
         public DbSet<SensorPorCuadro> SensorPorCuadros { get; set; }
 
-
         public GestorContext(DbContextOptions<GestorContext> options) : base(options)
         {
         }
@@ -50,7 +49,17 @@ namespace AccesoDeDatos.Repositorios.EF
                 .HasForeignKey(colmena => colmena.ApiarioId)
                 .OnDelete(DeleteBehavior.Restrict); // evita que se pueda borrar un apiario con colmenas
 
+            // Índice único: Nombre de Apiario único por Usuario
+            modelBuilder.Entity<Apiario>()
+                .HasIndex(a => new { a.UsuarioId, a.Nombre })
+                .IsUnique()
+                .HasDatabaseName("IX_Apiario_UsuarioId_Nombre_Unique");
 
+            // Índice único: Nombre de Colmena único por Apiario
+            modelBuilder.Entity<Colmena>()
+                .HasIndex(c => new { c.ApiarioId, c.Nombre })
+                .IsUnique()
+                .HasDatabaseName("IX_Colmena_ApiarioId_Nombre_Unique");
 
             // Configurar Sensor con ambas FKs en NoAction
             modelBuilder.Entity<Sensor>()

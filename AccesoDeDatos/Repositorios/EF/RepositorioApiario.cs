@@ -21,7 +21,7 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             if(entidad!=null)
             {
-                
+                ValidarNombreUnico(entidad);
                 _context.Apiarios.Update(entidad);
                 entidad.ValidarApiario();
                 _context.Entry(entidad).Property(a => a.FechaAlta).IsModified = false; //agrego esto para que entity no nos modifique la fecha de alta
@@ -40,6 +40,7 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             if (entidad != null)
             {
+                ValidarNombreUnico(entidad);
                 //agrego la validacion del apiario
                 entidad.ValidarApiario();
                 _context.Apiarios.Add(entidad);
@@ -78,6 +79,18 @@ namespace AccesoDeDatos.Repositorios.EF
                 .Include(apiario => apiario.Colmenas)
                 .ToList();
             return apiarios;
+        }
+        private void ValidarNombreUnico(Apiario entidad)
+        {
+            bool existeNombreDuplicado = _context.Apiarios
+                .Any(a => a.UsuarioId == entidad.UsuarioId
+                       && a.Nombre == entidad.Nombre
+                       && a.Id != entidad.Id);
+
+            if (existeNombreDuplicado)
+            {
+                throw new ApiarioException($"Ya existe un apiario con el nombre '{entidad.Nombre}' para este usuario.");
+            }
         }
     }
 }

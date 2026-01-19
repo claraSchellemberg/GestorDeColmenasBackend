@@ -21,6 +21,7 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             if (entidad != null)
             {
+                ValidarNombreUnico(entidad);
                 _context.Colmenas.Update(entidad);
                 entidad.ValidarColmena();
                 _context.Entry(entidad).Property(a=> a.FechaInstalacionSensores).IsModified = false;//agrego esto para que entity no nos modifique la fecha de alta de los sensores
@@ -35,6 +36,7 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             if (entidad != null)
             {
+                ValidarNombreUnico(entidad);
                 entidad.ValidarColmena();
                 _context.Colmenas.Add(entidad);
                 _context.SaveChanges();
@@ -94,6 +96,18 @@ namespace AccesoDeDatos.Repositorios.EF
                 throw new ColmenaException("No se encontraron colmenas para el apiario especificado.");
             }
             return colmenas;
+        }
+        private void ValidarNombreUnico(Colmena entidad)
+        {
+            bool existeNombreDuplicado = _context.Colmenas
+                .Any(c => c.ApiarioId == entidad.ApiarioId
+                       && c.Nombre == entidad.Nombre
+                       && c.Id != entidad.Id);
+
+            if (existeNombreDuplicado)
+            {
+                throw new ColmenaException($"Ya existe una colmena con el nombre '{entidad.Nombre}' en este apiario.");
+            }
         }
     }
 }
