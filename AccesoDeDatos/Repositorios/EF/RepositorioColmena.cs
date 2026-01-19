@@ -1,4 +1,5 @@
 ﻿using LogicaDeNegocios.Entidades;
+using LogicaDeNegocios.Enums;
 using LogicaDeNegocios.Excepciones;
 using LogicaDeNegocios.InterfacesRepositorio;
 using Microsoft.EntityFrameworkCore;
@@ -55,7 +56,8 @@ namespace AccesoDeDatos.Repositorios.EF
         public void Eliminar(int id)
         {
             Colmena colmena = ObtenerElementoPorId(id);
-            _context.Colmenas.Remove(colmena);
+            colmena.Estado = Estado.INACTIVA;
+            _context.Colmenas.Update(colmena);
             _context.SaveChanges();
         }
         public Colmena ObtenerElementoPorId(int id)
