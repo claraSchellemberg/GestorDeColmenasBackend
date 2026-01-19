@@ -223,6 +223,95 @@ namespace LogicaDeNegocios.Tests.Entidades
             // Este test documenta el comportamiento actual
             apiario.ValidarApiario(); // No lanza excepción
         }
+
+        #region Tests de Validación de Coordenadas - Latitud
+
+        [Theory]
+        [InlineData("-34.9011")]
+        [InlineData("34.9011")]
+        [InlineData("-90")]
+        [InlineData("90")]
+        [InlineData("0")]
+        [InlineData("0.0")]
+        [InlineData("-0.5")]
+        [InlineData("89.999999")]
+        public void ValidarApiario_ConLatitudValida_NoLanzaExcepcion(string latitud)
+        {
+            // Arrange
+            var apiario = new Apiario { Nombre = "Apiario", Latitud = latitud, Longitud = "-58.5", UbicacionDeReferencia = "Ubicacion" };
+
+            // Act & Assert
+            apiario.ValidarApiario(); // No debe lanzar excepción
+        }
+
+        [Theory]
+        [InlineData("abc")]
+        [InlineData("12.34.56")]
+        [InlineData("-91")]
+        [InlineData("91")]
+        [InlineData("latitud")]
+        [InlineData("12a")]
+        [InlineData("--34")]
+        [InlineData("34-")]
+        [InlineData("12,5")]
+        [InlineData("@34.5")]
+        [InlineData("34.5!")]
+        public void ValidarApiario_ConLatitudInvalida_LanzaExcepcion(string latitud)
+        {
+            // Arrange
+            var apiario = new Apiario { Nombre = "Apiario", Latitud = latitud, Longitud = "-58.5", UbicacionDeReferencia = "Ubicacion" };
+
+            // Act & Assert
+            var ex = Assert.Throws<ApiarioException>(() => apiario.ValidarApiario());
+            Assert.Equal("La latitud debe estar en formato decimal entre -90 y 90 (ej: -34.9011).", ex.Message);
+        }
+
+        #endregion
+
+        #region Tests de Validación de Coordenadas - Longitud
+
+        [Theory]
+        [InlineData("-56.1645")]
+        [InlineData("56.1645")]
+        [InlineData("-180")]
+        [InlineData("180")]
+        [InlineData("0")]
+        [InlineData("0.0")]
+        [InlineData("-0.5")]
+        [InlineData("179.999999")]
+        [InlineData("-179.999999")]
+        public void ValidarApiario_ConLongitudValida_NoLanzaExcepcion(string longitud)
+        {
+            // Arrange
+            var apiario = new Apiario { Nombre = "Apiario", Latitud = "-34.5", Longitud = longitud, UbicacionDeReferencia = "Ubicacion" };
+
+            // Act & Assert
+            apiario.ValidarApiario(); // No debe lanzar excepción
+        }
+
+        [Theory]
+        [InlineData("abc")]
+        [InlineData("12.34.56")]
+        [InlineData("-181")]
+        [InlineData("181")]
+        [InlineData("longitud")]
+        [InlineData("12a")]
+        [InlineData("--58")]
+        [InlineData("58-")]
+        [InlineData("58,5")]
+        [InlineData("@58.5")]
+        [InlineData("58.5!")]
+        public void ValidarApiario_ConLongitudInvalida_LanzaExcepcion(string longitud)
+        {
+            // Arrange
+            var apiario = new Apiario { Nombre = "Apiario", Latitud = "-34.5", Longitud = longitud, UbicacionDeReferencia = "Ubicacion" };
+
+            // Act & Assert
+            var ex = Assert.Throws<ApiarioException>(() => apiario.ValidarApiario());
+            Assert.Equal("La longitud debe estar en formato decimal entre -180 y 180 (ej: -56.1645).", ex.Message);
+        }
+
+        #endregion
     }
 }
 

@@ -3,7 +3,7 @@ using Vonage;
 using Vonage.Request;
 using Vonage.Messaging;
 
-namespace WebApi.Servicios.Sms
+namespace WebApi.Servicios.Notificaciones
 {
     public class VonageServicioSms : IServicioSms
     {

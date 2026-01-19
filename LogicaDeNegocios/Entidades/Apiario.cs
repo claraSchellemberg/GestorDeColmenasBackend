@@ -2,9 +2,7 @@
 using LogicaDeNegocios.Excepciones;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace LogicaDeNegocios.Entidades
 {
@@ -42,6 +40,36 @@ namespace LogicaDeNegocios.Entidades
             {
                 throw new ApiarioException("Todos los campos del apiario son obligatorios.");
             }
+            if (!ValidarLatitud())
+            {
+                throw new ApiarioException("La latitud debe estar en formato decimal entre -90 y 90 (ej: -34.9011).");
+            }
+            if (!ValidarLongitud())
+            {
+                throw new ApiarioException("La longitud debe estar en formato decimal entre -180 y 180 (ej: -56.1645).");
+            }
+        }
+
+        private bool ValidarLatitud()
+        {
+            if (string.IsNullOrWhiteSpace(Latitud))
+            {
+                return false;
+            }
+            // Regex para latitud: -90 a 90, formato decimal
+            string pattern = @"^-?([0-8]?[0-9](\.\d+)?|90(\.0+)?)$";
+            return Regex.IsMatch(Latitud.Trim(), pattern);
+        }
+
+        private bool ValidarLongitud()
+        {
+            if (string.IsNullOrWhiteSpace(Longitud))
+            {
+                return false;
+            }
+            // Regex para longitud: -180 a 180, formato decimal
+            string pattern = @"^-?(1[0-7][0-9](\.\d+)?|180(\.0+)?|[0-9]{1,2}(\.\d+)?)$";
+            return Regex.IsMatch(Longitud.Trim(), pattern);
         }
     }
 }
