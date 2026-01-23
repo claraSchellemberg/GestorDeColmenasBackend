@@ -1,5 +1,5 @@
 using LogicaDeNegocios.Entidades;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Notificaciones;
 using System;
 using System.Collections.Generic;
 using System.Linq;

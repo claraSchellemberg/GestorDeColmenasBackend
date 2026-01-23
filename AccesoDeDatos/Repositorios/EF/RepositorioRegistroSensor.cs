@@ -1,6 +1,6 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Excepciones;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -44,10 +44,22 @@ namespace AccesoDeDatos.Repositorios.EF
             }
         }
 
+        public IEnumerable<RegistroSensor> ObtenerRegistrosPorIdColmenaRepo(int idColmena)
+        {
+            return _context.RegistroSensors
+                .Where(rs => rs.SensorPorCuadro.Cuadro.ColmenaId == idColmena)
+                .Include(rs => rs.SensorPorCuadro)
+                .ThenInclude(sc => sc.Cuadro)
+                .ThenInclude(c => c.Colmena)
+                .ToList();
+        }
+
         public IEnumerable<RegistroSensor> ObtenerTodosLosElementos()
         {
             IEnumerable<RegistroSensor> registros = _context.RegistroSensors
-                .Include(rs => rs.sensorPorCuadro)
+                .Include(rs => rs.SensorPorCuadro)
+                .ThenInclude(sc => sc.Cuadro)
+                .ThenInclude(c => c.Colmena)
                 .ToList();
             return registros;
         }
@@ -55,7 +67,7 @@ namespace AccesoDeDatos.Repositorios.EF
         public RegistroSensor ObtenerUltimoPorCuadro(int cuadroId)
         {
             var ultimoRegistro = ObtenerTodosLosElementos()
-                                .Where(r => r.sensorPorCuadro.CuadroId == cuadroId)
+                                .Where(r => r.SensorPorCuadro.CuadroId == cuadroId)
                                 .OrderByDescending(r => r.FechaRegistro)
                                 .FirstOrDefault(); // FirstOrDefault retorna null si no hay elementos
             

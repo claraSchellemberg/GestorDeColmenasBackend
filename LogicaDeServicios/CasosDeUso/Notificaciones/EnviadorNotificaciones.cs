@@ -1,7 +1,7 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Enums;
 using LogicaDeNegocios.Excepciones;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Notificaciones;
 using LogicaDeServicios.CasosDeUso.Notificaciones.Canales;
 using System;
 using System.Collections.Generic;

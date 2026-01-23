@@ -1,6 +1,8 @@
 using AccesoDeDatos.Repositorios.EF;
 using LogicaDeNegocios;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Entidades;
+using LogicaDeNegocios.InterfacesRepositorio.Notificaciones;
+using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using LogicaDeServicios.CasosDeUso.Apiarios;
 using LogicaDeServicios.CasosDeUso.Colmenas;
 using LogicaDeServicios.CasosDeUso.Notificaciones;
@@ -68,6 +70,7 @@ builder.Services.AddScoped<IActualizar<ColmenaSetDto>, ActualizarColmena>();
 builder.Services.AddScoped<IObtenerDetalleColmena<DetalleColmenaDto>, ObtenerDetalleColmena>();
 builder.Services.AddScoped<EliminarColmena>();
 builder.Services.AddScoped<IObtenerPorNombreApiarioEIdUsuario<ApiarioGetDto>, ObtenerApiarioPorNombreEIdUsuario>();
+builder.Services.AddScoped<IObtenerRegistrosPorColmena<RegistroPorColmenaDto>, ObtenerRegistrosPorColmena>();
 
 //Inyecciones para los Casos de Uso de Registro
 builder.Services.AddScoped<IAgregar<DataArduinoDto, DataArduinoDto>, AgregarMedicion>();

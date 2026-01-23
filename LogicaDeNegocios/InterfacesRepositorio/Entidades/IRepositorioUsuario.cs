@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogicaDeNegocios.InterfacesRepositorio
+namespace LogicaDeNegocios.InterfacesRepositorio.Entidades
 {
     public interface IRepositorioUsuario : IRepositorioAgregar<Usuario>, 
                             IRepositorioActualizar<Usuario>, IRepositorioEliminar<Usuario>, 

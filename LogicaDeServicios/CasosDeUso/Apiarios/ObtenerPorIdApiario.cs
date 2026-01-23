@@ -1,4 +1,4 @@
-﻿using LogicaDeNegocios.InterfacesRepositorio;
+﻿using LogicaDeNegocios.InterfacesRepositorio.Entidades;
 using LogicaDeServicios.DTOs.Apiarios;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using LogicaDeServicios.Mappers;

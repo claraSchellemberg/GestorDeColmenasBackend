@@ -1,6 +1,6 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Excepciones;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Entidades;
 using LogicaDeServicios.DTOs.Colmenas;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using System;
@@ -29,7 +29,6 @@ namespace LogicaDeServicios.CasosDeUso.Colmenas
             {
                 throw new ColmenaException($"La colmena con Id {idColmena} no existe");
             }
-            Apiario apiario = _repoApiarios.ObtenerElementoPorId(colmena.ApiarioId);
             int cantCuadros = colmena.Cuadros.Count;
             int cantRegistros = colmena.Mediciones.Count;
             float tempInterna1 = ObtenerUltimaMedicion(colmena, m => m.TempInterna1);
@@ -39,7 +38,7 @@ namespace LogicaDeServicios.CasosDeUso.Colmenas
             float peso = ObtenerUltimaMedicionColmena(colmena, m => m.Peso);
 
             return new DetalleColmenaDto(idColmena, colmena.Nombre, colmena.Descripcion, 
-                apiario.Nombre,
+                colmena.Apiario.Nombre,
                 colmena.FechaInstalacionSensores, colmena.Condicion, cantCuadros, cantRegistros,
                 tempInterna1, tempInterna2, tempInterna3, tempExterna, peso);
         }

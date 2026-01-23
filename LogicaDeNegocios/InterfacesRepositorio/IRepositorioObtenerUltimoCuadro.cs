@@ -2,7 +2,7 @@
 
 namespace LogicaDeNegocios.InterfacesRepositorio
 {
-    public interface IRepositorioObtenerUltimoCadro
+    public interface IRepositorioObtenerUltimoCuadro
     {
         RegistroSensor ObtenerUltimoPorCuadro(int cuadroId);
     }

@@ -1,6 +1,6 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Enums;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Notificaciones;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers

@@ -74,7 +74,7 @@ namespace AccesoDeDatos.Repositorios.EF
                 .HasForeignKey(s => s.CuadroId)
                 .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<RegistroSensor>()
-                .HasOne(rs => rs.sensorPorCuadro);
+                .HasOne(rs => rs.SensorPorCuadro);
         }
 
     }
