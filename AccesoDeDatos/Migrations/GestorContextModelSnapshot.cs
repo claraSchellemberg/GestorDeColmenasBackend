@@ -60,7 +60,7 @@ namespace AccesoDeDatos.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UbicacionDeReferencia")
                         .IsRequired()
@@ -71,7 +71,9 @@ namespace AccesoDeDatos.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
+                    b.HasIndex("UsuarioId", "Nombre")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Apiario_UsuarioId_Nombre_Unique");
 
                     b.ToTable("Apiarios");
                 });
@@ -102,11 +104,13 @@ namespace AccesoDeDatos.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApiarioId");
+                    b.HasIndex("ApiarioId", "Nombre")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Colmena_ApiarioId_Nombre_Unique");
 
                     b.ToTable("Colmenas");
                 });
@@ -342,13 +346,13 @@ namespace AccesoDeDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SensorPorCuadroId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("ValorEstaEnRangoBorde")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("sensorPorCuadroId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("sensorPorCuadroId");
+                    b.HasIndex("SensorPorCuadroId");
 
                     b.ToTable("Registros", t =>
                         {
@@ -449,13 +453,13 @@ namespace AccesoDeDatos.Migrations
                     b.HasOne("LogicaDeNegocios.Entidades.Cuadro", "Cuadro")
                         .WithMany("Mediciones")
                         .HasForeignKey("CuadroId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("LogicaDeNegocios.Entidades.Sensor", "Sensor")
                         .WithMany()
                         .HasForeignKey("SensorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Cuadro");
@@ -468,7 +472,7 @@ namespace AccesoDeDatos.Migrations
                     b.HasOne("LogicaDeNegocios.Entidades.MedicionColmena", "MedicionColmena")
                         .WithMany()
                         .HasForeignKey("MedicionColmenaId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("MedicionColmena");
@@ -476,11 +480,13 @@ namespace AccesoDeDatos.Migrations
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.RegistroSensor", b =>
                 {
-                    b.HasOne("LogicaDeNegocios.Entidades.SensorPorCuadro", "sensorPorCuadro")
+                    b.HasOne("LogicaDeNegocios.Entidades.SensorPorCuadro", "SensorPorCuadro")
                         .WithMany()
-                        .HasForeignKey("sensorPorCuadroId");
+                        .HasForeignKey("SensorPorCuadroId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
-                    b.Navigation("sensorPorCuadro");
+                    b.Navigation("SensorPorCuadro");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Apiario", b =>

@@ -45,15 +45,6 @@ namespace AccesoDeDatos.Repositorios.EF
             }
         }
 
-        public IEnumerable<RegistroMedicionColmena> ObtenerRegistrosPorIdColmenaRepo(int idColmena)
-        {
-            return _context.RegistroMedicionColmenas
-                .Where(r => r.MedicionColmena.ColmenaId == idColmena)
-                .Include(r => r.MedicionColmena)
-                .ThenInclude(mc => mc.Colmena)
-                .ToList();
-        }
-
         public IEnumerable<RegistroMedicionColmena> ObtenerTodosLosElementos()
         {
             IEnumerable<RegistroMedicionColmena> registros = _context.RegistroMedicionColmenas

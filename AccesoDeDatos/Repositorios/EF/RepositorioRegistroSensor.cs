@@ -44,16 +44,6 @@ namespace AccesoDeDatos.Repositorios.EF
             }
         }
 
-        public IEnumerable<RegistroSensor> ObtenerRegistrosPorIdColmenaRepo(int idColmena)
-        {
-            return _context.RegistroSensors
-                .Where(rs => rs.SensorPorCuadro.Cuadro.ColmenaId == idColmena)
-                .Include(rs => rs.SensorPorCuadro)
-                .ThenInclude(sc => sc.Cuadro)
-                .ThenInclude(c => c.Colmena)
-                .ToList();
-        }
-
         public IEnumerable<RegistroSensor> ObtenerTodosLosElementos()
         {
             IEnumerable<RegistroSensor> registros = _context.RegistroSensors

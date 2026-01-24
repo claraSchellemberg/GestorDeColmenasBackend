@@ -73,8 +73,33 @@ namespace AccesoDeDatos.Repositorios.EF
                 .WithMany()
                 .HasForeignKey(s => s.CuadroId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            // Configurar SensorPorCuadro FKs para evitar cascades múltiples en SQL Server
+            modelBuilder.Entity<SensorPorCuadro>()
+                .HasOne(spc => spc.Sensor)
+                .WithMany()
+                .HasForeignKey(spc => spc.SensorId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<SensorPorCuadro>()
+                .HasOne(spc => spc.Cuadro)
+                .WithMany(c => c.Mediciones)
+                .HasForeignKey(spc => spc.CuadroId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Configurar RegistroSensor -> SensorPorCuadro (evitar cascade delete)
             modelBuilder.Entity<RegistroSensor>()
-                .HasOne(rs => rs.SensorPorCuadro);
+                .HasOne(rs => rs.SensorPorCuadro)
+                .WithMany() // SensorPorCuadro no tiene colección de registros en las entidades proporcionadas
+                .HasForeignKey("SensorPorCuadroId") // shadow FK name matches migration
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<RegistroMedicionColmena>()
+                .HasOne(rmc => rmc.MedicionColmena)
+                .WithMany() // MedicionColmena no tiene colección de registros en las entidades proporcionadas
+                .HasForeignKey("MedicionColmenaId") // shadow FK name matches migration
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
 
     }

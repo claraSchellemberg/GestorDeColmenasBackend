@@ -16,15 +16,9 @@ namespace LogicaDeServicios.CasosDeUso.Colmenas
     public class ObtenerRegistrosPorColmena : IObtenerRegistrosPorColmena<RegistroPorColmenaDto>
     {
         private readonly IRepositorioColmena _repoColmenas;
-        private readonly IRepositorioRegistroMedicionColmena _repoMedicionColmena;
-        private readonly IRepositorioRegistroSensor _repoRegistroSensor;
-        public ObtenerRegistrosPorColmena(IRepositorioColmena repoColmenas,
-                                         IRepositorioRegistroMedicionColmena repoMedicionColmena,
-                                            IRepositorioRegistroSensor repoRegistroSensor)
+        public ObtenerRegistrosPorColmena(IRepositorioColmena repoColmenas)
         {
             _repoColmenas = repoColmenas;
-            _repoMedicionColmena = repoMedicionColmena;
-            _repoRegistroSensor = repoRegistroSensor;
         }
         IEnumerable<RegistroPorColmenaDto> IObtenerRegistrosPorColmena<RegistroPorColmenaDto>.ObtenerRegistrosPorIdColmena(int idColmena)
         {
@@ -34,48 +28,39 @@ namespace LogicaDeServicios.CasosDeUso.Colmenas
                 throw new ColmenaException($"La colmena con Id {idColmena} no existe");
             }
             var dtoList = new List<RegistroPorColmenaDto>();
-            var registrosMedicion = _repoMedicionColmena.ObtenerRegistrosPorIdColmenaRepo(idColmena)
-                ?? Enumerable.Empty<RegistroMedicionColmena>();
+            var registrosMedicion = colmena.Mediciones;
             foreach (var registro in registrosMedicion)
             {
                 var dto = new RegistroPorColmenaDto
                 {
                     Id = registro.Id,
-                    FechaRegistro = registro.FechaRegistro,
-                    EstaPendiente = registro.EstaPendiente,
-                    ValorEstaEnRangoBorde = registro.ValorEstaEnRangoBorde,
-                    MensajesAlerta = registro.MensajesAlerta,
                     TipoRegistro = "MedicionColmena",
-                    FechaMedicion = registro.MedicionColmena.FechaMedicion,
+                    FechaMedicion = registro.FechaMedicion,
                     TempInterna1 = 0,
                     TempInterna2 = 0,
                     TempInterna3 = 0,
-                    TempExterna = registro.MedicionColmena.TempExterna,
-                    Peso = registro.MedicionColmena.Peso,
-                    Estado = registro.MedicionColmena.Colmena.Condicion
+                    TempExterna = registro.TempExterna,
+                    Peso = registro.Peso,
+                    Estado = registro.Colmena.Condicion
                 };
                 dtoList.Add(dto);
             }
-            var registrosSensor = _repoRegistroSensor.ObtenerRegistrosPorIdColmenaRepo(idColmena)
-            ?? Enumerable.Empty<RegistroSensor>();
-            foreach (var registro in registrosSensor)
+            var cuadros = colmena.Cuadros;
+            foreach(Cuadro c in cuadros)
             {
-                var dto = new RegistroPorColmenaDto
+                foreach(SensorPorCuadro sr in c.Mediciones)
                 {
-                    Id = registro.Id,
-                    FechaRegistro = registro.FechaRegistro,
-                    EstaPendiente = registro.EstaPendiente,
-                    ValorEstaEnRangoBorde = registro.ValorEstaEnRangoBorde,
-                    MensajesAlerta = registro.MensajesAlerta,
-                    TipoRegistro = "Sensor",
-                    FechaMedicion = registro.SensorPorCuadro.FechaMedicion,
-                    TempInterna1 = registro.SensorPorCuadro.TempInterna1,
-                    TempInterna2 = registro.SensorPorCuadro.TempInterna2,
-                    TempInterna3 = registro.SensorPorCuadro.TempInterna3,
-                    TempExterna = 0,
-                    Peso = 0
-                };
-                dtoList.Add(dto);
+                    var dto = new RegistroPorColmenaDto
+                    {
+                        Id = sr.Id,
+                        TipoRegistro = "Sensor",
+                        FechaMedicion = sr.FechaMedicion,
+                        TempInterna1 = sr.TempInterna1,
+                        TempInterna2 = sr.TempInterna2,
+                        TempInterna3 = sr.TempInterna3
+                    };
+                    dtoList.Add(dto);
+                }
             }
             return dtoList.OrderBy(r => r.FechaRegistro);
         }

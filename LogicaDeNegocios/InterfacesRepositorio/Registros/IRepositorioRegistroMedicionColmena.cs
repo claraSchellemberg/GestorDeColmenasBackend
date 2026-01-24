@@ -10,8 +10,7 @@ namespace LogicaDeNegocios.InterfacesRepositorio.Registros
 {
     public interface IRepositorioRegistroMedicionColmena: IRepositorioAgregar<RegistroMedicionColmena>,
                     IRepositorioObtenerPorId<RegistroMedicionColmena>, 
-                        IRepositorioObtenerTodos<RegistroMedicionColmena>,
-                        IRepositorioObtenerRegistrosPorColmena<RegistroMedicionColmena>
+                        IRepositorioObtenerTodos<RegistroMedicionColmena>
     {
     }
 }

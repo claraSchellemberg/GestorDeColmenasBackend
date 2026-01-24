@@ -1,6 +1,7 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Excepciones;
 using LogicaDeNegocios.InterfacesRepositorio.Entidades;
+using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using LogicaDeServicios.DTOs.Colmenas;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using System;
@@ -13,13 +14,13 @@ namespace LogicaDeServicios.CasosDeUso.Colmenas
 {
     public class ObtenerDetalleColmena : IObtenerDetalleColmena<DetalleColmenaDto>
     {
-        IRepositorioColmena _repoColmenas;
-        IRepositorioApiario _repoApiarios;
-        public ObtenerDetalleColmena(IRepositorioColmena repoColmenas, 
-                                        IRepositorioApiario repoApiarios)
+        private readonly IRepositorioColmena _repoColmenas;
+        private readonly IRepositorioRegistro _repoRegistros;
+        public ObtenerDetalleColmena(IRepositorioColmena repoColmenas,
+                                        IRepositorioRegistro repoRegistros)
         {
             _repoColmenas = repoColmenas;
-            _repoApiarios = repoApiarios;
+            _repoRegistros = repoRegistros;
         }
 
         DetalleColmenaDto IObtenerDetalleColmena<DetalleColmenaDto>.ObtenerDetalleColmena(int idColmena)

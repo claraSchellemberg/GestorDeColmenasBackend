@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AccesoDeDatos.Migrations
 {
     /// <inheritdoc />
-    public partial class nombre_unico_apiario_y_colmena : Migration
+    public partial class inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,7 +47,7 @@ namespace AccesoDeDatos.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Latitud = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Longitud = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UbicacionDeReferencia = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -74,7 +74,7 @@ namespace AccesoDeDatos.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FechaInstalacionSensores = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Condicion = table.Column<int>(type: "int", nullable: false),
                     Estado = table.Column<int>(type: "int", nullable: false),
                     ApiarioId = table.Column<int>(type: "int", nullable: false)
@@ -176,14 +176,12 @@ namespace AccesoDeDatos.Migrations
                         name: "FK_SensorPorCuadros_Cuadros_CuadroId",
                         column: x => x.CuadroId,
                         principalTable: "Cuadros",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_SensorPorCuadros_Sensores_SensorId",
                         column: x => x.SensorId,
                         principalTable: "Sensores",
-                        principalColumn: "SensorId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "SensorId");
                 });
 
             migrationBuilder.CreateTable(
@@ -198,9 +196,9 @@ namespace AccesoDeDatos.Migrations
                     MedicionColmenaId = table.Column<int>(type: "int", nullable: true),
                     ValorEstaEnRangoBorde = table.Column<bool>(type: "bit", nullable: true),
                     MensajesAlerta = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SensorPorCuadroId = table.Column<int>(type: "int", nullable: true),
                     RegistroSensor_ValorEstaEnRangoBorde = table.Column<bool>(type: "bit", nullable: true),
-                    RegistroSensor_MensajesAlerta = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    sensorPorCuadroId = table.Column<int>(type: "int", nullable: true)
+                    RegistroSensor_MensajesAlerta = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -209,11 +207,10 @@ namespace AccesoDeDatos.Migrations
                         name: "FK_Registros_MedicionColmenas_MedicionColmenaId",
                         column: x => x.MedicionColmenaId,
                         principalTable: "MedicionColmenas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Registros_SensorPorCuadros_sensorPorCuadroId",
-                        column: x => x.sensorPorCuadroId,
+                        name: "FK_Registros_SensorPorCuadros_SensorPorCuadroId",
+                        column: x => x.SensorPorCuadroId,
                         principalTable: "SensorPorCuadros",
                         principalColumn: "Id");
                 });
@@ -248,14 +245,16 @@ namespace AccesoDeDatos.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Apiarios_UsuarioId",
+                name: "IX_Apiario_UsuarioId_Nombre_Unique",
                 table: "Apiarios",
-                column: "UsuarioId");
+                columns: new[] { "UsuarioId", "Nombre" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Colmenas_ApiarioId",
+                name: "IX_Colmena_ApiarioId_Nombre_Unique",
                 table: "Colmenas",
-                column: "ApiarioId");
+                columns: new[] { "ApiarioId", "Nombre" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cuadros_ColmenaId",
@@ -283,9 +282,9 @@ namespace AccesoDeDatos.Migrations
                 column: "MedicionColmenaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Registros_sensorPorCuadroId",
+                name: "IX_Registros_SensorPorCuadroId",
                 table: "Registros",
-                column: "sensorPorCuadroId");
+                column: "SensorPorCuadroId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sensores_ColmenaId",
