@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccesoDeDatos.Migrations
 {
     [DbContext(typeof(GestorContext))]
-    [Migration("20260124002236_inicial")]
-    partial class inicial
+    [Migration("20260124031800_ultimaMedicion_puede_ser_null")]
+    partial class ultimaMedicion_puede_ser_null
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,7 +109,12 @@ namespace AccesoDeDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int?>("UltimaMedicionId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UltimaMedicionId");
 
                     b.HasIndex("ApiarioId", "Nombre")
                         .IsUnique()
@@ -129,9 +134,14 @@ namespace AccesoDeDatos.Migrations
                     b.Property<int>("ColmenaId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UltimaMedicionId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ColmenaId");
+
+                    b.HasIndex("UltimaMedicionId");
 
                     b.ToTable("Cuadros");
                 });
@@ -388,7 +398,14 @@ namespace AccesoDeDatos.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("LogicaDeNegocios.Entidades.MedicionColmena", "UltimaMedicion")
+                        .WithMany()
+                        .HasForeignKey("UltimaMedicionId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.Navigation("Apiario");
+
+                    b.Navigation("UltimaMedicion");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Cuadro", b =>
@@ -399,7 +416,14 @@ namespace AccesoDeDatos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("LogicaDeNegocios.Entidades.SensorPorCuadro", "UltimaMedicion")
+                        .WithMany()
+                        .HasForeignKey("UltimaMedicionId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.Navigation("Colmena");
+
+                    b.Navigation("UltimaMedicion");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.MedicionColmena", b =>

@@ -11,6 +11,8 @@ namespace LogicaDeNegocios.Entidades
         public int Id { get; set; }
         public int ColmenaId { get; set; }
         public Colmena Colmena { get; set; }
+        public int? UltimaMedicionId { get; set; }
+        public SensorPorCuadro? UltimaMedicion { get; set; }
         public List<SensorPorCuadro> Mediciones { get; set; } = new List<SensorPorCuadro>();
         
         public Cuadro()

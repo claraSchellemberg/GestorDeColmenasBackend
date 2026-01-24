@@ -47,6 +47,7 @@ namespace AccesoDeDatos.Repositorios.EF
         public void AgregarMedicionDeCuadro(SensorPorCuadro medicion, Cuadro cuadro)
         {
             cuadro.Mediciones.Add(medicion);
+            cuadro.UltimaMedicion = medicion;
             Actualizar(cuadro);
         }
 

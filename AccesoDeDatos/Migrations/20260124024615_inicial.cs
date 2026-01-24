@@ -77,7 +77,8 @@ namespace AccesoDeDatos.Migrations
                     Nombre = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Condicion = table.Column<int>(type: "int", nullable: false),
                     Estado = table.Column<int>(type: "int", nullable: false),
-                    ApiarioId = table.Column<int>(type: "int", nullable: false)
+                    ApiarioId = table.Column<int>(type: "int", nullable: false),
+                    UltimaMedicionId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -167,7 +168,8 @@ namespace AccesoDeDatos.Migrations
                     TempInterna3 = table.Column<float>(type: "real", nullable: false),
                     FechaMedicion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SensorId = table.Column<int>(type: "int", nullable: false),
-                    CuadroId = table.Column<int>(type: "int", nullable: false)
+                    CuadroId = table.Column<int>(type: "int", nullable: false),
+                    CuadroId1 = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -175,6 +177,11 @@ namespace AccesoDeDatos.Migrations
                     table.ForeignKey(
                         name: "FK_SensorPorCuadros_Cuadros_CuadroId",
                         column: x => x.CuadroId,
+                        principalTable: "Cuadros",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SensorPorCuadros_Cuadros_CuadroId1",
+                        column: x => x.CuadroId1,
                         principalTable: "Cuadros",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -257,6 +264,11 @@ namespace AccesoDeDatos.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Colmenas_UltimaMedicionId",
+                table: "Colmenas",
+                column: "UltimaMedicionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Cuadros_ColmenaId",
                 table: "Cuadros",
                 column: "ColmenaId");
@@ -302,14 +314,40 @@ namespace AccesoDeDatos.Migrations
                 column: "CuadroId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SensorPorCuadros_CuadroId1",
+                table: "SensorPorCuadros",
+                column: "CuadroId1",
+                unique: true,
+                filter: "[CuadroId1] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SensorPorCuadros_SensorId",
                 table: "SensorPorCuadros",
                 column: "SensorId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Colmenas_MedicionColmenas_UltimaMedicionId",
+                table: "Colmenas",
+                column: "UltimaMedicionId",
+                principalTable: "MedicionColmenas",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Apiarios_Usuarios_UsuarioId",
+                table: "Apiarios");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Colmenas_Apiarios_ApiarioId",
+                table: "Colmenas");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Colmenas_MedicionColmenas_UltimaMedicionId",
+                table: "Colmenas");
+
             migrationBuilder.DropTable(
                 name: "Configuracions");
 
@@ -318,9 +356,6 @@ namespace AccesoDeDatos.Migrations
 
             migrationBuilder.DropTable(
                 name: "Registros");
-
-            migrationBuilder.DropTable(
-                name: "MedicionColmenas");
 
             migrationBuilder.DropTable(
                 name: "SensorPorCuadros");
@@ -332,13 +367,16 @@ namespace AccesoDeDatos.Migrations
                 name: "Cuadros");
 
             migrationBuilder.DropTable(
-                name: "Colmenas");
+                name: "Usuarios");
 
             migrationBuilder.DropTable(
                 name: "Apiarios");
 
             migrationBuilder.DropTable(
-                name: "Usuarios");
+                name: "MedicionColmenas");
+
+            migrationBuilder.DropTable(
+                name: "Colmenas");
         }
     }
 }

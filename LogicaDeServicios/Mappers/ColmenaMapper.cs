@@ -1,5 +1,6 @@
 ﻿ using LogicaDeNegocios.Entidades;
 using LogicaDeServicios.DTOs.Colmenas;
+using LogicaDeServicios.DTOs.Cuadros;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,8 @@ namespace LogicaDeServicios.Mappers
     {
         public static Colmena FromDto(ColmenaSetDto colmenaSetDto) 
         {
-            return new Colmena(colmenaSetDto.Descripcion, colmenaSetDto.Nombre, colmenaSetDto.ApiarioId);
+            return new Colmena(colmenaSetDto.Descripcion, colmenaSetDto.Nombre, 
+                colmenaSetDto.ApiarioId);
         }
 
         public static Colmena UpdateFromDto(Colmena colmena, ColmenaSetDto colmenaSetDto)
@@ -29,12 +31,20 @@ namespace LogicaDeServicios.Mappers
 
         public static ColmenaGetDto ToDto(Colmena colmena)
         {
+            var cuadros = new List<CuadroGetDto>();
+            foreach(var cuadro in colmena.Cuadros)
+            {
+                cuadros.Add(CuadroMapper.ToDto(cuadro));
+            }
             return new ColmenaGetDto (colmena.Id,
                                           colmena.FechaInstalacionSensores,
                                           colmena.Descripcion,
                                           colmena.Nombre,
                                           colmena.ApiarioId,
-                                          colmena.Condicion);
+                                          colmena.Condicion,
+                                          MedicionColmenaMapper.ToDto(colmena.UltimaMedicion),
+                                          cuadros
+                                          );
         }
 
         public static IEnumerable<ColmenaGetDto> ToListDto(IEnumerable<Colmena> colmenas)

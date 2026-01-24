@@ -51,6 +51,7 @@ namespace AccesoDeDatos.Repositorios.EF
         public void AgregarMedicion(MedicionColmena medicion, Colmena colmena)
         {
             colmena.Mediciones.Add(medicion);
+            colmena.UltimaMedicion= medicion;
             Actualizar(colmena);
         }
 
@@ -83,7 +84,10 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             IEnumerable<Colmena> colmenas = _context.Colmenas
                 .Include(c => c.Cuadros)
-                .Include(c=> c.Mediciones)
+                    .ThenInclude(cu => cu.Mediciones)
+                .Include(c => c.Mediciones)
+                .Include(c => c.Apiario)
+                    .ThenInclude(a => a.Usuario)
                 .ToList();
             return colmenas;
         }

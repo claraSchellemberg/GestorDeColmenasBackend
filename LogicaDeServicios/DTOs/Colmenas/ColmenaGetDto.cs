@@ -1,4 +1,7 @@
 ﻿using LogicaDeNegocios.Enums;
+using LogicaDeServicios.DTOs.Cuadros;
+using LogicaDeServicios.DTOs.MedicionColmenas;
+using LogicaDeServicios.DTOs.SensorPorCuadros;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +15,9 @@ namespace LogicaDeServicios.DTOs.Colmenas
                                     string Descripcion,
                                     string Nombre,
                                     int ApiarioId,
-                                    CondicionColmena Estado)
+                                    CondicionColmena Estado,
+                                    MedicionColmenasGetDto? UltimaMedicion,
+                                    List<CuadroGetDto> Cuadros)
     {
     }
 }

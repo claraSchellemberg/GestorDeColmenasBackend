@@ -91,15 +91,28 @@ namespace AccesoDeDatos.Repositorios.EF
             modelBuilder.Entity<RegistroSensor>()
                 .HasOne(rs => rs.SensorPorCuadro)
                 .WithMany() // SensorPorCuadro no tiene colección de registros en las entidades proporcionadas
-                .HasForeignKey("SensorPorCuadroId") // shadow FK name matches migration
+                .HasForeignKey("SensorPorCuadroId") 
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<RegistroMedicionColmena>()
                 .HasOne(rmc => rmc.MedicionColmena)
                 .WithMany() // MedicionColmena no tiene colección de registros en las entidades proporcionadas
-                .HasForeignKey("MedicionColmenaId") // shadow FK name matches migration
+                .HasForeignKey("MedicionColmenaId") 
                 .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Colmena>()
+                .HasOne(c => c.UltimaMedicion)
+                .WithMany()
+                .HasForeignKey("UltimaMedicionId")
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Cuadro>()
+                .HasOne(c => c.UltimaMedicion)
+                .WithMany()
+                .HasForeignKey("UltimaMedicionId")
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
     }
