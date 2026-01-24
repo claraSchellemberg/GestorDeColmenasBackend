@@ -36,15 +36,27 @@ namespace LogicaDeServicios.Mappers
             {
                 cuadros.Add(CuadroMapper.ToDto(cuadro));
             }
-            return new ColmenaGetDto (colmena.Id,
-                                          colmena.FechaInstalacionSensores,
-                                          colmena.Descripcion,
-                                          colmena.Nombre,
-                                          colmena.ApiarioId,
-                                          colmena.Condicion,
-                                          MedicionColmenaMapper.ToDto(colmena.UltimaMedicion),
-                                          cuadros
-                                          );
+            if (cuadros.Count > 0)
+            {
+                return new ColmenaGetDto(colmena.Id,
+                                              colmena.FechaInstalacionSensores,
+                                              colmena.Descripcion,
+                                              colmena.Nombre,
+                                              colmena.ApiarioId,
+                                              colmena.Condicion,
+                                              MedicionColmenaMapper.ToDto(colmena.UltimaMedicion),
+                                              cuadros
+                                              );
+            }
+            return new ColmenaGetDto(colmena.Id,
+                                              colmena.FechaInstalacionSensores,
+                                              colmena.Descripcion,
+                                              colmena.Nombre,
+                                              colmena.ApiarioId,
+                                              colmena.Condicion,
+                                              null,
+                                              cuadros
+                                              );
         }
 
         public static IEnumerable<ColmenaGetDto> ToListDto(IEnumerable<Colmena> colmenas)
