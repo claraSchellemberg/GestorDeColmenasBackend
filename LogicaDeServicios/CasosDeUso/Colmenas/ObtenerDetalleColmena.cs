@@ -1,6 +1,7 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Excepciones;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Entidades;
+using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using LogicaDeServicios.DTOs.Colmenas;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using System;
@@ -13,13 +14,13 @@ namespace LogicaDeServicios.CasosDeUso.Colmenas
 {
     public class ObtenerDetalleColmena : IObtenerDetalleColmena<DetalleColmenaDto>
     {
-        IRepositorioColmena _repoColmenas;
-        IRepositorioApiario _repoApiarios;
-        public ObtenerDetalleColmena(IRepositorioColmena repoColmenas, 
-                                        IRepositorioApiario repoApiarios)
+        private readonly IRepositorioColmena _repoColmenas;
+        private readonly IRepositorioRegistro _repoRegistros;
+        public ObtenerDetalleColmena(IRepositorioColmena repoColmenas,
+                                        IRepositorioRegistro repoRegistros)
         {
             _repoColmenas = repoColmenas;
-            _repoApiarios = repoApiarios;
+            _repoRegistros = repoRegistros;
         }
 
         DetalleColmenaDto IObtenerDetalleColmena<DetalleColmenaDto>.ObtenerDetalleColmena(int idColmena)
@@ -29,7 +30,6 @@ namespace LogicaDeServicios.CasosDeUso.Colmenas
             {
                 throw new ColmenaException($"La colmena con Id {idColmena} no existe");
             }
-            Apiario apiario = _repoApiarios.ObtenerElementoPorId(colmena.ApiarioId);
             int cantCuadros = colmena.Cuadros.Count;
             int cantRegistros = colmena.Mediciones.Count;
             float tempInterna1 = ObtenerUltimaMedicion(colmena, m => m.TempInterna1);
@@ -39,7 +39,7 @@ namespace LogicaDeServicios.CasosDeUso.Colmenas
             float peso = ObtenerUltimaMedicionColmena(colmena, m => m.Peso);
 
             return new DetalleColmenaDto(idColmena, colmena.Nombre, colmena.Descripcion, 
-                apiario.Nombre,
+                colmena.Apiario.Nombre,
                 colmena.FechaInstalacionSensores, colmena.Condicion, cantCuadros, cantRegistros,
                 tempInterna1, tempInterna2, tempInterna3, tempExterna, peso);
         }

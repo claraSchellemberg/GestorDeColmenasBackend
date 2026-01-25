@@ -1,5 +1,6 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Enums;
+using LogicaDeNegocios.InterfacesRepositorio.Notificaciones;
 using LogicaDeNegocios.Excepciones;
 using LogicaDeNegocios.InterfacesRepositorio;
 using LogicaDeServicios.InterfacesCasosDeUso;

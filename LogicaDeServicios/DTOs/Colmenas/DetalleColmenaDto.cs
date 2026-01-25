@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.DTOs.Colmenas
 {
-    public record DetalleColmenaDto(int Id, string Nombre, string NombreApiario,
-        string Descripcion, DateTime FechaInstalaciones, CondicionColmena Estado, 
+    public record DetalleColmenaDto(int Id, string Nombre, string Descripcion,
+        string ApiarioNombre, DateTime FechaInstalaciones, CondicionColmena Estado,
             int CantidadCuadros, int CantidadRegistros, float TempInterna1, 
             float TempInterna2, float TempInterna3, float TempExterna, float Peso)
     {

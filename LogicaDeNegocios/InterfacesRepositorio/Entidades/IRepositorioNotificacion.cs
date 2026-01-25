@@ -2,7 +2,7 @@
 using LogicaDeNegocios.Enums;
 using LogicaDeNegocios.InterfacesRepositorio.CRUD;
 
-namespace LogicaDeNegocios.InterfacesRepositorio
+namespace LogicaDeNegocios.InterfacesRepositorio.Entidades
 {
     public interface IRepositorioNotificacion : IRepositorioAgregar<Notificacion>,
                                                 IRepositorioObtenerPorId<Notificacion>,

@@ -1,6 +1,6 @@
 using LogicaDeNegocios.Entidades;
 
-namespace LogicaDeNegocios.InterfacesRepositorio
+namespace LogicaDeNegocios.InterfacesRepositorio.Notificaciones
 {
     /// <summary>
     /// Interfaz que define un observador de notificaciones.

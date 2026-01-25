@@ -1,4 +1,4 @@
-﻿using LogicaDeNegocios.InterfacesRepositorio;
+﻿using LogicaDeNegocios.InterfacesRepositorio.Entidades;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using System;
 using System.Collections.Generic;

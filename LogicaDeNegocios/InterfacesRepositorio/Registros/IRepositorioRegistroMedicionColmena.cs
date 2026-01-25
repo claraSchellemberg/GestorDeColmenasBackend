@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogicaDeNegocios.InterfacesRepositorio
+namespace LogicaDeNegocios.InterfacesRepositorio.Registros
 {
     public interface IRepositorioRegistroMedicionColmena: IRepositorioAgregar<RegistroMedicionColmena>,
-                        IRepositorioActualizar<RegistroMedicionColmena>, IRepositorioEliminar<RegistroMedicionColmena>,
-                        IRepositorioObtenerPorId<RegistroMedicionColmena>, IRepositorioObtenerTodos<RegistroMedicionColmena>
+                    IRepositorioObtenerPorId<RegistroMedicionColmena>, 
+                        IRepositorioObtenerTodos<RegistroMedicionColmena>
     {
     }
 }

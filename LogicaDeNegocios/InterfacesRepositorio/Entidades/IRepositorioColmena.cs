@@ -1,12 +1,13 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.InterfacesRepositorio.CRUD;
+using LogicaDeNegocios.InterfacesRepositorio.Mediciones;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogicaDeNegocios.InterfacesRepositorio
+namespace LogicaDeNegocios.InterfacesRepositorio.Entidades
 {
     public interface IRepositorioColmena : IRepositorioAgregar<Colmena>,
                         IRepositorioActualizar<Colmena>, IRepositorioEliminar<Colmena>, 

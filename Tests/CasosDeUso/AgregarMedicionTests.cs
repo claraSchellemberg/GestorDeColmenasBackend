@@ -1,7 +1,9 @@
 using LogicaDeNegocios;
 using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Enums;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Entidades;
+using LogicaDeNegocios.InterfacesRepositorio.Notificaciones;
+using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using LogicaDeServicios.CasosDeUso.TomarMedicion;
 using LogicaDeServicios.DTOs.Arduino;
 using LogicaDeServicios.InterfacesCasosDeUso;

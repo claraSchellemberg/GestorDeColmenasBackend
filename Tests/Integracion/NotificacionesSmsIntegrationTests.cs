@@ -1,7 +1,8 @@
 ﻿using LogicaDeNegocios;
 using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Enums;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Entidades;
+using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using LogicaDeServicios.CasosDeUso.Notificaciones;
 using LogicaDeServicios.CasosDeUso.Notificaciones.Canales;
 using LogicaDeServicios.CasosDeUso.TomarMedicion;

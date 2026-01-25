@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogicaDeNegocios.InterfacesRepositorio
+namespace LogicaDeNegocios.InterfacesRepositorio.Registros
 {
     public interface IRepositorioRegistroSensor: IRepositorioAgregar<RegistroSensor>,
-                        IRepositorioObtenerPorId<RegistroSensor>, IRepositorioObtenerTodos<RegistroSensor>, IRepositorioObtenerUltimoCadro
+                        IRepositorioObtenerPorId<RegistroSensor>, IRepositorioObtenerTodos<RegistroSensor>, 
+                        IRepositorioObtenerUltimoCuadro
     {
     }
 }

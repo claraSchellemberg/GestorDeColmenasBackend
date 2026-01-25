@@ -4,6 +4,7 @@ using AccesoDeDatos.Repositorios.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccesoDeDatos.Migrations
 {
     [DbContext(typeof(GestorContext))]
-    partial class GestorContextModelSnapshot : ModelSnapshot
+    [Migration("20260124031800_ultimaMedicion_puede_ser_null")]
+    partial class ultimaMedicion_puede_ser_null
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,8 +47,8 @@ namespace AccesoDeDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Estado")
-                        .HasColumnType("int");
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("FechaAlta")
                         .HasColumnType("datetime2");

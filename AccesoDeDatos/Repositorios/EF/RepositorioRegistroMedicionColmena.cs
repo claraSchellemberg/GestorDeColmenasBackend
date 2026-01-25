@@ -1,6 +1,6 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Excepciones;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,10 +17,6 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             _context = context;
         }
-        public void Actualizar(RegistroMedicionColmena entidad)
-        {
-            throw new NotImplementedException();
-        }
 
         public RegistroMedicionColmena Agregar(RegistroMedicionColmena entidad)
         {
@@ -35,20 +31,26 @@ namespace AccesoDeDatos.Repositorios.EF
                 throw new RegistroException("El registro no puede estar vacío");
             }
         }
-
-        public void Eliminar(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public RegistroMedicionColmena ObtenerElementoPorId(int id)
         {
-            throw new NotImplementedException();
+            RegistroMedicionColmena registroMedicionColmena = _context.RegistroMedicionColmenas
+                .FirstOrDefault(rs => rs.Id == id);
+            if (registroMedicionColmena != null)
+            {
+                return registroMedicionColmena;
+            }
+            else
+            {
+                throw new RegistroException("El registro ingresado no existe");
+            }
         }
 
         public IEnumerable<RegistroMedicionColmena> ObtenerTodosLosElementos()
         {
-            throw new NotImplementedException();
+            IEnumerable<RegistroMedicionColmena> registros = _context.RegistroMedicionColmenas
+                .Include(rs => rs.MedicionColmena)
+                .ToList();
+            return registros;
         }
     }
 }
