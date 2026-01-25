@@ -1,8 +1,7 @@
 ﻿using LogicaDeNegocios;
 using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Enums;
-using LogicaDeNegocios.InterfacesRepositorio.Entidades;
-using LogicaDeNegocios.InterfacesRepositorio.Registros;
+using LogicaDeNegocios.InterfacesRepositorio;
 using LogicaDeServicios.CasosDeUso.Notificaciones;
 using LogicaDeServicios.CasosDeUso.Notificaciones.Canales;
 using LogicaDeServicios.CasosDeUso.TomarMedicion;
@@ -15,14 +14,14 @@ namespace Tests.Integracion
 {
     /// <summary>
     /// Tests de integración que prueban el flujo completo:
-    /// AgregarMedicion → GenerarNotificacion → EnviadorNotificaciones → CanalSms → VonageServicioSms
+    /// AgregarMedicion → GenerarNotificacion → EnviadorNotificaciones → CanalEmail → ServicioEmail (SendGrid)
     /// 
-    /// ⚠️ IMPORTANTE: El test marcado con Skip envía SMS reales. 
+    /// ⚠️ IMPORTANTE: El test marcado con Skip envía emails reales. 
     /// Solo ejecutar manualmente cuando se necesite verificar el flujo completo.
     /// </summary>
-    public class NotificacionesSmsIntegrationTests
+    public class NotificacionesEmailIntegrationTests
     {
-        private const string NUMERO_PRUEBA = "+59891988714";
+        private const string EMAIL_PRUEBA = "clara@test.com";
 
         // Mocks de repositorios
         private readonly Mock<IRepositorioCuadro> _mockRepoCuadros;
@@ -34,9 +33,9 @@ namespace Tests.Integracion
 
         // Componentes reales del sistema de notificaciones
         private readonly GeneradorNotificaciones _generadorNotificaciones;
-        private readonly Mock<IServicioSms> _mockServicioSms;
+        private readonly Mock<IServicioEmail> _mockServicioEmail;
 
-        public NotificacionesSmsIntegrationTests()
+        public NotificacionesEmailIntegrationTests()
         {
             _mockRepoCuadros = new Mock<IRepositorioCuadro>();
             _mockRepoColmenas = new Mock<IRepositorioColmena>();
@@ -45,7 +44,7 @@ namespace Tests.Integracion
             _mockRepoRegistroMedicionColmena = new Mock<IRepositorioRegistroMedicionColmena>();
             _mockRepoNotificaciones = new Mock<IRepositorioNotificacion>();
             _generadorNotificaciones = new GeneradorNotificaciones();
-            _mockServicioSms = new Mock<IServicioSms>();
+            _mockServicioEmail = new Mock<IServicioEmail>();
 
             // Inicializar configuración para los tests
             var configuraciones = new List<(string Nombre, string Valor)>
@@ -58,10 +57,10 @@ namespace Tests.Integracion
             Configuracion.Inicializar(configuraciones);
         }
 
-        #region Tests con Mock (Sin envío real de SMS)
+        #region Tests con Mock (Sin envío real de Email)
 
         [Fact]
-        public void FlujoCompleto_MedicionPesoCero_GeneraYEnviaNotificacionSms()
+        public void FlujoCompleto_MedicionPesoCero_GeneraYEnviaNotificacionEmail()
         {
             // Arrange
             var usuario = CrearUsuarioDePrueba();
@@ -72,27 +71,27 @@ namespace Tests.Integracion
 
             ConfigurarMocksRepositorios(sensor, colmena, cuadro);
 
-            // Configurar mock del servicio SMS para capturar la llamada
-            string mensajeEnviado = null;
-            string numeroDestino = null;
+            // Configurar mock del servicio Email para capturar la llamada
+            Notificacion notificacionEnviada = null;
+            Usuario usuarioDestino = null;
 
-            _mockServicioSms
-                .Setup(s => s.EnviarAsync(It.IsAny<string>(), It.IsAny<string>()))
-                .Callback<string, string>((numero, mensaje) =>
+            _mockServicioEmail
+                .Setup(s => s.EnviarAsync(It.IsAny<Notificacion>(), It.IsAny<Usuario>()))
+                .Callback<Notificacion, Usuario>((notificacion, user) =>
                 {
-                    numeroDestino = numero;
-                    mensajeEnviado = mensaje;
+                    notificacionEnviada = notificacion;
+                    usuarioDestino = user;
                 })
                 .Returns(Task.CompletedTask);
 
-            // Crear el canal SMS con el mock
-            var canalSms = new CanalSms(_mockServicioSms.Object);
-            var canalEmailMock = new Mock<ICanalNotificacion>().Object;
+            // Crear el canal Email con el mock
+            var canalEmail = new CanalEmail(_mockServicioEmail.Object);
+            var canalSmsMock = new Mock<ICanalNotificacion>().Object;
             var canalWhatsAppMock = new Mock<ICanalNotificacion>().Object;
             var canalFrontendMock = new Mock<ICanalNotificacion>().Object;
 
             // Crear el enviador y suscribirlo al generador
-            var enviadorNotificaciones = new EnviadorNotificaciones(canalSms, canalEmailMock, canalWhatsAppMock, canalFrontendMock);
+            var enviadorNotificaciones = new EnviadorNotificaciones(canalSmsMock, canalEmail, canalWhatsAppMock, canalFrontendMock);
             _generadorNotificaciones.SuscribirObservador(enviadorNotificaciones);
 
             // Crear el caso de uso
@@ -106,7 +105,6 @@ namespace Tests.Integracion
                 _generadorNotificaciones
             );
 
-            // Record constructor: idSensor, tipoSensor, peso, tempExterna, tempInterna1, tempInterna2, tempInterna3
             var dto = new DataArduinoDto(
                 idSensor: 1,
                 tipoSensor: "peso",
@@ -123,17 +121,17 @@ namespace Tests.Integracion
             // Assert - Esperar un momento para que el Task.Run complete
             Thread.Sleep(500);
 
-            _mockServicioSms.Verify(s => s.EnviarAsync(
-                It.Is<string>(n => n == NUMERO_PRUEBA),
-                It.Is<string>(m => m.Contains("Peso"))),
+            _mockServicioEmail.Verify(s => s.EnviarAsync(
+                It.Is<Notificacion>(n => n.Mensaje.Contains("Peso")),
+                It.Is<Usuario>(u => u.Email == EMAIL_PRUEBA)),
                 Times.Once);
 
-            Assert.Equal(NUMERO_PRUEBA, numeroDestino);
-            Assert.Contains("Peso", mensajeEnviado);
+            Assert.Equal(EMAIL_PRUEBA, usuarioDestino?.Email);
+            Assert.Contains("Peso", notificacionEnviada?.Mensaje);
         }
 
         [Fact]
-        public void FlujoCompleto_MedicionPesoMaximo_GeneraNotificacionCosecha()
+        public void FlujoCompleto_MedicionPesoMaximo_GeneraNotificacionCosechaEmail()
         {
             // Arrange
             var usuario = CrearUsuarioDePrueba();
@@ -144,14 +142,14 @@ namespace Tests.Integracion
 
             ConfigurarMocksRepositorios(sensor, colmena, cuadro);
 
-            _mockServicioSms
-                .Setup(s => s.EnviarAsync(It.IsAny<string>(), It.IsAny<string>()))
+            _mockServicioEmail
+                .Setup(s => s.EnviarAsync(It.IsAny<Notificacion>(), It.IsAny<Usuario>()))
                 .Returns(Task.CompletedTask);
 
-            var canalSms = new CanalSms(_mockServicioSms.Object);
+            var canalEmail = new CanalEmail(_mockServicioEmail.Object);
             var enviadorNotificaciones = new EnviadorNotificaciones(
-                canalSms,
                 new Mock<ICanalNotificacion>().Object,
+                canalEmail,
                 new Mock<ICanalNotificacion>().Object,
                 new Mock<ICanalNotificacion>().Object
             );
@@ -167,7 +165,6 @@ namespace Tests.Integracion
                 _generadorNotificaciones
             );
 
-            // Record constructor: idSensor, tipoSensor, peso, tempExterna, tempInterna1, tempInterna2, tempInterna3
             var dto = new DataArduinoDto(
                 idSensor: 1,
                 tipoSensor: "peso",
@@ -184,14 +181,14 @@ namespace Tests.Integracion
             // Assert
             Thread.Sleep(500);
 
-            _mockServicioSms.Verify(s => s.EnviarAsync(
-                NUMERO_PRUEBA,
-                It.Is<string>(m => m.Contains("cosechar"))),
+            _mockServicioEmail.Verify(s => s.EnviarAsync(
+                It.Is<Notificacion>(n => n.Mensaje.Contains("cosechar")),
+                It.Is<Usuario>(u => u.Email == EMAIL_PRUEBA)),
                 Times.Once);
         }
 
         [Fact]
-        public void FlujoCompleto_MedicionNormal_NoEnviaNotificacion()
+        public void FlujoCompleto_MedicionNormal_NoEnviaNotificacionEmail()
         {
             // Arrange
             var usuario = CrearUsuarioDePrueba();
@@ -202,14 +199,14 @@ namespace Tests.Integracion
 
             ConfigurarMocksRepositorios(sensor, colmena, cuadro);
 
-            _mockServicioSms
-                .Setup(s => s.EnviarAsync(It.IsAny<string>(), It.IsAny<string>()))
+            _mockServicioEmail
+                .Setup(s => s.EnviarAsync(It.IsAny<Notificacion>(), It.IsAny<Usuario>()))
                 .Returns(Task.CompletedTask);
 
-            var canalSms = new CanalSms(_mockServicioSms.Object);
+            var canalEmail = new CanalEmail(_mockServicioEmail.Object);
             var enviadorNotificaciones = new EnviadorNotificaciones(
-                canalSms,
                 new Mock<ICanalNotificacion>().Object,
+                canalEmail,
                 new Mock<ICanalNotificacion>().Object,
                 new Mock<ICanalNotificacion>().Object
             );
@@ -225,7 +222,6 @@ namespace Tests.Integracion
                 _generadorNotificaciones
             );
 
-            // Record constructor: idSensor, tipoSensor, peso, tempExterna, tempInterna1, tempInterna2, tempInterna3
             var dto = new DataArduinoDto(
                 idSensor: 1,
                 tipoSensor: "peso",
@@ -242,50 +238,84 @@ namespace Tests.Integracion
             // Assert
             Thread.Sleep(500);
 
-            _mockServicioSms.Verify(s => s.EnviarAsync(
-                It.IsAny<string>(),
-                It.IsAny<string>()),
+            _mockServicioEmail.Verify(s => s.EnviarAsync(
+                It.IsAny<Notificacion>(),
+                It.IsAny<Usuario>()),
                 Times.Never);
+        }
+
+        [Fact]
+        public void CanalEmail_EnviaCorrectamente_ConDatosValidos()
+        {
+            // Arrange
+            var usuario = new Usuario
+            {
+                Id = 1,
+                Nombre = "Test User",
+                Email = EMAIL_PRUEBA
+            };
+
+            var notificacion = new Notificacion
+            {
+                Id = 1,
+                Mensaje = "Mensaje de prueba para email",
+                FechaNotificacion = DateTime.Now,
+                Estado = EstadoNotificacion.PENDIENTE
+            };
+
+            _mockServicioEmail
+                .Setup(s => s.EnviarAsync(It.IsAny<Notificacion>(), It.IsAny<Usuario>()))
+                .Returns(Task.CompletedTask);
+
+            var canalEmail = new CanalEmail(_mockServicioEmail.Object);
+
+            // Act
+            canalEmail.EnviarAsync(notificacion, usuario).Wait();
+
+            // Assert
+            _mockServicioEmail.Verify(s => s.EnviarAsync(
+                It.Is<Notificacion>(n => n.Mensaje == "Mensaje de prueba para email"),
+                It.Is<Usuario>(u => u.Email == EMAIL_PRUEBA)),
+                Times.Once);
         }
 
         #endregion
 
-        #region Test de Integración Real (Envía SMS real via Vonage)
+        #region Test de Integración Real (Envía Email real via SendGrid)
 
-        // ESTE TEST ENVÍA UN SMS REAL A +59891988714
+        // ESTE TEST ENVÍA UN EMAIL REAL via SendGrid
         // Solo ejecutar manualmente para verificar el flujo completo.
-        // Requiere variables de entorno VONAGE_API_KEY, VONAGE_API_SECRET configuradas.
-        [Fact(Skip = "Ejecutar manualmente - envía SMS real via Vonage")]
+        // Requiere variables de entorno SENDGRID_API_KEY, SENDGRID_FROM_EMAIL configuradas.
+        [Fact(Skip = "Ejecutar manualmente - envía email real via SendGrid")]
         //[Fact]
-        public void FlujoCompletoReal_MedicionPesoCero_EnviaSmsRealViaVonage()
+        public void FlujoCompletoReal_MedicionPesoCero_EnviaEmailRealViaSendGrid()
         {
-            // seteamos las variables de entorno para Vonage (API Key, Secret, From Number)
-            Environment.SetEnvironmentVariable("VONAGE_API_KEY", "TU_API_KEY_AQUI");
-            Environment.SetEnvironmentVariable("VONAGE_API_SECRET", "TU_API_SECRET_AQUI");
-            Environment.SetEnvironmentVariable("VONAGE_FROM_NUMBER", "TU_NUMERO_AQUI");
+            // seteamos las variables de entorno para SendGrid
+            Environment.SetEnvironmentVariable("SENDGRID_API_KEY", "TU_API_KEY_AQUI");
+            Environment.SetEnvironmentVariable("SENDGRID_FROM_EMAIL", "notificaciones.gestordeapiarios@gmail.com");
+            Environment.SetEnvironmentVariable("SENDGRID_FROM_NAME", "Gestor de Apiarios");
 
             // Arrange
-            var usuario = CrearUsuarioDePrueba();
+            var usuario = CrearUsuarioDePruebaReal(); // Usar email real para recibir el correo
             var apiario = CrearApiarioDePrueba(usuario);
             var colmena = CrearColmenaDePrueba(apiario);
             var cuadro = CrearCuadroDePrueba(colmena);
             var sensor = CrearSensorDePrueba(colmena, cuadro);
 
             // ⚠️ FIX: Ensure the full navigation chain is properly linked
-            // sensor.Colmena -> Apiario -> Usuario
             sensor.Colmena = colmena;
             colmena.Apiario = apiario;
             apiario.Usuario = usuario;
 
             ConfigurarMocksRepositorios(sensor, colmena, cuadro);
 
-            // Usar el servicio REAL de Vonage
-            IServicioSms servicioSmsReal = new WebApi.Servicios.Notificaciones.VonageServicioSms();
+            // Usar el servicio REAL de SendGrid
+            IServicioEmail servicioEmailReal = new WebApi.Servicios.Notificaciones.ServicioEmail();
 
-            var canalSms = new CanalSms(servicioSmsReal);
+            var canalEmail = new CanalEmail(servicioEmailReal);
             var enviadorNotificaciones = new EnviadorNotificaciones(
-                canalSms,
                 new Mock<ICanalNotificacion>().Object,
+                canalEmail,
                 new Mock<ICanalNotificacion>().Object,
                 new Mock<ICanalNotificacion>().Object
             );
@@ -317,9 +347,42 @@ namespace Tests.Integracion
             agregarMedicion.Agregar(dto);
 
             // Assert - Wait for async Task.Run to complete
-            Thread.Sleep(3000);
+            Thread.Sleep(5000); // Más tiempo para email que para SMS
 
-            Assert.True(true, "SMS enviado - verificar manualmente en el teléfono +59891988714");
+            Assert.True(true, "Email enviado - verificar manualmente en la bandeja de entrada");
+        }
+
+        [Fact(Skip = "Ejecutar manualmente - envía email real via SendGrid")]
+        //[Fact]
+        public void EnvioDirecto_EmailReal_ViaSendGrid()
+        {
+            // seteamos las variables de entorno para SendGrid
+            Environment.SetEnvironmentVariable("SENDGRID_API_KEY", "TU_API_KEY_AQUI");
+            Environment.SetEnvironmentVariable("SENDGRID_FROM_EMAIL", "notificaciones.gestordeapiarios@gmail.com");
+            Environment.SetEnvironmentVariable("SENDGRID_FROM_NAME", "Gestor de Apiarios");
+
+            // Arrange
+            var servicioEmail = new WebApi.Servicios.Notificaciones.ServicioEmail();
+
+            var usuario = new Usuario
+            {
+                Nombre = "Clara Test",
+                Email = "spotifyclara912@gmail.com" // Cambiar por tu email real
+            };
+
+            var notificacion = new Notificacion
+            {
+                Mensaje = "🐝 Test de integración - Notificación del Gestor de Apiarios",
+                FechaNotificacion = DateTime.Now,
+                Estado = EstadoNotificacion.PENDIENTE
+            };
+
+            // Act
+            var task = servicioEmail.EnviarAsync(notificacion, usuario);
+            task.Wait();
+
+            // Assert
+            Assert.True(true, "Email enviado correctamente - verificar bandeja de entrada");
         }
 
         #endregion
@@ -328,10 +391,20 @@ namespace Tests.Integracion
 
         private Usuario CrearUsuarioDePrueba()
         {
-            return new Usuario("Clara Test", "clara@test.com", "password123", NUMERO_PRUEBA, "12")
+            return new Usuario("Clara Test", EMAIL_PRUEBA, "password123", "+59891988714", "12")
             {
                 Id = 1,
-                MedioDeComunicacionDePreferencia = CanalPreferidoNotificacion.SMS
+                MedioDeComunicacionDePreferencia = CanalPreferidoNotificacion.EMAIL
+            };
+        }
+
+        private Usuario CrearUsuarioDePruebaReal()
+        {
+            // Para tests reales, cambiar por un email donde puedas verificar la recepción
+            return new Usuario("Clara Test", "spotifyclara912@gmail.com", "password123", "+59891988714", "12")
+            {
+                Id = 1,
+                MedioDeComunicacionDePreferencia = CanalPreferidoNotificacion.EMAIL
             };
         }
 

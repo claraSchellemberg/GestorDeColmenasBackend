@@ -16,7 +16,6 @@ using LogicaDeServicios.InterfacesCasosDeUso;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Hubs;
 using WebApi.Servicios.Notificaciones;
-using WebApi.Servicios.Sms;
 
 
 
@@ -78,9 +77,10 @@ builder.Services.AddScoped<IAgregar<DataArduinoDto, DataArduinoDto>, AgregarMedi
 //Inyeccion para las notificaciones
 // Servicio de infraestructura
 builder.Services.AddScoped<IServicioSms, VonageServicioSms>();
-
+builder.Services.AddScoped<IServicioEmail, ServicioEmail>();
 // Servicio de push para SignalR
 builder.Services.AddScoped<INotificacionPushService, SignalRNotificacionPushService>();
+
 
 // Canales de notificación
 builder.Services.AddScoped<CanalSms>();

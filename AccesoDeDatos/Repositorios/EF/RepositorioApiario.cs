@@ -56,7 +56,8 @@ namespace AccesoDeDatos.Repositorios.EF
         public void Eliminar(int id)
         {
             Apiario apiario = ObtenerElementoPorId(id);
-            _context.Apiarios.Remove(apiario);
+            apiario.Estado = LogicaDeNegocios.Enums.Estado.INACTIVA;
+            _context.Apiarios.Update(apiario);
             _context.SaveChanges();
         }
 

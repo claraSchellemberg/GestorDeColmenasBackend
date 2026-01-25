@@ -4,6 +4,7 @@ using AccesoDeDatos.Repositorios.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccesoDeDatos.Migrations
 {
     [DbContext(typeof(GestorContext))]
-    partial class GestorContextModelSnapshot : ModelSnapshot
+    [Migration("20260119000115_se_cambio_agregar")]
+    partial class se_cambio_agregar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +63,7 @@ namespace AccesoDeDatos.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UbicacionDeReferencia")
                         .IsRequired()
@@ -71,9 +74,7 @@ namespace AccesoDeDatos.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId", "Nombre")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Apiario_UsuarioId_Nombre_Unique");
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Apiarios");
                 });
@@ -104,18 +105,11 @@ namespace AccesoDeDatos.Migrations
 
                     b.Property<string>("Nombre")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("UltimaMedicionId")
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UltimaMedicionId");
-
-                    b.HasIndex("ApiarioId", "Nombre")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Colmena_ApiarioId_Nombre_Unique");
+                    b.HasIndex("ApiarioId");
 
                     b.ToTable("Colmenas");
                 });
@@ -131,14 +125,9 @@ namespace AccesoDeDatos.Migrations
                     b.Property<int>("ColmenaId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UltimaMedicionId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ColmenaId");
-
-                    b.HasIndex("UltimaMedicionId");
 
                     b.ToTable("Cuadros");
                 });
@@ -356,13 +345,13 @@ namespace AccesoDeDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("SensorPorCuadroId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("ValorEstaEnRangoBorde")
                         .HasColumnType("bit");
 
-                    b.HasIndex("SensorPorCuadroId");
+                    b.Property<int?>("sensorPorCuadroId")
+                        .HasColumnType("int");
+
+                    b.HasIndex("sensorPorCuadroId");
 
                     b.ToTable("Registros", t =>
                         {
@@ -395,14 +384,7 @@ namespace AccesoDeDatos.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("LogicaDeNegocios.Entidades.MedicionColmena", "UltimaMedicion")
-                        .WithMany()
-                        .HasForeignKey("UltimaMedicionId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.Navigation("Apiario");
-
-                    b.Navigation("UltimaMedicion");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Cuadro", b =>
@@ -413,14 +395,7 @@ namespace AccesoDeDatos.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LogicaDeNegocios.Entidades.SensorPorCuadro", "UltimaMedicion")
-                        .WithMany()
-                        .HasForeignKey("UltimaMedicionId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.Navigation("Colmena");
-
-                    b.Navigation("UltimaMedicion");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.MedicionColmena", b =>
@@ -477,13 +452,13 @@ namespace AccesoDeDatos.Migrations
                     b.HasOne("LogicaDeNegocios.Entidades.Cuadro", "Cuadro")
                         .WithMany("Mediciones")
                         .HasForeignKey("CuadroId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LogicaDeNegocios.Entidades.Sensor", "Sensor")
                         .WithMany()
                         .HasForeignKey("SensorId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Cuadro");
@@ -496,7 +471,7 @@ namespace AccesoDeDatos.Migrations
                     b.HasOne("LogicaDeNegocios.Entidades.MedicionColmena", "MedicionColmena")
                         .WithMany()
                         .HasForeignKey("MedicionColmenaId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("MedicionColmena");
@@ -504,13 +479,11 @@ namespace AccesoDeDatos.Migrations
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.RegistroSensor", b =>
                 {
-                    b.HasOne("LogicaDeNegocios.Entidades.SensorPorCuadro", "SensorPorCuadro")
+                    b.HasOne("LogicaDeNegocios.Entidades.SensorPorCuadro", "sensorPorCuadro")
                         .WithMany()
-                        .HasForeignKey("SensorPorCuadroId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("sensorPorCuadroId");
 
-                    b.Navigation("SensorPorCuadro");
+                    b.Navigation("sensorPorCuadro");
                 });
 
             modelBuilder.Entity("LogicaDeNegocios.Entidades.Apiario", b =>

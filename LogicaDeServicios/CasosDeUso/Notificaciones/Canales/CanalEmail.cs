@@ -1,4 +1,6 @@
 ﻿using LogicaDeNegocios.Entidades;
+using LogicaDeServicios.InterfacesCasosDeUso;
+using SendGrid;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +11,17 @@ namespace LogicaDeServicios.CasosDeUso.Notificaciones.Canales
 {
     public class CanalEmail : ICanalNotificacion
     {
-        public Task EnviarAsync(Notificacion notificacion, Usuario usuario)
+        private readonly IServicioEmail _servicioEmail;
+        public CanalEmail(IServicioEmail servicioEmail)
         {
-            throw new NotImplementedException();
+            _servicioEmail = servicioEmail;
+        }
+        public async Task EnviarAsync(Notificacion notificacion, Usuario usuario)
+        {
+            await _servicioEmail.EnviarAsync(
+            notificacion,
+            usuario
+            );
         }
     }
 }
