@@ -1,6 +1,7 @@
 ﻿using LogicaDeNegocios;
 using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Enums;
+using LogicaDeNegocios.InterfacesRepositorio;
 using LogicaDeNegocios.InterfacesRepositorio.Entidades;
 using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using LogicaDeServicios.CasosDeUso.Notificaciones;
@@ -260,9 +261,9 @@ namespace Tests.Integracion
         public void FlujoCompletoReal_MedicionPesoCero_EnviaSmsRealViaVonage()
         {
             // seteamos las variables de entorno para Vonage (API Key, Secret, From Number)
-            Environment.SetEnvironmentVariable("VONAGE_API_KEY", "TU_API_KEY_AQUI");
-            Environment.SetEnvironmentVariable("VONAGE_API_SECRET", "TU_API_SECRET_AQUI");
-            Environment.SetEnvironmentVariable("VONAGE_FROM_NUMBER", "TU_NUMERO_AQUI");
+            Environment.SetEnvironmentVariable("VONAGE_API_KEY", "3667ac03");
+            Environment.SetEnvironmentVariable("VONAGE_API_SECRET", "AOBOax02F4jWGOob");
+            Environment.SetEnvironmentVariable("VONAGE_FROM_NUMBER", "+59891988714");
 
             // Arrange
             var usuario = CrearUsuarioDePrueba();
@@ -280,7 +281,7 @@ namespace Tests.Integracion
             ConfigurarMocksRepositorios(sensor, colmena, cuadro);
 
             // Usar el servicio REAL de Vonage
-            IServicioSms servicioSmsReal = new WebApi.Servicios.Notificaciones.VonageServicioSms();
+            IServicioSms servicioSmsReal = new WebApi.Servicios.Sms.VonageServicioSms();
 
             var canalSms = new CanalSms(servicioSmsReal);
             var enviadorNotificaciones = new EnviadorNotificaciones(
@@ -328,7 +329,7 @@ namespace Tests.Integracion
 
         private Usuario CrearUsuarioDePrueba()
         {
-            return new Usuario("Clara Test", "clara@test.com", "password123", NUMERO_PRUEBA, "12")
+            return new Usuario("Clara Test", "clara@test.com", "password123", NUMERO_PRUEBA, "12", CanalPreferidoNotificacion.SMS)
             {
                 Id = 1,
                 MedioDeComunicacionDePreferencia = CanalPreferidoNotificacion.SMS

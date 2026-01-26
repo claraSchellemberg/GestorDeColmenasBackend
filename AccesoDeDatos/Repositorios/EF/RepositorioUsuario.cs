@@ -1,6 +1,7 @@
-﻿using LogicaDeNegocios.Entidades;
+﻿using AccesoDeDatos.Repositorios.Excepciones;
+using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Excepciones;
-using LogicaDeNegocios.InterfacesRepositorio.Entidades;
+using LogicaDeNegocios.InterfacesRepositorio;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace AccesoDeDatos.Repositorios.EF
             if (entidad != null)
             {
                 _context.Usuarios.Update(entidad);
+                entidad.ValidarUsuario();
                 _context.SaveChanges();
             }
             else
@@ -33,6 +35,7 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             if (entidad != null)
             {
+                entidad.ValidarUsuario();
                 _context.Usuarios.Add(entidad);
                 _context.SaveChanges();
                 return entidad;
@@ -59,6 +62,16 @@ namespace AccesoDeDatos.Repositorios.EF
             {
                 throw new UsuarioException("El usuario no existe");
             }
+        }
+
+        public Usuario ObtenerPorEmail(string email)
+        {
+            Usuario usuario = _context.Usuarios.FirstOrDefault(u => u.Email.ToLower().Contains(email.ToLower()));
+            if (usuario == null)
+            {
+                throw new NotFoundException($"No se encontró el email {email}"); 
+            }
+            return usuario; 
         }
     }
 }

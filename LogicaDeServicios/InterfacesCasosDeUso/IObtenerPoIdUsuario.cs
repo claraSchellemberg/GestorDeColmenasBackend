@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace LogicaDeServicios.InterfacesCasosDeUso
 {
-    public interface IObtenerPorNombreApiarioEIdUsuario<T>
+    public interface IObtenerPorIdUsuario<T>
     {
-        T ObtenerPorNombreEIdUsuario(string nombre, int idUsuario);
+        T ObtenerPorIdUsuario(int idUsuario);
     }
 }

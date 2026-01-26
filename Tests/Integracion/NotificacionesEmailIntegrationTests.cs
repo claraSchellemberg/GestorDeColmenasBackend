@@ -2,6 +2,8 @@
 using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Enums;
 using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Entidades;
+using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using LogicaDeServicios.CasosDeUso.Notificaciones;
 using LogicaDeServicios.CasosDeUso.Notificaciones.Canales;
 using LogicaDeServicios.CasosDeUso.TomarMedicion;
@@ -391,7 +393,7 @@ namespace Tests.Integracion
 
         private Usuario CrearUsuarioDePrueba()
         {
-            return new Usuario("Clara Test", EMAIL_PRUEBA, "password123", "+59891988714", "12")
+            return new Usuario("Clara Test", EMAIL_PRUEBA, "password123", "+59891988714", "12", CanalPreferidoNotificacion.EMAIL)
             {
                 Id = 1,
                 MedioDeComunicacionDePreferencia = CanalPreferidoNotificacion.EMAIL
@@ -401,7 +403,7 @@ namespace Tests.Integracion
         private Usuario CrearUsuarioDePruebaReal()
         {
             // Para tests reales, cambiar por un email donde puedas verificar la recepción
-            return new Usuario("Clara Test", "spotifyclara912@gmail.com", "password123", "+59891988714", "12")
+            return new Usuario("Clara Test", "spotifyclara912@gmail.com", "password123", "+59891988714", "12", CanalPreferidoNotificacion.EMAIL)
             {
                 Id = 1,
                 MedioDeComunicacionDePreferencia = CanalPreferidoNotificacion.EMAIL
