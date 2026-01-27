@@ -20,6 +20,7 @@ namespace LogicaDeNegocios.Entidades
         //no se llama canal porque no puedo repetir el nombre
         public List<Apiario> Apiarios { get; set; } = new List<Apiario>();
         public string NumeroApicultor { get; set; }
+        public Estado Estado { get; set; } = Estado.ACTIVA;
 
         public Usuario()
         {

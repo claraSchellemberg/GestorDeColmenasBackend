@@ -48,7 +48,8 @@ namespace AccesoDeDatos.Repositorios.EF
         public void Eliminar(int id)
         {
             Usuario usuario= ObtenerElementoPorId(id);
-            _context.Usuarios.Remove(usuario);
+            usuario.Estado = LogicaDeNegocios.Enums.Estado.INACTIVA;
+            _context.Usuarios.Update(usuario);
             _context.SaveChanges();
         }
         public Usuario ObtenerElementoPorId(int id)
