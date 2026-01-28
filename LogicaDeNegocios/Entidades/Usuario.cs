@@ -21,6 +21,7 @@ namespace LogicaDeNegocios.Entidades
         public List<Apiario> Apiarios { get; set; } = new List<Apiario>();
         public string NumeroApicultor { get; set; }
         public Estado Estado { get; set; } = Estado.ACTIVA;
+        //public string? FotoPerfil { get; set; }
 
         public Usuario()
         {
