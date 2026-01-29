@@ -74,6 +74,14 @@ namespace AccesoDeDatos.Repositorios.EF
             }
         }
 
+        public IEnumerable<Apiario> ObtenerElementoPorIdUsuario(int idUsuario)
+        {
+            IEnumerable<Apiario> apiarios = _context.Apiarios.Where(a => a.UsuarioId == idUsuario)
+                .Include(apiario => apiario.Colmenas)
+                .ToList();
+            return apiarios;
+        }
+
         public IEnumerable<Apiario> ObtenerTodosLosElementos()
         {
             IEnumerable<Apiario> apiarios = _context.Apiarios

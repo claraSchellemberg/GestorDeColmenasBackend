@@ -12,12 +12,25 @@ namespace LogicaDeServicios.Mappers
     {
         public static Usuario FromDto(UsuarioSetDto usuarioSetDto)
         {
-            return new Usuario(usuarioSetDto.Nombre,
+            var usuario = new Usuario(usuarioSetDto.Nombre,
                                 usuarioSetDto.Email,
                                 usuarioSetDto.Contraseña,
                                 usuarioSetDto.NumeroTelefono,
-                                usuarioSetDto.NumeroApicultor
-                                );
+                                usuarioSetDto.NumeroApicultor,
+                                usuarioSetDto.MedioDeComunicacionDePreferencia);
+            return usuario;
+        }
+
+        public static Usuario UpdateFromDto(Usuario usuario,UsuarioSetDto usuarioSetDto)
+        {
+            usuario.Nombre = usuarioSetDto.Nombre;
+            usuario.Email = usuarioSetDto.Email;
+            usuario.Contraseña = usuarioSetDto.Contraseña;
+            usuario.NumeroTelefono = usuarioSetDto.NumeroTelefono;
+            usuario.NumeroApicultor = usuarioSetDto.NumeroApicultor;
+            usuario.MedioDeComunicacionDePreferencia = usuarioSetDto.MedioDeComunicacionDePreferencia;
+            return usuario;
+
         }
 
         public static UsuarioGetDto ToDto(Usuario usuario)
@@ -26,18 +39,19 @@ namespace LogicaDeServicios.Mappers
                                         usuario.Nombre,
                                         usuario.Email,
                                         usuario.Contraseña,
-                                        usuario.NumeroTelefono);
+                                        usuario.NumeroTelefono,
+                                        usuario.NumeroApicultor,
+                                        usuario.MedioDeComunicacionDePreferencia);
         }
 
         public static IEnumerable<UsuarioGetDto> ToListDto(IEnumerable<Usuario> usuarios)
         {
-            List<UsuarioGetDto> usuariosGetDto= new List<UsuarioGetDto>();
+            List<UsuarioGetDto> usuariosGetDto = new List<UsuarioGetDto>();
             foreach (Usuario usuario in usuarios)
             {
                 usuariosGetDto.Add(ToDto(usuario));
             }
             return usuariosGetDto;
-        }
-            
+        }   
     }
 }

@@ -1,9 +1,7 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Enums;
-using LogicaDeNegocios.InterfacesRepositorio.Notificaciones;
-using LogicaDeNegocios.Excepciones;
 using LogicaDeNegocios.InterfacesRepositorio;
-using LogicaDeServicios.InterfacesCasosDeUso;
+using LogicaDeNegocios.InterfacesRepositorio.Notificaciones;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -17,19 +15,17 @@ namespace WebApi.Controllers
     public class TestNotificacionesController : ControllerBase
     {
         private readonly IGeneradorNotificaciones _generadorNotificaciones;
-        private readonly IServicioEmail _servicioEmail;
 
-        public TestNotificacionesController(IGeneradorNotificaciones generadorNotificaciones, IServicioEmail servicioEmail)
+        public TestNotificacionesController(IGeneradorNotificaciones generadorNotificaciones)
         {
             _generadorNotificaciones = generadorNotificaciones;
-            _servicioEmail = servicioEmail;
         }
 
         [HttpPost("sms")]
         public IActionResult EnviarSmsDePrueba([FromBody] TestSmsRequest request)
         {
             // Crear usuario de prueba con el número proporcionado
-            var usuario = new Usuario("Test User", "test@test.com", "password123", request.NumeroTelefono, "123")
+            var usuario = new Usuario("Test User", "test@test.com", "password123", request.NumeroTelefono, "123", CanalPreferidoNotificacion.SMS)
             {
                 Id = 1,
                 MedioDeComunicacionDePreferencia = CanalPreferidoNotificacion.SMS
@@ -51,64 +47,11 @@ namespace WebApi.Controllers
 
             return Ok(new { message = "Notificación enviada", destino = request.NumeroTelefono });
         }
-
-        [HttpPost("email")]
-        public async Task<IActionResult> EnviarEmailTest([FromBody] EmailTestDto emailTestDto)
-        {
-            try
-            {
-                if (emailTestDto == null)
-                {
-                    return BadRequest("Los datos recibidos son incorrectos");
-                }
-
-                if (string.IsNullOrWhiteSpace(emailTestDto.EmailDestino))
-                {
-                    return BadRequest("El email de destino es requerido");
-                }
-
-                var usuario = new Usuario
-                {
-                    Nombre = emailTestDto.NombreDestino ?? "Usuario Test",
-                    Email = emailTestDto.EmailDestino
-                };
-
-                var notificacion = new Notificacion
-                {
-                    Mensaje = emailTestDto.Mensaje ?? "Este es un mensaje de prueba del Gestor de Apiarios",
-                    FechaNotificacion = DateTime.Now,
-                    Estado = EstadoNotificacion.PENDIENTE
-                };
-
-                await _servicioEmail.EnviarAsync(notificacion, usuario);
-
-                return Ok(new { mensaje = "Email enviado exitosamente", destino = emailTestDto.EmailDestino });
-            }
-            catch (NotificacionException ex)
-            {
-                return StatusCode(500, new { error = "Error de configuración", detalle = ex.Message });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(500, new { error = "Error enviando email", detalle = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { error = "Error inesperado", detalle = ex.Message });
-            }
-        }
     }
 
     public class TestSmsRequest
     {
-        public string NumeroTelefono { get; set; }
+        public string NumeroTelefono { get; set; } // E.164 format: +59899123456
         public string Mensaje { get; set; }
-    }
-
-    public class EmailTestDto
-    {
-        public string EmailDestino { get; set; } = string.Empty;
-        public string? NombreDestino { get; set; }
-        public string? Mensaje { get; set; }
     }
 }

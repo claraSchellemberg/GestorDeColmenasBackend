@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AccesoDeDatos.Migrations
 {
     /// <inheritdoc />
-    public partial class inicial : Migration
+    public partial class Inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -52,7 +52,7 @@ namespace AccesoDeDatos.Migrations
                     Longitud = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UbicacionDeReferencia = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaAlta = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Activo = table.Column<bool>(type: "bit", nullable: false),
+                    Estado = table.Column<int>(type: "int", nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -78,7 +78,7 @@ namespace AccesoDeDatos.Migrations
                     Condicion = table.Column<int>(type: "int", nullable: false),
                     Estado = table.Column<int>(type: "int", nullable: false),
                     ApiarioId = table.Column<int>(type: "int", nullable: false),
-                    UltimaMedicionId = table.Column<int>(type: "int", nullable: false)
+                    UltimaMedicionId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -89,25 +89,6 @@ namespace AccesoDeDatos.Migrations
                         principalTable: "Apiarios",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Cuadros",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ColmenaId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cuadros", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Cuadros_Colmenas_ColmenaId",
-                        column: x => x.ColmenaId,
-                        principalTable: "Colmenas",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -126,6 +107,26 @@ namespace AccesoDeDatos.Migrations
                     table.PrimaryKey("PK_MedicionColmenas", x => x.Id);
                     table.ForeignKey(
                         name: "FK_MedicionColmenas_Colmenas_ColmenaId",
+                        column: x => x.ColmenaId,
+                        principalTable: "Colmenas",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cuadros",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ColmenaId = table.Column<int>(type: "int", nullable: false),
+                    UltimaMedicionId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cuadros", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cuadros_Colmenas_ColmenaId",
                         column: x => x.ColmenaId,
                         principalTable: "Colmenas",
                         principalColumn: "Id",
@@ -168,8 +169,7 @@ namespace AccesoDeDatos.Migrations
                     TempInterna3 = table.Column<float>(type: "real", nullable: false),
                     FechaMedicion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SensorId = table.Column<int>(type: "int", nullable: false),
-                    CuadroId = table.Column<int>(type: "int", nullable: false),
-                    CuadroId1 = table.Column<int>(type: "int", nullable: true)
+                    CuadroId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -177,11 +177,6 @@ namespace AccesoDeDatos.Migrations
                     table.ForeignKey(
                         name: "FK_SensorPorCuadros_Cuadros_CuadroId",
                         column: x => x.CuadroId,
-                        principalTable: "Cuadros",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_SensorPorCuadros_Cuadros_CuadroId1",
-                        column: x => x.CuadroId1,
                         principalTable: "Cuadros",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -274,6 +269,11 @@ namespace AccesoDeDatos.Migrations
                 column: "ColmenaId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Cuadros_UltimaMedicionId",
+                table: "Cuadros",
+                column: "UltimaMedicionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MedicionColmenas_ColmenaId",
                 table: "MedicionColmenas",
                 column: "ColmenaId");
@@ -314,13 +314,6 @@ namespace AccesoDeDatos.Migrations
                 column: "CuadroId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SensorPorCuadros_CuadroId1",
-                table: "SensorPorCuadros",
-                column: "CuadroId1",
-                unique: true,
-                filter: "[CuadroId1] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SensorPorCuadros_SensorId",
                 table: "SensorPorCuadros",
                 column: "SensorId");
@@ -330,6 +323,13 @@ namespace AccesoDeDatos.Migrations
                 table: "Colmenas",
                 column: "UltimaMedicionId",
                 principalTable: "MedicionColmenas",
+                principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Cuadros_SensorPorCuadros_UltimaMedicionId",
+                table: "Cuadros",
+                column: "UltimaMedicionId",
+                principalTable: "SensorPorCuadros",
                 principalColumn: "Id");
         }
 
@@ -348,6 +348,18 @@ namespace AccesoDeDatos.Migrations
                 name: "FK_Colmenas_MedicionColmenas_UltimaMedicionId",
                 table: "Colmenas");
 
+            migrationBuilder.DropForeignKey(
+                name: "FK_Cuadros_Colmenas_ColmenaId",
+                table: "Cuadros");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Sensores_Colmenas_ColmenaId",
+                table: "Sensores");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Cuadros_SensorPorCuadros_UltimaMedicionId",
+                table: "Cuadros");
+
             migrationBuilder.DropTable(
                 name: "Configuracions");
 
@@ -356,15 +368,6 @@ namespace AccesoDeDatos.Migrations
 
             migrationBuilder.DropTable(
                 name: "Registros");
-
-            migrationBuilder.DropTable(
-                name: "SensorPorCuadros");
-
-            migrationBuilder.DropTable(
-                name: "Sensores");
-
-            migrationBuilder.DropTable(
-                name: "Cuadros");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
@@ -377,6 +380,15 @@ namespace AccesoDeDatos.Migrations
 
             migrationBuilder.DropTable(
                 name: "Colmenas");
+
+            migrationBuilder.DropTable(
+                name: "SensorPorCuadros");
+
+            migrationBuilder.DropTable(
+                name: "Sensores");
+
+            migrationBuilder.DropTable(
+                name: "Cuadros");
         }
     }
 }

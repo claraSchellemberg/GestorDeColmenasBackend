@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AccesoDeDatos.Migrations
 {
     [DbContext(typeof(GestorContext))]
-    [Migration("20260124031800_ultimaMedicion_puede_ser_null")]
-    partial class ultimaMedicion_puede_ser_null
+    [Migration("20260125234125_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,8 +47,8 @@ namespace AccesoDeDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Activo")
-                        .HasColumnType("bit");
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("FechaAlta")
                         .HasColumnType("datetime2");

@@ -10,7 +10,7 @@ namespace LogicaDeNegocios.InterfacesRepositorio.Entidades
 {
     public interface IRepositorioApiario : IRepositorioAgregar<Apiario>,
                             IRepositorioActualizar<Apiario>, IRepositorioEliminar<Apiario>,
-                            IRepositorioObtenerPorId<Apiario>, IRepositorioObtenerTodos<Apiario>
+                            IRepositorioObtenerPorId<Apiario>, IRepositorioObtenerTodos<Apiario>, IRepositorioObtenerPorIdUsuario<IEnumerable<Apiario>>
     {
     }
 }

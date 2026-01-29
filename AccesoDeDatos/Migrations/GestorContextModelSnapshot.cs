@@ -309,6 +309,9 @@ namespace AccesoDeDatos.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Estado")
+                        .HasColumnType("int");
+
                     b.Property<int>("MedioDeComunicacionDePreferencia")
                         .HasColumnType("int");
 

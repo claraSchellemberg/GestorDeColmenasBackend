@@ -17,14 +17,14 @@ namespace WebApi.Controllers
         IObtenerTodos<ApiarioGetDto> _getTodos;
         IActualizar<ApiarioSetDto> _update;
         IEliminar _delete;
-        IObtenerPorNombreApiarioEIdUsuario<ApiarioGetDto> _getPorNombreEIdUsuario;
+        IObtenerPorIdUsuario<IEnumerable<ApiarioGetDto>> _getPorNombreEIdUsuario;
 
         public ApiariosController(IAgregar<ApiarioSetDto, ApiarioGetDto> add,
                                     IObtenerPorId<ApiarioGetDto> getPorId,
                                     IObtenerTodos<ApiarioGetDto> getTodos,
                                     IActualizar<ApiarioSetDto> update,
                                     EliminarApiario delete,
-                                    IObtenerPorNombreApiarioEIdUsuario<ApiarioGetDto> getPorNombreEIdUsuario)
+                                    IObtenerPorIdUsuario<IEnumerable<ApiarioGetDto>> getPorNombreEIdUsuario)
         {
             _add = add;
             _getPorId = getPorId;
@@ -32,6 +32,7 @@ namespace WebApi.Controllers
             _update = update;
             _delete = delete;
             _getPorNombreEIdUsuario = getPorNombreEIdUsuario;
+
         }
 
         [HttpPost]
@@ -182,22 +183,17 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpGet("nombre/{nombre}/usuario/{usuarioId}")]
-        public IActionResult ObtenerPorNombreYUsuario(string nombre, int usuarioId) 
+        [HttpGet("usuario/{usuarioId}")]
+        public IActionResult ObtenerPorUsuario(int usuarioId)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(nombre))
-                {
-                    throw new BadRequestException("El nombre del apiario es requerido");
-                }
-
                 if (usuarioId <= 0)
                 {
                     throw new BadRequestException("El id del usuario es incorrecto");
                 }
 
-                var apiario = _getPorNombreEIdUsuario.ObtenerPorNombreEIdUsuario(nombre, usuarioId);
+                var apiario = _getPorNombreEIdUsuario.ObtenerPorIdUsuario(usuarioId);
                 return Ok(apiario);
             }
             catch (BadRequestException e)
