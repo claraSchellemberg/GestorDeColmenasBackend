@@ -28,6 +28,7 @@ namespace LogicaDeServicios.Mappers
             usuario.Contraseña = usuarioSetDto.Contraseña;
             usuario.NumeroTelefono = usuarioSetDto.NumeroTelefono;
             usuario.NumeroApicultor = usuarioSetDto.NumeroApicultor;
+            usuario.MedioDeComunicacionDePreferencia = usuarioSetDto.MedioDeComunicacionDePreferencia;
             return usuario;
 
         }

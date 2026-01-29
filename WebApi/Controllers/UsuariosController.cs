@@ -91,7 +91,7 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public IActionResult Actualizar(int id, UsuarioSetDto usuarioSetDto)
         {
             try
