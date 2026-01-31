@@ -8,7 +8,8 @@ namespace LogicaDeNegocios.Entidades
 {
     public class RegistroSensor: Registro
     {
-        public SensorPorCuadro SensorPorCuadro { get; set; }
+        public int? SensorPorCuadroId { get; set; }
+        public SensorPorCuadro SensorPorCuadro { get; set; } 
         public bool ValorEstaEnRangoBorde { get; set; }
         public List<string> MensajesAlerta { get; set; } = new List<string>();
 
