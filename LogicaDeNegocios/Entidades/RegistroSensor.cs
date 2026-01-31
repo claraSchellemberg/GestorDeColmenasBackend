@@ -17,7 +17,7 @@ namespace LogicaDeNegocios.Entidades
 
         public RegistroSensor(SensorPorCuadro sensorPorCuadro)
         {
-            this.SensorPorCuadro = sensorPorCuadro;
+            SensorPorCuadro = sensorPorCuadro;
             ValorEstaEnRangoBorde = false;
         }
 

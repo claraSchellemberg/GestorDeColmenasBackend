@@ -1,5 +1,6 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeServicios.DTOs.Cuadros;
+using LogicaDeServicios.DTOs.SensorPorCuadros;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,12 @@ namespace LogicaDeServicios.Mappers
 
         public static CuadroGetDto ToDto(Cuadro cuadro)
         {
-            return new CuadroGetDto(cuadro.Id);
+            var mediciones = new List<SensorPorCuadroGetDto>();
+            foreach (var medicion in cuadro.Mediciones)
+            {
+                mediciones.Add(SensorPorCuadroMapper.ToDto(medicion));
+            }
+            return new CuadroGetDto(cuadro.Id, mediciones.LastOrDefault());
         }
 
         public static IEnumerable<CuadroGetDto> ToListDto(IEnumerable<Cuadro> cuadros)

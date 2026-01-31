@@ -1,7 +1,7 @@
 ﻿using AccesoDeDatos.Repositorios.Excepciones;
 using LogicaDeNegocios.Enums;
 using LogicaDeNegocios.Excepciones;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Entidades;
 using LogicaDeServicios.DTOs.Notificaciones;
 using Microsoft.AspNetCore.Mvc;
 

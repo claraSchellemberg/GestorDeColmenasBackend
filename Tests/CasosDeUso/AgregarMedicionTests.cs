@@ -1,7 +1,9 @@
 using LogicaDeNegocios;
 using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Enums;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Entidades;
+using LogicaDeNegocios.InterfacesRepositorio.Notificaciones;
+using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using LogicaDeServicios.CasosDeUso.TomarMedicion;
 using LogicaDeServicios.DTOs.Arduino;
 using LogicaDeServicios.InterfacesCasosDeUso;
@@ -61,7 +63,7 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         /// </summary>
         private Usuario CrearUsuarioTest(int id = 1)
         {
-            return new Usuario("Usuario Test", "test@test.com", "password123", "+59899123456", "12")
+            return new Usuario("Usuario Test", "test@test.com", "password123", "+59899123456", "12", CanalPreferidoNotificacion.SMS)
             {
                 Id = id
             };

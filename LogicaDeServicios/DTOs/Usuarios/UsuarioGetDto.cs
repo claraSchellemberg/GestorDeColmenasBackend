@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LogicaDeNegocios.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,9 @@ namespace LogicaDeServicios.DTOs.Usuarios
                                     string Nombre,
                                     string Email,
                                     string Contraseña,
-                                    string NumeroTelefono)
+                                    string NumeroTelefono,
+                                    string NumeroApicultor,
+                                    CanalPreferidoNotificacion MedioDeComunicacionDePreferencia)
     {
     }
 }

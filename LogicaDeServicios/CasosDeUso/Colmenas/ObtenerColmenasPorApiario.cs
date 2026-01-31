@@ -1,5 +1,5 @@
 ﻿using LogicaDeNegocios.Excepciones;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Entidades;
 using LogicaDeServicios.DTOs.Colmenas;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using LogicaDeServicios.Mappers;

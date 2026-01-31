@@ -1,20 +1,24 @@
 using AccesoDeDatos.Repositorios.EF;
 using LogicaDeNegocios;
 using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Entidades;
+using LogicaDeNegocios.InterfacesRepositorio.Notificaciones;
+using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using LogicaDeServicios.CasosDeUso.Apiarios;
 using LogicaDeServicios.CasosDeUso.Colmenas;
 using LogicaDeServicios.CasosDeUso.Notificaciones;
 using LogicaDeServicios.CasosDeUso.Notificaciones.Canales;
 using LogicaDeServicios.CasosDeUso.TomarMedicion;
+using LogicaDeServicios.CasosDeUso.Usuarios;
 using LogicaDeServicios.DTOs.Apiarios;
 using LogicaDeServicios.DTOs.Arduino;
 using LogicaDeServicios.DTOs.Colmenas;
 using LogicaDeServicios.DTOs.Registros;
+using LogicaDeServicios.DTOs.Usuarios;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Hubs;
 using WebApi.Servicios.Notificaciones;
-using WebApi.Servicios.Sms;
 
 
 
@@ -47,6 +51,7 @@ builder.Services.AddScoped<IObtenerPorId<ApiarioGetDto>, ObtenerPorIdApiario>();
 builder.Services.AddScoped<IObtenerTodos<ApiarioGetDto>, ObtenerTodosApiarios>();
 builder.Services.AddScoped<IActualizar<ApiarioSetDto>, ActualizarApiario>();
 builder.Services.AddScoped<EliminarApiario>();
+builder.Services.AddScoped<IObtenerPorIdUsuario<IEnumerable<ApiarioGetDto>>, ObtenerApiarioPorIdUsuario>();
 
 //Inyecciones para los Casos de Uso de Colmenas
 builder.Services.AddScoped<IAgregar<ColmenaSetDto, ColmenaGetDto>>(sp =>
@@ -67,17 +72,25 @@ builder.Services.AddScoped<IObtenerColmenasPorApiario<ColmenaGetDto>>(sp =>
 builder.Services.AddScoped<IActualizar<ColmenaSetDto>, ActualizarColmena>();
 builder.Services.AddScoped<IObtenerDetalleColmena<DetalleColmenaDto>, ObtenerDetalleColmena>();
 builder.Services.AddScoped<EliminarColmena>();
-builder.Services.AddScoped<IObtenerPorNombreApiarioEIdUsuario<ApiarioGetDto>, ObtenerApiarioPorNombreEIdUsuario>();
+builder.Services.AddScoped<IObtenerRegistrosPorColmena<RegistroPorColmenaDto>, ObtenerRegistrosPorColmena>();
 
 //Inyecciones para los Casos de Uso de Registro
 builder.Services.AddScoped<IAgregar<DataArduinoDto, DataArduinoDto>, AgregarMedicion>();
 
+//Inyecciones para los Casos de Uso de Usuario
+builder.Services.AddScoped<IAgregar<UsuarioSetDto, UsuarioGetDto>, AgregarUsuario>();
+builder.Services.AddScoped<IObtenerPorId<UsuarioGetDto>, ObtenerPorIdUsuario>();
+builder.Services.AddScoped<IActualizar<UsuarioSetDto>, ActualizarUsuario>();
+builder.Services.AddScoped<IEliminar, EliminarUsuario>();
+builder.Services.AddScoped<ILogin<UsuarioLoginDto>, ObtenerLogin>();
+
 //Inyeccion para las notificaciones
 // Servicio de infraestructura
 builder.Services.AddScoped<IServicioSms, VonageServicioSms>();
-
+builder.Services.AddScoped<IServicioEmail, ServicioEmail>();
 // Servicio de push para SignalR
 builder.Services.AddScoped<INotificacionPushService, SignalRNotificacionPushService>();
+
 
 // Canales de notificación
 builder.Services.AddScoped<CanalSms>();

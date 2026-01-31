@@ -2,6 +2,8 @@
 using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Enums;
 using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Entidades;
+using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using LogicaDeServicios.CasosDeUso.Notificaciones;
 using LogicaDeServicios.CasosDeUso.Notificaciones.Canales;
 using LogicaDeServicios.CasosDeUso.TomarMedicion;
@@ -327,7 +329,7 @@ namespace Tests.Integracion
 
         private Usuario CrearUsuarioDePrueba()
         {
-            return new Usuario("Clara Test", "clara@test.com", "password123", NUMERO_PRUEBA, "12")
+            return new Usuario("Clara Test", "clara@test.com", "password123", NUMERO_PRUEBA, "12", CanalPreferidoNotificacion.SMS)
             {
                 Id = 1,
                 MedioDeComunicacionDePreferencia = CanalPreferidoNotificacion.SMS

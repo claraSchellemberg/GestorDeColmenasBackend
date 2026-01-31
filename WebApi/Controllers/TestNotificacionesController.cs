@@ -1,6 +1,7 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Enums;
 using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Notificaciones;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -24,7 +25,7 @@ namespace WebApi.Controllers
         public IActionResult EnviarSmsDePrueba([FromBody] TestSmsRequest request)
         {
             // Crear usuario de prueba con el número proporcionado
-            var usuario = new Usuario("Test User", "test@test.com", "password123", request.NumeroTelefono, "123")
+            var usuario = new Usuario("Test User", "test@test.com", "password123", request.NumeroTelefono, "123", CanalPreferidoNotificacion.SMS)
             {
                 Id = 1,
                 MedioDeComunicacionDePreferencia = CanalPreferidoNotificacion.SMS

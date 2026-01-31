@@ -25,7 +25,6 @@ namespace AccesoDeDatos.Repositorios.EF
         public DbSet<Sensor> Sensores { get; set; }
         public DbSet<SensorPorCuadro> SensorPorCuadros { get; set; }
 
-
         public GestorContext(DbContextOptions<GestorContext> options) : base(options)
         {
         }
@@ -50,7 +49,17 @@ namespace AccesoDeDatos.Repositorios.EF
                 .HasForeignKey(colmena => colmena.ApiarioId)
                 .OnDelete(DeleteBehavior.Restrict); // evita que se pueda borrar un apiario con colmenas
 
+            // Índice único: Nombre de Apiario único por Usuario
+            modelBuilder.Entity<Apiario>()
+                .HasIndex(a => new { a.UsuarioId, a.Nombre })
+                .IsUnique()
+                .HasDatabaseName("IX_Apiario_UsuarioId_Nombre_Unique");
 
+            // Índice único: Nombre de Colmena único por Apiario
+            modelBuilder.Entity<Colmena>()
+                .HasIndex(c => new { c.ApiarioId, c.Nombre })
+                .IsUnique()
+                .HasDatabaseName("IX_Colmena_ApiarioId_Nombre_Unique");
 
             // Configurar Sensor con ambas FKs en NoAction
             modelBuilder.Entity<Sensor>()
@@ -64,8 +73,46 @@ namespace AccesoDeDatos.Repositorios.EF
                 .WithMany()
                 .HasForeignKey(s => s.CuadroId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            // Configurar SensorPorCuadro FKs para evitar cascades múltiples en SQL Server
+            modelBuilder.Entity<SensorPorCuadro>()
+                .HasOne(spc => spc.Sensor)
+                .WithMany()
+                .HasForeignKey(spc => spc.SensorId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<SensorPorCuadro>()
+                .HasOne(spc => spc.Cuadro)
+                .WithMany(c => c.Mediciones)
+                .HasForeignKey(spc => spc.CuadroId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // Configurar RegistroSensor -> SensorPorCuadro (evitar cascade delete)
             modelBuilder.Entity<RegistroSensor>()
-                .HasOne(rs => rs.SensorPorCuadro);
+                .HasOne(rs => rs.SensorPorCuadro)
+                .WithMany() // SensorPorCuadro no tiene colección de registros en las entidades proporcionadas
+                .HasForeignKey("SensorPorCuadroId") 
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<RegistroMedicionColmena>()
+                .HasOne(rmc => rmc.MedicionColmena)
+                .WithMany() // MedicionColmena no tiene colección de registros en las entidades proporcionadas
+                .HasForeignKey("MedicionColmenaId") 
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Colmena>()
+                .HasOne(c => c.UltimaMedicion)
+                .WithMany()
+                .HasForeignKey("UltimaMedicionId")
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Cuadro>()
+                .HasOne(c => c.UltimaMedicion)
+                .WithMany()
+                .HasForeignKey("UltimaMedicionId")
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
     }

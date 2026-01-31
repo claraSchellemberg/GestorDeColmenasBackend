@@ -1,6 +1,8 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Enums;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Entidades;
+using LogicaDeNegocios.InterfacesRepositorio.Notificaciones;
+using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using LogicaDeServicios.DTOs.Arduino;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using Microsoft.Identity.Client;

@@ -1,6 +1,6 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeNegocios.Excepciones;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Entidades;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -47,6 +47,7 @@ namespace AccesoDeDatos.Repositorios.EF
         public void AgregarMedicionDeCuadro(SensorPorCuadro medicion, Cuadro cuadro)
         {
             cuadro.Mediciones.Add(medicion);
+            cuadro.UltimaMedicion = medicion;
             Actualizar(cuadro);
         }
 

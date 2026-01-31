@@ -1,6 +1,7 @@
 ﻿using LogicaDeNegocios.Entidades;
+using LogicaDeNegocios.Enums;
 using LogicaDeNegocios.Excepciones;
-using LogicaDeNegocios.InterfacesRepositorio;
+using LogicaDeNegocios.InterfacesRepositorio.Entidades;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             if (entidad != null)
             {
+                ValidarNombreUnico(entidad);
                 _context.Colmenas.Update(entidad);
                 entidad.ValidarColmena();
                 _context.Entry(entidad).Property(a=> a.FechaInstalacionSensores).IsModified = false;//agrego esto para que entity no nos modifique la fecha de alta de los sensores
@@ -35,6 +37,7 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             if (entidad != null)
             {
+                ValidarNombreUnico(entidad);
                 entidad.ValidarColmena();
                 _context.Colmenas.Add(entidad);
                 _context.SaveChanges();
@@ -49,20 +52,26 @@ namespace AccesoDeDatos.Repositorios.EF
         public void AgregarMedicion(MedicionColmena medicion, Colmena colmena)
         {
             colmena.Mediciones.Add(medicion);
+            colmena.UltimaMedicion= medicion;
             Actualizar(colmena);
         }
 
         public void Eliminar(int id)
         {
             Colmena colmena = ObtenerElementoPorId(id);
-            _context.Colmenas.Remove(colmena);
+            colmena.Estado = Estado.INACTIVA;
+            _context.Colmenas.Update(colmena);
             _context.SaveChanges();
         }
         public Colmena ObtenerElementoPorId(int id)
         {
-            Colmena colmena = _context.Colmenas.Include(c => c.Apiario)
-                .ThenInclude(a => a.Usuario)
-                .FirstOrDefault(a => a.Id == id);
+            Colmena colmena = _context.Colmenas
+                .Include(c => c.Cuadros)
+                    .ThenInclude(cu => cu.Mediciones)
+                .Include(c => c.Mediciones)
+                .Include(c => c.Apiario)
+                    .ThenInclude(a => a.Usuario)
+                .FirstOrDefault(c => c.Id == id);
             if (colmena != null)
             {
                 return colmena;
@@ -77,7 +86,10 @@ namespace AccesoDeDatos.Repositorios.EF
         {
             IEnumerable<Colmena> colmenas = _context.Colmenas
                 .Include(c => c.Cuadros)
-                .Include(c=> c.Mediciones)
+                    .ThenInclude(cu => cu.Mediciones)
+                .Include(c => c.Mediciones)
+                .Include(c => c.Apiario)
+                    .ThenInclude(a => a.Usuario)
                 .ToList();
             return colmenas;
         }
@@ -94,6 +106,18 @@ namespace AccesoDeDatos.Repositorios.EF
                 throw new ColmenaException("No se encontraron colmenas para el apiario especificado.");
             }
             return colmenas;
+        }
+        private void ValidarNombreUnico(Colmena entidad)
+        {
+            bool existeNombreDuplicado = _context.Colmenas
+                .Any(c => c.ApiarioId == entidad.ApiarioId
+                       && c.Nombre == entidad.Nombre
+                       && c.Id != entidad.Id);
+
+            if (existeNombreDuplicado)
+            {
+                throw new ColmenaException($"Ya existe una colmena con el nombre '{entidad.Nombre}' en este apiario.");
+            }
         }
     }
 }

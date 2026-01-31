@@ -9,7 +9,9 @@
         "VONAGE_API_SECRET": "AOBOax02F4jWGOob",
         "VONAGE_API_KEY": "3667ac03",
         "VONAGE_FROM_NUMBER": "+59891988714",
-        "DB_CONNECTION_STRING": "Server=tcp:servidorgestionapiarios.database.windows.net,1433;Initial Catalog=GestorBD;Persist Security Info=False;User ID=apiaridoAmin;Password=GestorDeApiarios2026;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+        "SENDGRID_API_KEY": "", // solo para poder hacer commit  en github
+        "SENDGRID_FROM_EMAIL": "notificaciones.gestordeapiarios@gmail.com",
+        "SENDGRID_FROM_NAME": "Gestor de Apiarios"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://gestordeapiariosfagro-c7e8dfb6aweqdnce.centralus-01.azurewebsites.net/"

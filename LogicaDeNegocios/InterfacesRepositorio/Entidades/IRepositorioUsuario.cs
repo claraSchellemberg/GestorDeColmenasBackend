@@ -12,5 +12,6 @@ namespace LogicaDeNegocios.InterfacesRepositorio
                             IRepositorioActualizar<Usuario>, IRepositorioEliminar<Usuario>, 
                             IRepositorioObtenerPorId<Usuario>
     {
+        Usuario ObtenerPorEmail(string value);
     }
 }

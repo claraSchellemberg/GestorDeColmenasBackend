@@ -1,5 +1,6 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeServicios.DTOs.Apiarios;
+using LogicaDeServicios.DTOs.Colmenas;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,13 +34,15 @@ namespace LogicaDeServicios.Mappers
 
         public static ApiarioGetDto ToDto(Apiario apiario)
         {
+            IEnumerable<ColmenaGetDto> colmenas = ColmenaMapper.ToListDto(apiario.Colmenas);                
             return new ApiarioGetDto(apiario.Id,
                                         apiario.Nombre,
                                         apiario.Latitud,
                                         apiario.Longitud,
                                         apiario.UbicacionDeReferencia,
                                         apiario.FechaAlta, 
-                                        apiario.UsuarioId);
+                                        apiario.UsuarioId,
+                                        colmenas);
         }
 
 
