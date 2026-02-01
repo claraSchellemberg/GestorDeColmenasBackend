@@ -116,9 +116,19 @@ builder.Services.AddScoped<IGeneradorNotificaciones>(provider =>
     return generador;
 });
 
+builder.Configuration
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                       ?? Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
+                       ?? Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+
+
 // Inyecta el contex y la cadena de conexion que la toma desde el json
 builder.Services.AddDbContext<GestorContext>(
-    options => options.UseSqlServer(Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"))
+    options => options.UseSqlServer(connectionString)
 );
 
 var app = builder.Build();
