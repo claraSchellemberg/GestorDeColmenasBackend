@@ -10,6 +10,35 @@ namespace AccesoDeDatos.Repositorios.EF
     {
         public GestorContext CreateDbContext(string[] args)
         {
+            // 1) Try to read connection string passed via CLI args (dotnet ef --connection "...")
+            string connectionFromArgs = null;
+            if (args != null && args.Length > 0)
+            {
+                for (int i = 0; i < args.Length; i++)
+                {
+                    var a = args[i];
+                    if (string.Equals(a, "--connection", StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(a, "-c", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (i + 1 < args.Length)
+                        {
+                            connectionFromArgs = args[i + 1];
+                            break;
+                        }
+                    }
+                    else if (a.StartsWith("--connection=", StringComparison.OrdinalIgnoreCase) ||
+                             a.StartsWith("-c=", StringComparison.OrdinalIgnoreCase))
+                    {
+                        var parts = a.Split(new[] { '=' }, 2);
+                        if (parts.Length == 2)
+                        {
+                            connectionFromArgs = parts[1];
+                            break;
+                        }
+                    }
+                }
+            }
+
             var basePath = Path.Combine(Directory.GetCurrentDirectory(), "..", "WebApi");
 
             var configuration = new ConfigurationBuilder()
@@ -18,8 +47,9 @@ namespace AccesoDeDatos.Repositorios.EF
                 .AddEnvironmentVariables()
                 .Build();
 
-            // Prefer config ConnectionStrings:DefaultConnection, then common env names
-            var connectionString = configuration.GetConnectionString("DefaultConnection")
+            // Prefer CLI arg, then config ConnectionStrings:DefaultConnection, then common env names
+            var connectionString = connectionFromArgs
+                                   ?? configuration.GetConnectionString("DefaultConnection")
                                    ?? Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
                                    ?? Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 

@@ -127,9 +127,13 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 
 // Inyecta el contex y la cadena de conexion que la toma desde el json
-builder.Services.AddDbContext<GestorContext>(
-    options => options.UseSqlServer(connectionString)
+builder.Services.AddDbContext<GestorContext>(options =>
+    options.UseSqlServer(
+        connectionString,
+        sql => sql.CommandTimeout(180) // 3 minutos
+    )
 );
+
 
 var app = builder.Build();
 
