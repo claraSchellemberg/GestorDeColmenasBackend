@@ -14,7 +14,7 @@
         "SENDGRID_FROM_NAME": "Gestor de Apiarios"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://gestordeapiariosfagro-c7e8dfb6aweqdnce.centralus-01.azurewebsites.net/"
+      "applicationUrl": "http://localhost:5083"
     },
     "https": {
       "commandName": "Project",
@@ -24,7 +24,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://gestordeapiariosfagro-c7e8dfb6aweqdnce.centralus-01.azurewebsites.net/"
+      "applicationUrl": "http://localhost:5083"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -40,7 +40,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://gestordeapiariosfagro-c7e8dfb6aweqdnce.centralus-01.azurewebsites.net/",
+      "applicationUrl": "http://localhost:5083",
       "sslPort": 44393
     }
   }
