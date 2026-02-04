@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,12 +14,22 @@ namespace LogicaDeNegocios.Entidades
         public bool ValorEstaEnRangoBorde { get; set; }
         public List<string> MensajesAlerta { get; set; } = new List<string>();
 
+        private readonly ILogger<RegistroMedicionColmena> _logger;
+
         public RegistroMedicionColmena() { }
 
         public RegistroMedicionColmena(MedicionColmena medicionColmena)
         {
             this.MedicionColmena = medicionColmena;
             ValorEstaEnRangoBorde = false;
+        }
+
+        //controlador que acepta logs para ver desde azure
+        public RegistroMedicionColmena(MedicionColmena medicionColmena, ILogger<RegistroMedicionColmena> logger)
+        {
+            MedicionColmena = medicionColmena;
+            ValorEstaEnRangoBorde = false;
+            _logger = logger ?? NullLogger<RegistroMedicionColmena>.Instance;
         }
 
         public override void ControlarValores()
@@ -31,6 +43,7 @@ namespace LogicaDeNegocios.Entidades
 
             float pesoMinimo = float.Parse(
                 Configuracion.GetValorPorNombre("PesoMinimoColmena"));
+            _logger.LogInformation($"Peso minimo configurado: {pesoMinimo}");
             if (MedicionColmena.Peso > 0 && MedicionColmena.Peso <= pesoMinimo)
             {
                 ValorEstaEnRangoBorde = true;
@@ -39,6 +52,7 @@ namespace LogicaDeNegocios.Entidades
 
             float pesoMaximo = float.Parse(
                 Configuracion.GetValorPorNombre("PesoMaximo"));
+            _logger.LogInformation($"PesoMaximo configurado: {pesoMaximo}");
             if (MedicionColmena.Peso >= pesoMaximo)
             {
                 ValorEstaEnRangoBorde = true;

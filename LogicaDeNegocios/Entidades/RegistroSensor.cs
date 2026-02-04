@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,9 @@ namespace LogicaDeNegocios.Entidades
         public bool ValorEstaEnRangoBorde { get; set; }
         public List<string> MensajesAlerta { get; set; } = new List<string>();
 
+        private readonly ILogger<RegistroSensor> _logger;
+
+
         public RegistroSensor() { }
 
         public RegistroSensor(SensorPorCuadro sensorPorCuadro)
@@ -21,10 +26,19 @@ namespace LogicaDeNegocios.Entidades
             ValorEstaEnRangoBorde = false;
         }
 
+        //controlador que acepta logs para ver desde azure
+        public RegistroSensor(SensorPorCuadro sensorPorCuadro, ILogger<RegistroSensor> logger)
+        {
+            SensorPorCuadro = sensorPorCuadro;
+            ValorEstaEnRangoBorde = false;
+            _logger = logger ?? NullLogger<RegistroSensor>.Instance;
+        }
+
         public override void ControlarValores()
         {
             float tempHipotermia = float.Parse(
                 Configuracion.GetValorPorNombre("TempHipotermia"));
+            _logger.LogInformation($"TempHipotermia trae: {tempHipotermia}");
 
             if (SensorPorCuadro.TempInterna1 <= tempHipotermia ||
                 SensorPorCuadro.TempInterna2 <= tempHipotermia ||
@@ -36,6 +50,7 @@ namespace LogicaDeNegocios.Entidades
 
             float tempCrias = float.Parse(
                 Configuracion.GetValorPorNombre("TempCrias"));
+            _logger.LogInformation($"TempCrias trae: {tempCrias }");
 
             if (SensorPorCuadro.TempInterna1 >= tempCrias &&
                 SensorPorCuadro.TempInterna2 >= tempCrias &&
