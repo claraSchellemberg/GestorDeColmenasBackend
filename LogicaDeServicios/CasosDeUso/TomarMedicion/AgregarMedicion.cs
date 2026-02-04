@@ -5,6 +5,7 @@ using LogicaDeNegocios.InterfacesRepositorio.Notificaciones;
 using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using LogicaDeServicios.DTOs.Arduino;
 using LogicaDeServicios.InterfacesCasosDeUso;
+using Microsoft.Extensions.Logging;
 using Microsoft.Identity.Client;
 using Microsoft.Win32;
 using System;
@@ -25,13 +26,15 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
         private IRepositorioRegistroMedicionColmena _repoRegistroMedicionColmena;
         private IRepositorioNotificacion _repoNotificaciones;
         private IGeneradorNotificaciones _generadorNotificaciones;
+        private readonly ILoggerFactory _loggerFactory;
 
         public AgregarMedicion(IRepositorioCuadro repoCuadros,
                         IRepositorioColmena repoColmenas, IRepositorioSensor repoSensores,
                         IRepositorioRegistroSensor repoRegistrosSensores,
                         IRepositorioRegistroMedicionColmena repositorioRegistroMedicionColmena,
                         IRepositorioNotificacion repoNotificaciones,
-                        IGeneradorNotificaciones generadorNotificaciones)
+                        IGeneradorNotificaciones generadorNotificaciones,
+                        ILoggerFactory loggerFactory)
         {
             _repoCuadros = repoCuadros;
             _repoColmenas = repoColmenas;
@@ -40,6 +43,7 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
             _repoRegistroMedicionColmena = repositorioRegistroMedicionColmena;
             _repoNotificaciones = repoNotificaciones;
             _generadorNotificaciones = generadorNotificaciones;
+            _loggerFactory = loggerFactory;
         }
 
         public DataArduinoDto Agregar(DataArduinoDto obj)
@@ -63,7 +67,9 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
                     FechaRegistro = DateTime.Now,
                     EstaPendiente = true
                 };
-                
+                // Create logger from the factory and pass into RegistroSensor
+                var registroLogger = _loggerFactory?.CreateLogger<RegistroMedicionColmena>();
+
                 registroMedicionColmena.ControlarValores();
                 _repoRegistroMedicionColmena.Agregar(registroMedicionColmena);
 
@@ -88,6 +94,9 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
                     FechaMedicion = DateTime.Now
                 };
                 _repoCuadros.AgregarMedicionDeCuadro(medicionDeCuadro, sensor.Cuadro);
+
+                // Create logger from the factory and pass into RegistroSensor
+                var registroLogger = _loggerFactory?.CreateLogger<RegistroSensor>();
 
                 RegistroSensor registro = new RegistroSensor
                 {

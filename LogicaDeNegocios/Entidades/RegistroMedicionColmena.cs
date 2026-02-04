@@ -14,7 +14,7 @@ namespace LogicaDeNegocios.Entidades
         public bool ValorEstaEnRangoBorde { get; set; }
         public List<string> MensajesAlerta { get; set; } = new List<string>();
 
-        private readonly ILogger<RegistroMedicionColmena> _logger;
+        private readonly ILogger<RegistroMedicionColmena> _logger = NullLogger<RegistroMedicionColmena>.Instance;
 
         public RegistroMedicionColmena() { }
 
