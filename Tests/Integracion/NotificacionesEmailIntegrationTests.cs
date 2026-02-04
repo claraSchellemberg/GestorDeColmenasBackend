@@ -8,6 +8,8 @@ using LogicaDeServicios.CasosDeUso.Notificaciones.Canales;
 using LogicaDeServicios.CasosDeUso.TomarMedicion;
 using LogicaDeServicios.DTOs.Arduino;
 using LogicaDeServicios.InterfacesCasosDeUso;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Xunit;
 
@@ -35,6 +37,8 @@ namespace Tests.Integracion
         // Componentes reales del sistema de notificaciones
         private readonly GeneradorNotificaciones _generadorNotificaciones;
         private readonly Mock<IServicioEmail> _mockServicioEmail;
+        // Initialize a non-null logger factory (NullLoggerFactory returns no-op loggers)
+        private readonly ILoggerFactory LoggerFactory = NullLoggerFactory.Instance;
 
         public NotificacionesEmailIntegrationTests()
         {
@@ -46,7 +50,7 @@ namespace Tests.Integracion
             _mockRepoNotificaciones = new Mock<IRepositorioNotificacion>();
             _generadorNotificaciones = new GeneradorNotificaciones();
             _mockServicioEmail = new Mock<IServicioEmail>();
-
+            LoggerFactory = NullLoggerFactory.Instance;
             // Inicializar configuración para los tests
             var configuraciones = new List<(string Nombre, string Valor)>
             {
@@ -103,7 +107,8 @@ namespace Tests.Integracion
                 _mockRepoRegistrosSensores.Object,
                 _mockRepoRegistroMedicionColmena.Object,
                 _mockRepoNotificaciones.Object,
-                _generadorNotificaciones
+                _generadorNotificaciones,
+                LoggerFactory
             );
 
             var dto = new DataArduinoDto(
@@ -163,7 +168,8 @@ namespace Tests.Integracion
                 _mockRepoRegistrosSensores.Object,
                 _mockRepoRegistroMedicionColmena.Object,
                 _mockRepoNotificaciones.Object,
-                _generadorNotificaciones
+                _generadorNotificaciones,
+                LoggerFactory
             );
 
             var dto = new DataArduinoDto(
@@ -220,7 +226,8 @@ namespace Tests.Integracion
                 _mockRepoRegistrosSensores.Object,
                 _mockRepoRegistroMedicionColmena.Object,
                 _mockRepoNotificaciones.Object,
-                _generadorNotificaciones
+                _generadorNotificaciones,
+                LoggerFactory
             );
 
             var dto = new DataArduinoDto(
@@ -331,7 +338,8 @@ namespace Tests.Integracion
                 _mockRepoRegistrosSensores.Object,
                 _mockRepoRegistroMedicionColmena.Object,
                 _mockRepoNotificaciones.Object,
-                generadorReal
+                generadorReal,
+                LoggerFactory
             );
 
             var dto = new DataArduinoDto(

@@ -7,6 +7,8 @@ using LogicaDeNegocios.InterfacesRepositorio.Registros;
 using LogicaDeServicios.CasosDeUso.TomarMedicion;
 using LogicaDeServicios.DTOs.Arduino;
 using LogicaDeServicios.InterfacesCasosDeUso;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using Xunit;
 
@@ -23,6 +25,7 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
         private readonly Mock<IGeneradorNotificaciones> _mockGeneradorNotificaciones;
         private readonly AgregarMedicion _agregarMedicion;
 
+        private readonly ILoggerFactory LoggerFactory;
         public AgregarMedicionTests()
         {
             _mockRepoCuadros = new Mock<IRepositorioCuadro>();
@@ -32,6 +35,7 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
             _mockRepoRegistroMedicionColmena = new Mock<IRepositorioRegistroMedicionColmena>();
             _mockRepoNotificaciones = new Mock<IRepositorioNotificacion>();
             _mockGeneradorNotificaciones = new Mock<IGeneradorNotificaciones>();
+            LoggerFactory = NullLoggerFactory.Instance;
 
             _agregarMedicion = new AgregarMedicion(
                 _mockRepoCuadros.Object,
@@ -40,7 +44,8 @@ namespace LogicaDeServicios.Tests.CasosDeUso.TomarMedicion
                 _mockRepoRegistrosSensores.Object,
                 _mockRepoRegistroMedicionColmena.Object,
                 _mockRepoNotificaciones.Object,
-                _mockGeneradorNotificaciones.Object
+                _mockGeneradorNotificaciones.Object,
+                LoggerFactory
             );
 
             InicializarConfiguracion();
