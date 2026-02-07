@@ -142,7 +142,7 @@ namespace LogicaDeServicios.CasosDeUso.TomarMedicion
             // independientes
             var ultimasmedicionesQueBordean = new List<RegistroSensor>();
 
-            foreach (var cuadro in cuadrosDeColmena)
+            foreach (var cuadro in cuadrosDeColmena.ToList())
             {
                 // Obtener TODOS los registros de sensores para este cuadro
                 // (necesitamos toda la lista para ordenar y obtener el último)
