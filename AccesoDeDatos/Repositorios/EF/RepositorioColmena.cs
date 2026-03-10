@@ -119,5 +119,20 @@ namespace AccesoDeDatos.Repositorios.EF
                 throw new ColmenaException($"Ya existe una colmena con el nombre '{entidad.Nombre}' en este apiario.");
             }
         }
+
+        public IEnumerable<Colmena> ObtenerColmenasPorUsuario(int usuarioId)
+        {
+            IEnumerable<Colmena> colmenas = _context.Colmenas
+                .Where(c => c.Apiario.UsuarioId == usuarioId)
+                .Include(c => c.Mediciones)
+                .Include(c => c.Cuadros)
+                .ThenInclude(c => c.Mediciones)
+                .ToList();
+            if(!colmenas.Any())
+            {
+                throw new ColmenaException("No se encontraron colmenas del usuario ingresado.");
+            }
+            return colmenas;
+        }
     }
 }

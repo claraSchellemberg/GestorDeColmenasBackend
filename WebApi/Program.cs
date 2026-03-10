@@ -73,6 +73,7 @@ builder.Services.AddScoped<IActualizar<ColmenaSetDto>, ActualizarColmena>();
 builder.Services.AddScoped<IObtenerDetalleColmena<DetalleColmenaDto>, ObtenerDetalleColmena>();
 builder.Services.AddScoped<EliminarColmena>();
 builder.Services.AddScoped<IObtenerRegistrosPorColmena<RegistroPorColmenaDto>, ObtenerRegistrosPorColmena>();
+builder.Services.AddScoped<IObtenerColmenasPorUsuario<ColmenaGetDto>, ObtenerColmenasPorUsuario>();
 
 //Inyecciones para los Casos de Uso de Registro
 builder.Services.AddScoped<IAgregar<DataArduinoDto, DataArduinoDto>, AgregarMedicion>();

@@ -19,6 +19,7 @@ namespace WebApi.Controllers
         IActualizar<ColmenaSetDto> _update;
         IEliminar _delete;
         IObtenerDetalleColmena<DetalleColmenaDto> _getDetalleColmena;
+        IObtenerColmenasPorUsuario<ColmenaGetDto> _getColmenasPorUsuario;
 
         public ColmenasController(IAgregar<ColmenaSetDto, ColmenaGetDto> add,
                                     IObtenerPorId<ColmenaGetDto> getPorId,
@@ -26,7 +27,8 @@ namespace WebApi.Controllers
                                     IObtenerColmenasPorApiario<ColmenaGetDto> getColmenasPorApiario,
                                     IActualizar<ColmenaSetDto> update,
                                     EliminarColmena delete,
-                                    IObtenerDetalleColmena<DetalleColmenaDto> getDetalleColmena)
+                                    IObtenerDetalleColmena<DetalleColmenaDto> getDetalleColmena,
+                                    IObtenerColmenasPorUsuario<ColmenaGetDto> getColmenasPorUsuario)
         {
             _add = add;
             _getPorId = getPorId;
@@ -35,6 +37,7 @@ namespace WebApi.Controllers
             _update = update;
             _delete = delete;
             _getDetalleColmena = getDetalleColmena;
+            _getColmenasPorUsuario = getColmenasPorUsuario;
         }
 
         [HttpPost]
@@ -242,6 +245,39 @@ namespace WebApi.Controllers
             catch (Exception)
             {
                 return StatusCode(500, "Hubo un problema intente nuevamente.");
+            }
+        }
+
+        [HttpGet("{usuarioId}/usuario")]
+        public IActionResult ObtenerColmenaPorUsuario(int usuarioId)
+        {
+            try
+            {
+                if (usuarioId <= 0)
+                {
+                    return BadRequest("El id de usuario recibido no es valido");
+                }
+                else
+                {
+                    var colmenas = _getColmenasPorUsuario.ObtenerColmenasPorUsuarioCU(usuarioId);
+                    return Ok(colmenas);
+                }
+            }
+            catch (BadRequestException e)
+            {
+                return StatusCode(e.StatusCode(), e.Error());
+            }
+            catch (NotFoundException e)
+            {
+                return StatusCode(e.StatusCode(), e.Error());
+            }
+            catch (LogicaDeNegocioException ex)
+            {
+                return StatusCode(404, ex.Message);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"Hubo un problema intente nuevamente: {e.Message}");
             }
         }
     }
