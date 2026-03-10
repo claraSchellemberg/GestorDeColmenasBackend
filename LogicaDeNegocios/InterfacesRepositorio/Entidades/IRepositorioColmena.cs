@@ -15,5 +15,6 @@ namespace LogicaDeNegocios.InterfacesRepositorio.Entidades
                         IRepositorioAgregarMedicionColmena
     {
         IEnumerable<Colmena> ObtenerColmenasPorApiario(int id);
+        IEnumerable<Colmena> ObtenerColmenasPorUsuario(int usuarioId);
     }
 }
