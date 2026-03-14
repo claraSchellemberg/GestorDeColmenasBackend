@@ -1,5 +1,6 @@
 ﻿using LogicaDeNegocios.Entidades;
 using LogicaDeServicios.DTOs.Usuarios;
+using LogicaDeServicios.Encription;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,10 @@ namespace LogicaDeServicios.Mappers
     {
         public static Usuario FromDto(UsuarioSetDto usuarioSetDto)
         {
+            string contraseñaHasheada = Hash.HashPassword(usuarioSetDto.Contraseña);
             var usuario = new Usuario(usuarioSetDto.Nombre,
                                 usuarioSetDto.Email,
-                                usuarioSetDto.Contraseña,
+                                contraseñaHasheada,
                                 usuarioSetDto.NumeroTelefono,
                                 usuarioSetDto.NumeroApicultor,
                                 usuarioSetDto.MedioDeComunicacionDePreferencia);
@@ -25,7 +27,7 @@ namespace LogicaDeServicios.Mappers
         {
             usuario.Nombre = usuarioSetDto.Nombre;
             usuario.Email = usuarioSetDto.Email;
-            usuario.Contraseña = usuarioSetDto.Contraseña;
+            usuario.Contraseña = Hash.HashPassword(usuarioSetDto.Contraseña);
             usuario.NumeroTelefono = usuarioSetDto.NumeroTelefono;
             usuario.NumeroApicultor = usuarioSetDto.NumeroApicultor;
             usuario.MedioDeComunicacionDePreferencia = usuarioSetDto.MedioDeComunicacionDePreferencia;
