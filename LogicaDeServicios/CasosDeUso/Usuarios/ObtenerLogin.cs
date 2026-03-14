@@ -2,6 +2,7 @@
 using LogicaDeNegocios.Excepciones;
 using LogicaDeNegocios.InterfacesRepositorio;
 using LogicaDeServicios.DTOs.Usuarios;
+using LogicaDeServicios.Encription;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using LogicaDeServicios.Mappers;
 using System;
@@ -15,6 +16,7 @@ namespace LogicaDeServicios.CasosDeUso.Usuarios
     public class ObtenerLogin:ILogin<UsuarioLoginDto>
     {
         private IRepositorioUsuario _repo;
+
         //aca se le agrega el jwt para el token
         public ObtenerLogin(IRepositorioUsuario repo)
         {
@@ -36,7 +38,7 @@ namespace LogicaDeServicios.CasosDeUso.Usuarios
             {
                 throw new UsuarioException("No se encontró el usuario, verifique el email.");
             }
-            if (usuario.Contraseña != usuarioLoginDto.Contraseña)
+            if (!Hash.VerifyPassword(usuarioLoginDto.Contraseña, usuario.Contraseña))
             {
                 throw new UsuarioException("Contraseña incorrecta.");
             }

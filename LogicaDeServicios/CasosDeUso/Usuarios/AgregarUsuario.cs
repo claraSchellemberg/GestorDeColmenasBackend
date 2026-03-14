@@ -1,6 +1,7 @@
 ﻿using LogicaDeNegocios.InterfacesRepositorio;
 using LogicaDeNegocios.InterfacesRepositorio.Entidades;
 using LogicaDeServicios.DTOs.Usuarios;
+using LogicaDeServicios.Encription;
 using LogicaDeServicios.InterfacesCasosDeUso;
 using LogicaDeServicios.Mappers;
 using System;
