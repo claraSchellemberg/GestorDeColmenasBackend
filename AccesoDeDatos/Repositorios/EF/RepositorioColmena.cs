@@ -101,10 +101,6 @@ namespace AccesoDeDatos.Repositorios.EF
                 .Include(c => c.Cuadros)
                 .Include(c => c.Mediciones)
                 .ToList();
-            if(!colmenas.Any())
-            {
-                throw new ColmenaException("No se encontraron colmenas para el apiario especificado.");
-            }
             return colmenas;
         }
         private void ValidarNombreUnico(Colmena entidad)

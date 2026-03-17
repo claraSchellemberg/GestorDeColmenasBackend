@@ -128,9 +128,9 @@ namespace WebApi.Controllers
                     throw new BadRequestException("El id recibido es incorrecto");
                 }
                 var colmenas = _getColmenasPorApiario.ObtenerColmenas(apiarioId);
-                if (colmenas.Count() == 0)
+                if (!colmenas.Any())
                 {
-                    return StatusCode(204);
+                    return Ok(new List<ColmenaGetDto>());
                 }
                 return Ok(colmenas);
             }
