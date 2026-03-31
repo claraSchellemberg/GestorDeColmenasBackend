@@ -23,16 +23,17 @@ namespace LogicaDeServicios.Mappers
             return usuario;
         }
 
-        public static Usuario UpdateFromDto(Usuario usuario,UsuarioSetDto usuarioSetDto)
+        public static Usuario UpdateFromDto(Usuario usuario, UsuarioSetDto usuarioSetDto)
         {
             usuario.Nombre = usuarioSetDto.Nombre;
             usuario.Email = usuarioSetDto.Email;
-            usuario.Contraseña = Hash.HashPassword(usuarioSetDto.Contraseña);
             usuario.NumeroTelefono = usuarioSetDto.NumeroTelefono;
             usuario.NumeroApicultor = usuarioSetDto.NumeroApicultor;
             usuario.MedioDeComunicacionDePreferencia = usuarioSetDto.MedioDeComunicacionDePreferencia;
-            return usuario;
+            if (!string.IsNullOrEmpty(usuarioSetDto.Contraseña))
+                usuario.Contraseña = Hash.HashPassword(usuarioSetDto.Contraseña);
 
+            return usuario;
         }
 
         public static UsuarioGetDto ToDto(Usuario usuario)
